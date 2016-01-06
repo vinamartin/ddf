@@ -18,6 +18,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasXPath;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static com.jayway.restassured.RestAssured.get;
 import static com.jayway.restassured.RestAssured.given;
@@ -42,12 +43,16 @@ import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 import org.slf4j.LoggerFactory;
 import org.slf4j.ext.XLogger;
 
 import com.jayway.restassured.http.ContentType;
 
 import ddf.catalog.data.Metacard;
+import ddf.catalog.endpoint.CatalogEndpoint;
+import ddf.catalog.endpoint.impl.CatalogEndpointImpl;
 import ddf.common.test.BeforeExam;
 import ddf.test.itests.AbstractIntegrationTest;
 import ddf.test.itests.common.CswQueryBuilder;
@@ -149,8 +154,7 @@ public class TestFederation extends AbstractIntegrationTest {
             }
             metacardsToDelete.clear();
         }
-        urlResourceReaderConfigurator.setUrlResourceReaderRootDirs(new String[] {
-                DEFAULT_URL_RESOURCE_READER_ROOT_RESOURCE_DIRS});
+        urlResourceReaderConfigurator.setUrlResourceReaderRootDirs(DEFAULT_URL_RESOURCE_READER_ROOT_RESOURCE_DIRS);
 
         if (resourcesToDelete != null) {
             for (String resource : resourcesToDelete) {
@@ -307,8 +311,7 @@ public class TestFederation extends AbstractIntegrationTest {
         metacardsToDelete.add(metacardId);
         String productDirectory = new File(fileName).getAbsoluteFile()
                 .getParent();
-        urlResourceReaderConfigurator.setUrlResourceReaderRootDirs(new String[] {
-                DEFAULT_URL_RESOURCE_READER_ROOT_RESOURCE_DIRS, productDirectory});
+        urlResourceReaderConfigurator.setUrlResourceReaderRootDirs(DEFAULT_URL_RESOURCE_READER_ROOT_RESOURCE_DIRS, productDirectory);
 
         String restUrl = REST_PATH.getUrl() + "sources/" + OPENSEARCH_SOURCE_ID + "/" + metacardId
                 + "?transform=resource";
@@ -332,8 +335,7 @@ public class TestFederation extends AbstractIntegrationTest {
         String fileName = testName.getMethodName() + ".txt";
         String metacardId = ingestXmlWithProduct(fileName);
         metacardsToDelete.add(metacardId);
-        urlResourceReaderConfigurator.setUrlResourceReaderRootDirs(new String[] {
-                DEFAULT_URL_RESOURCE_READER_ROOT_RESOURCE_DIRS});
+        urlResourceReaderConfigurator.setUrlResourceReaderRootDirs(DEFAULT_URL_RESOURCE_READER_ROOT_RESOURCE_DIRS);
 
         String restUrl = REST_PATH.getUrl() + "sources/" + OPENSEARCH_SOURCE_ID + "/" + metacardId
                 + "?transform=resource";
@@ -378,8 +380,7 @@ public class TestFederation extends AbstractIntegrationTest {
         metacardsToDelete.add(metacardId);
         String productDirectory = new File(fileName).getAbsoluteFile()
                 .getParent();
-        urlResourceReaderConfigurator.setUrlResourceReaderRootDirs(new String[] {
-                DEFAULT_URL_RESOURCE_READER_ROOT_RESOURCE_DIRS, productDirectory});
+        urlResourceReaderConfigurator.setUrlResourceReaderRootDirs(DEFAULT_URL_RESOURCE_READER_ROOT_RESOURCE_DIRS, productDirectory);
 
         String restUrl = REST_PATH.getUrl() + "sources/" + OPENSEARCH_SOURCE_ID + "/" + metacardId
                 + "?transform=resource";
@@ -395,8 +396,7 @@ public class TestFederation extends AbstractIntegrationTest {
     public void testFederatedRetrieveExistingProductCsw() throws Exception {
         String productDirectory = new File(DEFAULT_SAMPLE_PRODUCT_FILE_NAME).getAbsoluteFile()
                 .getParent();
-        urlResourceReaderConfigurator.setUrlResourceReaderRootDirs(new String[] {
-                DEFAULT_URL_RESOURCE_READER_ROOT_RESOURCE_DIRS, productDirectory});
+        urlResourceReaderConfigurator.setUrlResourceReaderRootDirs(DEFAULT_URL_RESOURCE_READER_ROOT_RESOURCE_DIRS, productDirectory);
 
         String restUrl = REST_PATH.getUrl() + "sources/" + CSW_SOURCE_ID + "/"
                 + metacardIds[XML_RECORD_INDEX] + "?transform=resource";
@@ -415,8 +415,7 @@ public class TestFederation extends AbstractIntegrationTest {
     @Test
     public void testFederatedRetrieveNoProduct() throws Exception {
         // Setup
-        urlResourceReaderConfigurator.setUrlResourceReaderRootDirs(new String[] {
-                DEFAULT_URL_RESOURCE_READER_ROOT_RESOURCE_DIRS});
+        urlResourceReaderConfigurator.setUrlResourceReaderRootDirs(DEFAULT_URL_RESOURCE_READER_ROOT_RESOURCE_DIRS);
         String restUrl = REST_PATH.getUrl() + "sources/" + OPENSEARCH_SOURCE_ID + "/"
                 + metacardIds[GEOJSON_RECORD_INDEX] + "?transform=resource";
 
@@ -430,7 +429,7 @@ public class TestFederation extends AbstractIntegrationTest {
     public void testFederatedRetrieveNoProductCsw() throws Exception {
         File[] rootDirectories = File.listRoots();
         String rootDir = rootDirectories[0].getCanonicalPath();
-        urlResourceReaderConfigurator.setUrlResourceReaderRootDirs(new String[] {rootDir});
+        urlResourceReaderConfigurator.setUrlResourceReaderRootDirs(rootDir);
         String restUrl = REST_PATH.getUrl() + "sources/" + CSW_SOURCE_ID + "/"
                 + metacardIds[GEOJSON_RECORD_INDEX] + "?transform=resource";
 
@@ -638,10 +637,31 @@ public class TestFederation extends AbstractIntegrationTest {
         // @formatter:on
     }
 
+    @Test
+    public void testCatalogEndpointExposure() throws InvalidSyntaxException {
+        // Check the service references
+        ArrayList<String> expectedEndpoints = new ArrayList<>();
+        expectedEndpoints.add("openSearchUrl");
+        expectedEndpoints.add("cswUrl");
+
+        String catalogEndpointClassName = ddf.catalog.endpoint.CatalogEndpoint.class.getName();
+
+        ServiceReference[] refs = bundleCtx.getAllServiceReferences(catalogEndpointClassName, null);
+
+        for (ServiceReference ref : refs) {
+            CatalogEndpoint endpoint = (CatalogEndpoint) bundleCtx.getService(ref);
+            String urlBindingName = endpoint.getEndpointProperties()
+                    .get(CatalogEndpointImpl.URL_BINDING_NAME_KEY);
+
+            assertTrue("Catalog endpoint url binding name: '" + urlBindingName + "' is expected.",
+                    expectedEndpoints.contains(urlBindingName));
+        }
+    }
+
     public void setupConnectedSources() throws IOException {
         CswConnectedSourceProperties connectedSourceProperties = new CswConnectedSourceProperties(
                 CONNECTED_SOURCE_ID);
-        createManagedService(CswConnectedSourceProperties.FACTORY_PID, connectedSourceProperties);
+        getServiceManager().createManagedService(CswConnectedSourceProperties.FACTORY_PID, connectedSourceProperties);
     }
 
     private String ingestXmlWithProduct(String fileName) throws IOException {
