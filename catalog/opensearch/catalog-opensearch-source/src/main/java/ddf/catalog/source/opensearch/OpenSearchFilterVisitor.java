@@ -1,10 +1,10 @@
 /**
  * Copyright (c) Codice Foundation
- * <p/>
+ * <p>
  * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
  * General Public License as published by the Free Software Foundation, either version 3 of the
  * License, or any later version.
- * <p/>
+ * <p>
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details. A copy of the GNU Lesser General Public License
@@ -50,10 +50,11 @@ import ddf.catalog.impl.filter.SpatialFilter;
 import ddf.catalog.impl.filter.TemporalFilter;
 
 public class OpenSearchFilterVisitor extends DefaultFilterVisitor {
-    private static final String ONLY_AND_MSG = "Opensearch only supports AND operations for non-contextual criteria.";
+    private static final String ONLY_AND_MSG =
+            "Opensearch only supports AND operations for non-contextual criteria.";
 
-    private static XLogger logger = new XLogger(
-            LoggerFactory.getLogger(OpenSearchFilterVisitor.class));
+    private static XLogger logger =
+            new XLogger(LoggerFactory.getLogger(OpenSearchFilterVisitor.class));
 
     private List<Filter> filters;
 
@@ -134,7 +135,8 @@ public class OpenSearchFilterVisitor extends DefaultFilterVisitor {
             // we
             // can cast it
             PointImpl point = (PointImpl) literalWrapper.evaluate(null);
-            double[] coords = point.getCentroid().getCoordinate();
+            double[] coords = point.getCentroid()
+                    .getCoordinate();
             double distance = filter.getDistance();
 
             logger.debug("point: coords[0] = " + coords[0] + ",   coords[1] = " + coords[1]);
@@ -172,7 +174,8 @@ public class OpenSearchFilterVisitor extends DefaultFilterVisitor {
             if (geometryExpression instanceof SurfaceImpl) {
                 SurfaceImpl polygon = (SurfaceImpl) literalWrapper.evaluate(null);
 
-                Coordinate[] coords = polygon.getJTSGeometry().getCoordinates();
+                Coordinate[] coords = polygon.getJTSGeometry()
+                        .getCoordinates();
 
                 geometryWkt.append("POLYGON((");
                 for (int i = 0; i < coords.length; i++) {
@@ -223,7 +226,8 @@ public class OpenSearchFilterVisitor extends DefaultFilterVisitor {
             if (geometryExpression instanceof SurfaceImpl) {
                 SurfaceImpl polygon = (SurfaceImpl) literalWrapper.evaluate(null);
 
-                Coordinate[] coords = polygon.getJTSGeometry().getCoordinates();
+                Coordinate[] coords = polygon.getJTSGeometry()
+                        .getCoordinates();
 
                 geometryWkt.append("POLYGON((");
                 for (int i = 0; i < coords.length; i++) {
@@ -295,8 +299,12 @@ public class OpenSearchFilterVisitor extends DefaultFilterVisitor {
             Period period = (Period) literal;
 
             // Extract the start and end dates from the filter
-            Date start = period.getBeginning().getPosition().getDate();
-            Date end = period.getEnding().getPosition().getDate();
+            Date start = period.getBeginning()
+                    .getPosition()
+                    .getDate();
+            Date end = period.getEnding()
+                    .getPosition()
+                    .getDate();
 
             temporalSearch = new TemporalFilter(start, end);
 
@@ -306,7 +314,8 @@ public class OpenSearchFilterVisitor extends DefaultFilterVisitor {
             DefaultPeriodDuration duration = (DefaultPeriodDuration) literal;
 
             // Extract the start and end dates from the filter
-            Date end = Calendar.getInstance().getTime();
+            Date end = Calendar.getInstance()
+                    .getTime();
             Date start = new Date(end.getTime() - duration.getTimeInMillis());
 
             temporalSearch = new TemporalFilter(start, end);
@@ -337,21 +346,26 @@ public class OpenSearchFilterVisitor extends DefaultFilterVisitor {
     public Object visit(PropertyIsLike filter, Object data) {
         logger.debug("ENTERING: PropertyIsLike filter");
 
-        LikeFilterImpl likeFilter = (LikeFilterImpl) filter;
+        if (curNest != NestedTypes.NOT) {
 
-        AttributeExpressionImpl expression = (AttributeExpressionImpl) likeFilter.getExpression();
-        String selectors = expression.getPropertyName();
-        logger.debug("selectors = " + selectors);
+            LikeFilterImpl likeFilter = (LikeFilterImpl) filter;
 
-        String searchPhrase = likeFilter.getLiteral();
-        logger.debug("searchPhrase = [" + searchPhrase + "]");
-        if (contextualSearch != null) {
-            contextualSearch.setSearchPhrase(
-                    contextualSearch.getSearchPhrase() + " " + curNest.toString() + " "
-                            + searchPhrase);
-        } else {
-            contextualSearch = new ContextualSearch(selectors, searchPhrase,
-                    likeFilter.isMatchingCase());
+            AttributeExpressionImpl expression =
+                    (AttributeExpressionImpl) likeFilter.getExpression();
+            String selectors = expression.getPropertyName();
+            logger.debug("selectors = " + selectors);
+
+            String searchPhrase = likeFilter.getLiteral();
+            logger.debug("searchPhrase = [" + searchPhrase + "]");
+            if (contextualSearch != null) {
+                contextualSearch.setSearchPhrase(
+                        contextualSearch.getSearchPhrase() + " " + curNest.toString() + " "
+                                + searchPhrase);
+            } else {
+                contextualSearch = new ContextualSearch(selectors,
+                        searchPhrase,
+                        likeFilter.isMatchingCase());
+            }
         }
 
         logger.debug("EXITING: PropertyIsLike filter");

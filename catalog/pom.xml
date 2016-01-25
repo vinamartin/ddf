@@ -505,6 +505,7 @@
         <module>transformer</module>
         <module>plugin</module>
         <module>opensearch</module>
+        <module>registry</module>
         <module>rest</module>
         <module>security</module>
         <module>admin</module>
