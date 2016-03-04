@@ -63,16 +63,48 @@ public class TransactionRequestConverter implements Converter {
     private static final CswRecordMetacardType CSW_RECORD_METACARD_TYPE =
             new CswRecordMetacardType();
 
-    private Converter inputTransformProvider;
+    private Converter delegatingTransformer;
 
     public TransactionRequestConverter(Converter itp) {
-        this.inputTransformProvider = itp;
+        this.delegatingTransformer = itp;
     }
 
     @Override
-    public void marshal(Object o, HierarchicalStreamWriter hierarchicalStreamWriter,
+    public void marshal(Object o, HierarchicalStreamWriter writer,
             MarshallingContext marshallingContext) {
+        if (o != null) {
+            if (CswTransactionRequest.class.isAssignableFrom(o.getClass())) {
+                CswTransactionRequest request = (CswTransactionRequest) o;
 
+                writer.addAttribute(CswConstants.SERVICE, request.getService());
+                writer.addAttribute(CswConstants.VERSION, request.getVersion());
+                writer.addAttribute(CswConstants.VERBOSE_RESPONSE,
+                        String.valueOf(request.isVerbose()));
+                writer.addAttribute(CswConstants.XMLNS + CswConstants.NAMESPACE_DELIMITER
+                        + CswConstants.CSW_NAMESPACE_PREFIX, CswConstants.CSW_OUTPUT_SCHEMA);
+                for (InsertAction insertAction : request.getInsertActions()) {
+                    writer.startNode("csw:Insert");
+                    writer.addAttribute(CswConstants.TYPE_NAME_PARAMETER,
+                            insertAction.getTypeName());
+                    marshallingContext.put(CswConstants.OUTPUT_SCHEMA_PARAMETER,
+                            "http://www.opengis.net/cat/wrs/1.0");
+                    for (Metacard metacard : insertAction.getRecords()) {
+                        try {
+                            marshallingContext.convertAnother(metacard, delegatingTransformer);
+                        } catch (ConversionException e) {
+                            // do nothing
+                        }
+                            /*
+                            HierarchicalStreamReader reader =
+                                    new BinaryStreamReader(binaryContent.getInputStream());
+                            HierarchicalStreamCopier copier = new HierarchicalStreamCopier();
+                            copier.copy(reader, writer); */
+
+                    }
+                    writer.endNode();
+                }
+            }
+        }
     }
 
     @Override
@@ -103,7 +135,7 @@ public class TransactionRequestConverter implements Converter {
                     reader.moveDown(); // move down to the record's tag
                     Metacard metacard = (Metacard) context.convertAnother(null,
                             MetacardImpl.class,
-                            inputTransformProvider);
+                            delegatingTransformer);
                     if (metacard != null) {
                         metacards.add(metacard);
                     }
@@ -264,7 +296,7 @@ public class TransactionRequestConverter implements Converter {
                 .contains(CswConstants.CSW_RECORD)) {
             Metacard metacard = (Metacard) context.convertAnother(null,
                     MetacardImpl.class,
-                    inputTransformProvider);
+                    delegatingTransformer);
 
             updateAction = new UpdateAction(metacard, typeName, handle);
             // Move back to the <Update>.

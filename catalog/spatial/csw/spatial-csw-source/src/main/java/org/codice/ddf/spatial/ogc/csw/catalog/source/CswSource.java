@@ -65,8 +65,14 @@ import org.codice.ddf.spatial.ogc.csw.catalog.common.CswRecordMetacardType;
 import org.codice.ddf.spatial.ogc.csw.catalog.common.CswSourceConfiguration;
 import org.codice.ddf.spatial.ogc.csw.catalog.common.GetCapabilitiesRequest;
 import org.codice.ddf.spatial.ogc.csw.catalog.common.GetRecordByIdRequest;
+import org.codice.ddf.spatial.ogc.csw.catalog.common.transaction.CswTransactionRequest;
+import org.codice.ddf.spatial.ogc.csw.catalog.common.transaction.DeleteAction;
+import org.codice.ddf.spatial.ogc.csw.catalog.common.transaction.InsertAction;
+import org.codice.ddf.spatial.ogc.csw.catalog.common.transaction.UpdateAction;
 import org.codice.ddf.spatial.ogc.csw.catalog.converter.CswTransformProvider;
+import org.codice.ddf.spatial.ogc.csw.catalog.converter.DefaultCswRecordMap;
 import org.codice.ddf.spatial.ogc.csw.catalog.source.reader.GetRecordsMessageBodyReader;
+import org.codice.ddf.spatial.ogc.csw.catalog.source.writer.CswTransactionRequestWriter;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortOrder;
 import org.osgi.framework.BundleContext;
@@ -88,22 +94,33 @@ import ddf.catalog.data.impl.ResultImpl;
 import ddf.catalog.filter.FilterAdapter;
 import ddf.catalog.filter.FilterBuilder;
 import ddf.catalog.filter.delegate.TagsFilterDelegate;
+import ddf.catalog.operation.CreateRequest;
+import ddf.catalog.operation.CreateResponse;
+import ddf.catalog.operation.DeleteRequest;
+import ddf.catalog.operation.DeleteResponse;
 import ddf.catalog.operation.Query;
 import ddf.catalog.operation.QueryRequest;
 import ddf.catalog.operation.ResourceResponse;
 import ddf.catalog.operation.SourceResponse;
+import ddf.catalog.operation.Update;
+import ddf.catalog.operation.UpdateRequest;
+import ddf.catalog.operation.UpdateResponse;
+import ddf.catalog.operation.impl.CreateResponseImpl;
+import ddf.catalog.operation.impl.DeleteResponseImpl;
 import ddf.catalog.operation.impl.QueryImpl;
 import ddf.catalog.operation.impl.QueryRequestImpl;
 import ddf.catalog.operation.impl.ResourceResponseImpl;
 import ddf.catalog.operation.impl.SourceResponseImpl;
+import ddf.catalog.operation.impl.UpdateResponseImpl;
 import ddf.catalog.resource.Resource;
 import ddf.catalog.resource.ResourceNotFoundException;
 import ddf.catalog.resource.ResourceNotSupportedException;
 import ddf.catalog.resource.ResourceReader;
 import ddf.catalog.resource.impl.ResourceImpl;
 import ddf.catalog.service.ConfiguredService;
+import ddf.catalog.source.CatalogStore;
 import ddf.catalog.source.ConnectedSource;
-import ddf.catalog.source.FederatedSource;
+import ddf.catalog.source.IngestException;
 import ddf.catalog.source.SourceMonitor;
 import ddf.catalog.source.UnsupportedQueryException;
 import ddf.catalog.transform.CatalogTransformerException;
@@ -112,15 +129,18 @@ import ddf.security.SecurityConstants;
 import ddf.security.Subject;
 import ddf.security.service.SecurityManager;
 import net.opengis.cat.csw.v_2_0_2.CapabilitiesType;
+import net.opengis.cat.csw.v_2_0_2.DeleteType;
 import net.opengis.cat.csw.v_2_0_2.ElementSetNameType;
 import net.opengis.cat.csw.v_2_0_2.ElementSetType;
 import net.opengis.cat.csw.v_2_0_2.GetCapabilitiesType;
 import net.opengis.cat.csw.v_2_0_2.GetRecordsResponseType;
 import net.opengis.cat.csw.v_2_0_2.GetRecordsType;
+import net.opengis.cat.csw.v_2_0_2.InsertResultType;
 import net.opengis.cat.csw.v_2_0_2.ObjectFactory;
 import net.opengis.cat.csw.v_2_0_2.QueryConstraintType;
 import net.opengis.cat.csw.v_2_0_2.QueryType;
 import net.opengis.cat.csw.v_2_0_2.ResultType;
+import net.opengis.cat.csw.v_2_0_2.TransactionResponseType;
 import net.opengis.filter.v_1_1_0.FilterCapabilities;
 import net.opengis.filter.v_1_1_0.FilterType;
 import net.opengis.filter.v_1_1_0.PropertyNameType;
@@ -136,11 +156,11 @@ import net.opengis.ows.v_1_0_0.Operation;
 import net.opengis.ows.v_1_0_0.OperationsMetadata;
 
 /**
- * CswSource provides a DDF {@link FederatedSource} and {@link ConnectedSource} for CSW 2.0.2
+ * CswSource provides a DDF {@link ddf.catalog.source.FederatedSource} and {@link ConnectedSource} for CSW 2.0.2
  * services.
  */
 public class CswSource extends MaskableImpl
-        implements FederatedSource, ConnectedSource, ConfiguredService {
+        implements CatalogStore, ConnectedSource, ConfiguredService {
 
     protected static final String CSW_SERVER_ERROR = "Error received from CSW server.";
 
@@ -246,7 +266,7 @@ public class CswSource extends MaskableImpl
 
     private FilterAdapter filterAdapter;
 
-    private Set<SourceMonitor> sourceMonitors = new HashSet<>();
+    private Set<SourceMonitor> sourceMonitors = new HashSet<SourceMonitor>();
 
     private Map<String, ContentType> contentTypes = new ConcurrentHashMap<>();
 
@@ -376,8 +396,8 @@ public class CswSource extends MaskableImpl
         consumerMap.put(CONNECTION_TIMEOUT_PROPERTY,
                 value -> cswSourceConfiguration.setConnectionTimeout((Integer) value));
 
-        consumerMap.put(RECEIVE_TIMEOUT_PROPERTY,
-                value -> cswSourceConfiguration.setReceiveTimeout((Integer) value));
+        consumerMap.put(RECEIVE_TIMEOUT_PROPERTY, value -> cswSourceConfiguration.setReceiveTimeout(
+                (Integer) value));
 
         consumerMap.put(OUTPUT_SCHEMA_PROPERTY,
                 value -> setConsumerOutputSchemaProperty((String) value));
@@ -537,7 +557,12 @@ public class CswSource extends MaskableImpl
 
         GetRecordsMessageBodyReader grmbr = new GetRecordsMessageBodyReader(cswTransformProvider,
                 cswSourceConfiguration);
-        return Arrays.asList(getRecordsTypeProvider, new CswResponseExceptionMapper(), grmbr);
+        CswTransactionRequestWriter writer = new CswTransactionRequestWriter();
+
+        return Arrays.asList(getRecordsTypeProvider,
+                new CswResponseExceptionMapper(),
+                grmbr,
+                writer);
     }
 
     /**
@@ -1139,9 +1164,9 @@ public class CswSource extends MaskableImpl
             if (wrappedMetacard.getAttribute(Metacard.RESOURCE_DOWNLOAD_URL) != null &&
                     wrappedMetacard.getAttribute(Metacard.RESOURCE_DOWNLOAD_URL)
                             .getValue() != null) {
-                wrappedMetacard.setAttribute(Metacard.RESOURCE_URI,
-                        wrappedMetacard.getAttribute(Metacard.RESOURCE_DOWNLOAD_URL)
-                                .getValue());
+                wrappedMetacard.setAttribute(Metacard.RESOURCE_URI, wrappedMetacard.getAttribute(
+                        Metacard.RESOURCE_DOWNLOAD_URL)
+                        .getValue());
             }
             Metacard tranformedMetacard = wrappedMetacard;
             if (transformer != null) {
@@ -1586,6 +1611,166 @@ public class CswSource extends MaskableImpl
 
     public void setSchemaToTagsMapping(String[] mapping) {
         this.cswSourceConfiguration.setSchemaToTagsMapping(mapping);
+    }
+
+    /**
+     * If a source is flagged as registry type, use the following methods for CRUD
+     * operations
+     */
+
+    @Override
+    public CreateResponse create(CreateRequest createRequest) throws IngestException {
+        Map<String, Serializable> properties = new HashMap<>();
+
+        Subject subject =
+                (Subject) createRequest.getPropertyValue(SecurityConstants.SECURITY_SUBJECT);
+        Csw csw = factory.getClientForSubject(subject);
+        CswTransactionRequest transactionRequest = new CswTransactionRequest();
+
+        List<Metacard> metacards = createRequest.getMetacards();
+        ArrayList<Metacard> createdMetacards = new ArrayList<>();
+        ArrayList<Filter> createdMetacardFilters = new ArrayList<>();
+
+        for (Metacard metacard : metacards) {
+            properties.put(metacard.getId(), metacard);
+            createdMetacardFilters.add(filterBuilder.attribute(Metacard.ID)
+                    .is()
+                    .equalTo()
+                    .text(metacard.getId()));
+        }
+
+        transactionRequest.getInsertActions()
+                .add(new InsertAction(CswConstants.CSW_TYPE, null, metacards));
+        try {
+            TransactionResponseType response = csw.transaction(transactionRequest);
+            List<InsertResultType> results = response.getInsertResult();
+        } catch (CswException e) {
+            LOGGER.debug("Csw Transaction Failed : " + e.getMessage());
+            throw new IngestException("Csw Transaction Failed : " + e.getMessage());
+        }
+
+        Filter createFilter = filterBuilder.anyOf(createdMetacardFilters);
+
+        Query query = new QueryImpl(createFilter);
+        QueryRequest queryRequest = new QueryRequestImpl(query);
+        try {
+            SourceResponse sourceResponse = query(queryRequest);
+            List<Result> results = sourceResponse.getResults();
+            createdMetacards.addAll(results.stream()
+                    .map(Result::getMetacard)
+                    .collect(Collectors.toList()));
+        } catch (UnsupportedQueryException e) {
+            LOGGER.debug("Unsupported Query : " + createFilter.toString());
+            throw new IngestException("Unsupported Query : " + createFilter.toString());
+        }
+
+        return new CreateResponseImpl(createRequest, properties, createdMetacards);
+    }
+
+    @Override
+    public UpdateResponse update(UpdateRequest updateRequest) throws IngestException {
+        Map<String, Serializable> properties = new HashMap<>();
+        List<Update> updates = new ArrayList<>();
+
+        Subject subject =
+                (Subject) updateRequest.getPropertyValue(SecurityConstants.SECURITY_SUBJECT);
+        Csw csw = factory.getClientForSubject(subject);
+        CswTransactionRequest transactionRequest = new CswTransactionRequest();
+
+        ArrayList<Metacard> initialMetacards = new ArrayList<>();
+        ArrayList<Metacard> updatedMetacards = new ArrayList<>();
+        ArrayList<Filter> updatedMetacardFilters = new ArrayList<>();
+
+        for (Map.Entry<Serializable, Metacard> update : updateRequest.getUpdates()) {
+            Metacard metacard = update.getValue();
+            properties.put(metacard.getId(), metacard);
+            updatedMetacardFilters.add(filterBuilder.attribute(Metacard.ID)
+                    .is()
+                    .equalTo()
+                    .text(metacard.getId()));
+            transactionRequest.getUpdateActions()
+                    .add(new UpdateAction(metacard, CswConstants.CSW_TYPE, null));
+        }
+        try {
+            TransactionResponseType response = csw.transaction(transactionRequest);
+        } catch (CswException e) {
+            LOGGER.debug("Csw Transaction Failed : " + e.getMessage());
+            throw new IngestException("Csw Transaction Failed : " + e.getMessage());
+        }
+
+        Filter updateFilter = filterBuilder.anyOf(updatedMetacardFilters);
+
+        Query query = new QueryImpl(updateFilter);
+        QueryRequest queryRequest = new QueryRequestImpl(query);
+        try {
+            SourceResponse sourceResponse = query(queryRequest);
+            List<Result> results = sourceResponse.getResults();
+            updatedMetacards.addAll(results.stream()
+                    .map(Result::getMetacard)
+                    .collect(Collectors.toList()));
+        } catch (UnsupportedQueryException e) {
+            LOGGER.debug("Unsupported Query : " + updateFilter.toString());
+            throw new IngestException("Unsupported Query : " + updateFilter.toString());
+        }
+        return new UpdateResponseImpl(updateRequest,
+                properties,
+                updatedMetacards,
+                initialMetacards);
+    }
+
+    @Override
+    public DeleteResponse delete(DeleteRequest deleteRequest) throws IngestException {
+        Map<String, Serializable> properties = new HashMap<>();
+        Subject subject =
+                (Subject) deleteRequest.getPropertyValue(SecurityConstants.SECURITY_SUBJECT);
+        Csw csw = factory.getClientForSubject(subject);
+        CswTransactionRequest transactionRequest = new CswTransactionRequest();
+
+        ArrayList<Metacard> deletedMetacards = new ArrayList<>();
+        ArrayList<Filter> deletedMetacardFilters = new ArrayList<>();
+
+        for (Serializable itemToDelete : deleteRequest.getAttributeValues()) {
+            DeleteType deleteType = new DeleteType();
+            QueryConstraintType queryConstraintType = new QueryConstraintType();
+            queryConstraintType.setCqlText(
+                    deleteRequest.getAttributeName() + " = \"" + itemToDelete.toString() + "\"");
+            deleteType.setConstraint(queryConstraintType);
+            deletedMetacardFilters.add(filterBuilder.attribute(deleteRequest.getAttributeName())
+                    .is()
+                    .equalTo()
+                    .text(itemToDelete.toString()));
+            DeleteAction deleteAction = new DeleteAction(deleteType,
+                    DefaultCswRecordMap.getPrefixToUriMapping());
+            transactionRequest.getDeleteActions()
+                    .add(deleteAction);
+        }
+
+        Filter deleteFilter = filterBuilder.anyOf(deletedMetacardFilters);
+
+        Query query = new QueryImpl(deleteFilter);
+        QueryRequest queryRequest = new QueryRequestImpl(query);
+        try {
+            SourceResponse sourceResponse = query(queryRequest);
+            List<Result> results = sourceResponse.getResults();
+            deletedMetacards.addAll(results.stream()
+                    .map(Result::getMetacard)
+                    .collect(Collectors.toList()));
+            for (Metacard metacard : deletedMetacards) {
+                properties.put(metacard.getId(), metacard);
+            }
+        } catch (UnsupportedQueryException e) {
+            LOGGER.debug("Unsupported Query : " + deleteFilter.toString());
+            throw new IngestException("Unsupported Query : " + deleteFilter.toString());
+        }
+
+        try {
+            TransactionResponseType response = csw.transaction(transactionRequest);
+        } catch (CswException e) {
+            LOGGER.debug("Csw Transaction Failed : " + e.getMessage());
+            throw new IngestException("Csw Transaction Failed : " + e.getMessage());
+        }
+
+        return new DeleteResponseImpl(deleteRequest, properties, deletedMetacards);
     }
 
     /**

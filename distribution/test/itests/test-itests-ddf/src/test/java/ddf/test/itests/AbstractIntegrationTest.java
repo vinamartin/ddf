@@ -253,8 +253,8 @@ public abstract class AbstractIntegrationTest {
     static {
         // Make Pax URL use the maven.repo.local setting if present
         if (System.getProperty("maven.repo.local") != null) {
-            System.setProperty("org.ops4j.pax.url.mvn.localRepository",
-                    System.getProperty("maven.repo.local"));
+            System.setProperty("org.ops4j.pax.url.mvn.localRepository", System.getProperty(
+                    "maven.repo.local"));
         }
     }
 
@@ -387,16 +387,16 @@ public abstract class AbstractIntegrationTest {
     }
 
     protected Option[] configurePaxExam() {
-        return options(logLevel(LogLevelOption.LogLevel.INFO),
-                useOwnExamBundlesStartLevel(100),
+        return options(logLevel(LogLevelOption.LogLevel.INFO), useOwnExamBundlesStartLevel(100),
                 // increase timeout for CI environment
-                systemTimeout(TimeUnit.MINUTES.toMillis(10)),
-                when(Boolean.getBoolean("keepRuntimeFolder")).useOptions(keepRuntimeFolder()),
-                cleanCaches(true));
+                systemTimeout(TimeUnit.MINUTES.toMillis(10)), when(Boolean.getBoolean(
+                        "keepRuntimeFolder")).useOptions(keepRuntimeFolder()), cleanCaches(true));
     }
 
     protected Option[] configureAdditionalBundles() {
         return options(junitBundles(),
+                wrappedBundle(mavenBundle("ddf.catalog.core",
+                        "catalog-core-api-impl").versionAsInProject()),
                 wrappedBundle(mavenBundle("org.apache.httpcomponents",
                         "httpclient").versionAsInProject()),
                 wrappedBundle(mavenBundle("org.apache.httpcomponents",
@@ -473,28 +473,28 @@ public abstract class AbstractIntegrationTest {
                 installStartupFile(getClass().getResourceAsStream("/hazelcast.xml"),
                         "/etc/hazelcast.xml"),
                 installStartupFile(getClass().getResourceAsStream(
-                        "/ddf.security.sts.client.configuration.config"),
+                                "/ddf.security.sts.client.configuration.config"),
                         "/etc/ddf.security.sts.client.configuration.config"),
                 editConfigurationFilePut("etc/ddf.security.sts.client.configuration.config",
                         "address",
                         "\"" + SECURE_ROOT + HTTPS_PORT.getPort()
                                 + "/services/SecurityTokenService?wsdl" + "\""),
                 installStartupFile(getClass().getResourceAsStream(
-                        "/ddf.catalog.solr.external.SolrHttpCatalogProvider.config"),
+                                "/ddf.catalog.solr.external.SolrHttpCatalogProvider.config"),
                         "/etc/ddf.catalog.solr.external.SolrHttpCatalogProvider.config"));
     }
 
     protected Option[] configureMavenRepos() {
         return options(editConfigurationFilePut("etc/org.ops4j.pax.url.mvn.cfg",
-                "org.ops4j.pax.url.mvn.repositories",
-                "http://repo1.maven.org/maven2@id=central,"
-                        + "http://oss.sonatype.org/content/repositories/snapshots@snapshots@noreleases@id=sonatype-snapshot,"
-                        + "http://oss.sonatype.org/content/repositories/ops4j-snapshots@snapshots@noreleases@id=ops4j-snapshot,"
-                        + "http://repository.apache.org/content/groups/snapshots-group@snapshots@noreleases@id=apache,"
-                        + "http://svn.apache.org/repos/asf/servicemix/m2-repo@id=servicemix,"
-                        + "http://repository.springsource.com/maven/bundles/release@id=springsource,"
-                        + "http://repository.springsource.com/maven/bundles/external@id=springsourceext,"
-                        + "http://oss.sonatype.org/content/repositories/releases/@id=sonatype"),
+                        "org.ops4j.pax.url.mvn.repositories",
+                        "http://repo1.maven.org/maven2@id=central,"
+                                + "http://oss.sonatype.org/content/repositories/snapshots@snapshots@noreleases@id=sonatype-snapshot,"
+                                + "http://oss.sonatype.org/content/repositories/ops4j-snapshots@snapshots@noreleases@id=ops4j-snapshot,"
+                                + "http://repository.apache.org/content/groups/snapshots-group@snapshots@noreleases@id=apache,"
+                                + "http://svn.apache.org/repos/asf/servicemix/m2-repo@id=servicemix,"
+                                + "http://repository.springsource.com/maven/bundles/release@id=springsource,"
+                                + "http://repository.springsource.com/maven/bundles/external@id=springsourceext,"
+                                + "http://oss.sonatype.org/content/repositories/releases/@id=sonatype"),
                 when(System.getProperty("maven.repo.local") != null).useOptions(
                         editConfigurationFilePut("etc/org.ops4j.pax.url.mvn.cfg",
                                 "org.ops4j.pax.url.mvn.localRepository",
@@ -503,9 +503,9 @@ public abstract class AbstractIntegrationTest {
 
     protected Option[] configureSystemSettings() {
         return options(when(System.getProperty(TEST_LOGLEVEL_PROPERTY) != null).useOptions(
-                systemProperty(TEST_LOGLEVEL_PROPERTY).value(System.getProperty(
-                        TEST_LOGLEVEL_PROPERTY,
-                        ""))),
+                        systemProperty(TEST_LOGLEVEL_PROPERTY).value(System.getProperty(
+                                TEST_LOGLEVEL_PROPERTY,
+                                ""))),
                 when(Boolean.getBoolean("isDebugEnabled")).useOptions(vmOption(
                         "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")),
                 when(System.getProperty("maven.repo.local") != null).useOptions(systemProperty(
@@ -529,8 +529,8 @@ public abstract class AbstractIntegrationTest {
                 // Need to add catalog-app since there are imports in the itests from catalog-app.
                 editConfigurationFileExtend("etc/org.apache.karaf.features.cfg",
                         "featuresBoot",
-                        "catalog-app"),
-                editConfigurationFileExtend("etc/org.apache.karaf.features.cfg",
+                        "catalog-app"), editConfigurationFileExtend(
+                        "etc/org.apache.karaf.features.cfg",
                         "featuresRepositories",
                         featuresUrl));
     }
@@ -731,6 +731,22 @@ public abstract class AbstractIntegrationTest {
         public static final String FACTORY_PID = "Csw_Connected_Source";
 
         public CswConnectedSourceProperties(String sourceId) {
+            this.putAll(getMetatypeDefaults(SYMBOLIC_NAME, FACTORY_PID));
+
+            this.put("id", sourceId);
+            this.put("cswUrl", CSW_PATH.getUrl());
+            this.put("pollInterval", 1);
+        }
+
+    }
+
+    public class CswCatalogStoreProperties extends HashMap<String, Object> {
+
+        public static final String SYMBOLIC_NAME = "spatial-csw-source";
+
+        public static final String FACTORY_PID = "Csw_Catalog_Store";
+
+        public CswCatalogStoreProperties(String sourceId) {
             this.putAll(getMetatypeDefaults(SYMBOLIC_NAME, FACTORY_PID));
 
             this.put("id", sourceId);

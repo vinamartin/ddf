@@ -78,6 +78,8 @@
 					availability="optional">
 		<reference-listener bind-method="bind"
 							unbind-method="unbind" ref="catalogStoreMap"/>
+        <reference-listener bind-method="bind"
+                            unbind-method="unbind" ref="sourcePollerRunner"/>
 	</reference-list>
     <!-- PREINGEST REFERENCE -->
     <reference-list id="preIngest" interface="ddf.catalog.plugin.PreIngestPlugin"

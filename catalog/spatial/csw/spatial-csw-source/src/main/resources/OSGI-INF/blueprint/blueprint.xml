@@ -73,6 +73,45 @@
         </cm:managed-component>
     </cm:managed-service-factory>
 
+    <cm:managed-service-factory
+            id="org.codice.ddf.spatial.ogc.csw.catalog.source.CswCatalogStore.id"
+            factory-pid="Csw_Catalog_Store"
+            interface="ddf.catalog.source.CatalogStore">
+        <cm:managed-component class="org.codice.ddf.spatial.ogc.csw.catalog.source.CswSource"
+                              init-method="init" destroy-method="destroy">
+            <property name="context" ref="blueprintBundleContext"/>
+            <property name="filterBuilder" ref="filterBuilder"/>
+            <property name="filterAdapter" ref="filterAdapter"/>
+            <property name="cswUrl" value=""/>
+            <property name="id" value=""/>
+            <property name="username" value=""/>
+            <property name="password" value=""/>
+            <property name="disableCnCheck" value="false"/>
+            <property name="coordinateOrder" value="LON_LAT"/>
+            <property name="usePosList" value="false"/>
+            <property name="contentTypeMapping" value="type"/>
+            <property name="effectiveDateMapping" value=""/>
+            <property name="createdDateMapping" value=""/>
+            <property name="modifiedDateMapping" value=""/>
+            <property name="resourceUriMapping" value=""/>
+            <property name="thumbnailMapping" value=""/>
+            <property name="identifierMapping" value="identifier"/>
+            <property name="pollInterval" value="5"/>
+            <property name="resourceReader" ref="resourceReader"/>
+            <property name="outputSchema" value=""/>
+            <property name="queryTypeQName" value=""/>
+            <property name="queryTypePrefix" value=""/>
+            <property name="cswTransformProvider" ref="cswTransformProvider"/>
+            <property name="isCqlForced" value="false"/>
+            <property name="forceSpatialFilter" value=""/>
+            <property name="connectionTimeout" value="30000"/>
+            <property name="receiveTimeout" value="60000"/>
+            <property name="securityManager" ref="securityManager"/>
+            <cm:managed-properties persistent-id="" update-strategy="component-managed"
+                                   update-method="refresh"/>
+        </cm:managed-component>
+    </cm:managed-service-factory>
+
 
     <cm:managed-service-factory
             id="org.codice.ddf.spatial.ogc.csw.catalog.source.CswConnectedSource.id"

@@ -27,12 +27,24 @@ import static com.jayway.restassured.path.json.JsonPath.with;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.karaf.jaas.boot.principal.RolePrincipal;
+import org.apache.shiro.mgt.DefaultSecurityManager;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.codice.ddf.security.policy.context.impl.PolicyManager;
 import org.hamcrest.Matcher;
+import org.hamcrest.xml.HasXPath;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -49,11 +61,26 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.ext.XLogger;
 
 import com.jayway.restassured.http.ContentType;
+import com.jayway.restassured.response.ValidatableResponse;
 
 import ddf.catalog.data.Metacard;
+import ddf.catalog.data.impl.BasicTypes;
+import ddf.catalog.data.impl.MetacardImpl;
 import ddf.catalog.endpoint.CatalogEndpoint;
 import ddf.catalog.endpoint.impl.CatalogEndpointImpl;
+import ddf.catalog.federation.FederationException;
+import ddf.catalog.operation.CreateRequest;
+import ddf.catalog.operation.CreateResponse;
+import ddf.catalog.operation.impl.CreateRequestImpl;
+import ddf.catalog.source.IngestException;
+import ddf.catalog.source.SourceUnavailableException;
+import ddf.catalog.source.UnsupportedQueryException;
+import ddf.catalog.transform.CatalogTransformerException;
 import ddf.common.test.BeforeExam;
+import ddf.security.SecurityConstants;
+import ddf.security.Subject;
+import ddf.security.common.util.Security;
+import ddf.security.impl.SubjectImpl;
 import ddf.test.itests.AbstractIntegrationTest;
 import ddf.test.itests.common.CswQueryBuilder;
 import ddf.test.itests.common.Library;
@@ -80,6 +107,8 @@ public class TestFederation extends AbstractIntegrationTest {
     private static final String RECORD_TITLE_1 = "myTitle";
 
     private static final String RECORD_TITLE_2 = "myXmlTitle";
+
+    private static final String CATALOG_STORE_ID = "cswCatalogStoreSource";
 
     private static final String CONNECTED_SOURCE_ID = "cswConnectedSource";
 
@@ -127,9 +156,15 @@ public class TestFederation extends AbstractIntegrationTest {
             getServiceManager().createManagedService(CswSourceProperties.FACTORY_PID,
                     cswProperties2);
 
+            CswCatalogStoreProperties cswCatalogStoreProperties = new CswCatalogStoreProperties(
+                    CATALOG_STORE_ID);
+            getServiceManager().createManagedService(CswCatalogStoreProperties.FACTORY_PID,
+                    cswCatalogStoreProperties);
+
             getCatalogBundle().waitForFederatedSource(OPENSEARCH_SOURCE_ID);
             getCatalogBundle().waitForFederatedSource(CSW_SOURCE_ID);
             getCatalogBundle().waitForFederatedSource(CSW_SOURCE_WITH_METACARD_XML_ID);
+            getCatalogBundle().waitForCatalogStore(CATALOG_STORE_ID);
 
             getServiceManager().waitForSourcesToBeAvailable(REST_PATH.getUrl(),
                     OPENSEARCH_SOURCE_ID,
@@ -673,6 +708,53 @@ public class TestFederation extends AbstractIntegrationTest {
             assertTrue("Catalog endpoint url binding name: '" + urlBindingName + "' is expected.",
                     expectedEndpoints.contains(urlBindingName));
         }
+    }
+
+    @Test
+    public void testCswRegistryCreate()
+            throws InterruptedException, IOException, CatalogTransformerException,
+            SourceUnavailableException, IngestException, FederationException,
+            UnsupportedQueryException {
+        ArrayList<Metacard> metacards = new ArrayList<>();
+        Map<String, Serializable> properties = new HashMap<>();
+        Set<String> destinations = new HashSet<>();
+
+        MetacardImpl metacard = new MetacardImpl(BasicTypes.BASIC_METACARD);
+        metacard.setId("metacard1");
+        metacards.add(metacard);
+        properties.put(metacard.getId(), metacard);
+
+        org.apache.shiro.mgt.SecurityManager securityManager = new DefaultSecurityManager();
+        PrincipalCollection principals = new SimplePrincipalCollection(new RolePrincipal("guest"),
+                PolicyManager.DEFAULT_REALM);
+
+        Subject subject = new SubjectImpl(principals, true, null, securityManager);
+
+        properties.put(SecurityConstants.SECURITY_SUBJECT, Security.getSystemSubject());
+
+        destinations.add(CATALOG_STORE_ID);
+
+        CreateRequest createRequest = new CreateRequestImpl(metacards, properties, destinations);
+        CreateResponse createResponse = getCatalogBundle().getCatalogFramework()
+                .create(createRequest);
+
+        String query =
+                new CswQueryBuilder().addAttributeFilter(CswQueryBuilder.PROPERTY_IS_EQUAL_TO,
+                        Metacard.ID,
+                        "metacard1")
+                        .getQuery();
+
+        ValidatableResponse response = given().auth()
+                .preemptive()
+                .basic("admin", "admin")
+                .header("Content-Type", MediaType.APPLICATION_XML)
+                .body(query)
+                .post(CSW_PATH.getUrl())
+                .then();
+
+        response.body(HasXPath.hasXPath(String.format(
+                "/GetRecordsResponse/SearchResults/Record[identifier=\"%s\"]",
+                "metacard1")));
     }
 
     public void setupConnectedSources() throws IOException {
