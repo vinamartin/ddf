@@ -12,7 +12,7 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  */
 
-package org.codice.ddf.catalog.admin.plugin;
+package org.codice.ddf.catalog.admin.poller;
 
 import java.util.List;
 import java.util.Map;
@@ -21,4 +21,8 @@ public interface AdminSourcePollerServiceBeanMBean {
     boolean sourceStatus(String servicePID);
 
     List<Map<String, Object>> allSourceInfo();
+
+    // Rename this. This method will be used for both publish and unpublish
+    boolean publish(String source, List<String> destinations);
+
 }

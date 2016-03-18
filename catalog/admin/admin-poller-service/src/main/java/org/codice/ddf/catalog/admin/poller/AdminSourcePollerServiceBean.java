@@ -12,7 +12,7 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  */
 
-package org.codice.ddf.catalog.admin.plugin;
+package org.codice.ddf.catalog.admin.poller;
 
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -31,6 +31,7 @@ import javax.management.ObjectName;
 
 import org.apache.shiro.util.CollectionUtils;
 import org.codice.ddf.ui.admin.api.ConfigurationAdminExt;
+import org.opengis.filter.Filter;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
@@ -42,6 +43,9 @@ import org.osgi.service.metatype.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ddf.catalog.CatalogFramework;
+import ddf.catalog.operation.impl.QueryImpl;
+import ddf.catalog.operation.impl.QueryRequestImpl;
 import ddf.catalog.service.ConfiguredService;
 import ddf.catalog.source.ConnectedSource;
 import ddf.catalog.source.FederatedSource;
@@ -81,7 +85,10 @@ public class AdminSourcePollerServiceBean implements AdminSourcePollerServiceBea
 
     private final AdminSourceHelper helper;
 
-    public AdminSourcePollerServiceBean(ConfigurationAdmin configurationAdmin) {
+    private CatalogFramework catalogFramework;
+
+    public AdminSourcePollerServiceBean(ConfigurationAdmin configurationAdmin,
+            CatalogFramework catalogFramework) {
         helper = getHelper();
         helper.configurationAdmin = configurationAdmin;
 
@@ -95,6 +102,7 @@ public class AdminSourcePollerServiceBean implements AdminSourcePollerServiceBea
                     e);
         }
         objectName = objName;
+        this.catalogFramework = catalogFramework;
     }
 
     public void init() {
@@ -213,6 +221,40 @@ public class AdminSourcePollerServiceBean implements AdminSourcePollerServiceBea
             }
         });
         return metatypes;
+    }
+
+    @Override
+    public boolean publish(String source, List<String> destinations) {
+        //query the framework based on the source id
+        //in the metacard there will be a list of ids where it is currently published
+        //catalogFramework.query(new QueryRequestImpl(new QueryImpl());
+
+        //find the diff of that list and destinations
+        //use that to decide what's published/unpublished
+        List<String> currentlyPublishedLocations = null;
+
+        // Destinations is where I want to publish to...
+        // Things that are not in this list that are in currently Published locations should be unpublished
+        List<String> publishLocations = destinations;
+        List<String> unpublishLocations = new ArrayList<>();
+
+        for (String location : currentlyPublishedLocations) {
+            if (!destinations.contains(location)) {
+                unpublishLocations.add(location);
+            }
+        }
+
+        //call publish on the list of things to publish
+        //create
+        for (String id : publishLocations) {
+            // create ....
+        }
+        //call unpublish on the list of things to unpublish
+        //delete
+
+        //update the metacard
+
+        return false;
     }
 
     protected AdminSourceHelper getHelper() {

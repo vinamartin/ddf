@@ -12,7 +12,7 @@
  * <http://www.gnu.org/licenses/lgpl.html>.
  */
 
-package org.codice.ddf.catalog.admin.plugin;
+package org.codice.ddf.catalog.admin.poller;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -36,6 +36,7 @@ import org.junit.Test;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
 
+import ddf.catalog.CatalogFramework;
 import ddf.catalog.service.ConfiguredService;
 import ddf.catalog.source.Source;
 import ddf.catalog.source.opensearch.OpenSearchSource;
@@ -52,7 +53,7 @@ public class AdminSourcePollerTest {
 
     @BeforeClass
     public static void setup() {
-        poller = new AdminSourcePollerTest().new MockedAdminSourcePoller(null);
+        poller = new AdminSourcePollerTest().new MockedAdminSourcePoller(null, null);
     }
 
     @Test
@@ -75,8 +76,8 @@ public class AdminSourcePollerTest {
     }
 
     private class MockedAdminSourcePoller extends AdminSourcePollerServiceBean {
-        public MockedAdminSourcePoller(ConfigurationAdmin configAdmin) {
-            super(configAdmin);
+        public MockedAdminSourcePoller(ConfigurationAdmin configAdmin, CatalogFramework catalogFramework) {
+            super(configAdmin, catalogFramework);
         }
 
         @Override

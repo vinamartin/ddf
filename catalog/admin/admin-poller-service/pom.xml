@@ -20,7 +20,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <name>DDF :: Catalog :: Admin :: Module :: Sources</name>
-    <artifactId>catalog-admin-module-sources</artifactId>
+    <artifactId>catalog-admin-poller-service</artifactId>
     <packaging>bundle</packaging>
     <dependencies>
         <dependency>
@@ -62,30 +62,12 @@
         </resources>
         <plugins>
             <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>grunt install</id>
-                        <goals>
-                            <goal>grunt</goal>
-                        </goals>
-                        <phase>install</phase>
-                        <configuration>
-                            <arguments>build</arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
                         <!--we will use this servlet filter once it has been made generic to protect this app-->
                         <!--<Embed-Dependency>search-securityservletfilter</Embed-Dependency>-->
-                        <Web-ContextPath>/admin/sources</Web-ContextPath>
-                        <_wab>src/main/webapp,${project.build.directory}/webapp</_wab>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Export-Package/>
                     </instructions>
@@ -109,22 +91,22 @@
                                         <limit>
                                             <counter>INSTRUCTION</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0</minimum>
+                                            <minimum>.44</minimum>
                                         </limit>
                                         <limit>
                                             <counter>BRANCH</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0</minimum>
+                                            <minimum>.53</minimum>
                                         </limit>
                                         <limit>
                                             <counter>COMPLEXITY</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0</minimum>
+                                            <minimum>.29</minimum>
                                         </limit>
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0</minimum>
+                                            <minimum>.43</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
