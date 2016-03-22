@@ -44,18 +44,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ddf.catalog.CatalogFramework;
+import ddf.catalog.data.Metacard;
+import ddf.catalog.data.Result;
+import ddf.catalog.federation.FederationException;
+import ddf.catalog.filter.FilterBuilder;
+import ddf.catalog.operation.Query;
+import ddf.catalog.operation.QueryResponse;
 import ddf.catalog.operation.impl.QueryImpl;
 import ddf.catalog.operation.impl.QueryRequestImpl;
 import ddf.catalog.service.ConfiguredService;
 import ddf.catalog.source.ConnectedSource;
 import ddf.catalog.source.FederatedSource;
 import ddf.catalog.source.Source;
+import ddf.catalog.source.SourceUnavailableException;
+import ddf.catalog.source.UnsupportedQueryException;
 
-public class AdminSourcePollerServiceBean implements AdminSourcePollerServiceBeanMBean {
+public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
     static final String META_TYPE_NAME = "org.osgi.service.metatype.MetaTypeService";
 
-    private static final Logger LOGGER =
-            LoggerFactory.getLogger(AdminSourcePollerServiceBean.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdminPollerServiceBean.class);
 
     private static final String MAP_ENTRY_ID = "id";
 
@@ -87,22 +94,25 @@ public class AdminSourcePollerServiceBean implements AdminSourcePollerServiceBea
 
     private CatalogFramework catalogFramework;
 
-    public AdminSourcePollerServiceBean(ConfigurationAdmin configurationAdmin,
-            CatalogFramework catalogFramework) {
+    private FilterBuilder filterBuilder;
+
+    public AdminPollerServiceBean(ConfigurationAdmin configurationAdmin,
+            CatalogFramework catalogFramework, FilterBuilder filterBuilder) {
         helper = getHelper();
         helper.configurationAdmin = configurationAdmin;
 
         mBeanServer = ManagementFactory.getPlatformMBeanServer();
         ObjectName objName = null;
         try {
-            objName = new ObjectName(AdminSourcePollerServiceBean.class.getName() + SERVICE_NAME);
+            objName = new ObjectName(AdminPollerServiceBean.class.getName() + SERVICE_NAME);
         } catch (MalformedObjectNameException e) {
             LOGGER.error("Unable to create Admin Source Poller Service MBean with name [{}].",
-                    AdminSourcePollerServiceBean.class.getName() + SERVICE_NAME,
+                    AdminPollerServiceBean.class.getName() + SERVICE_NAME,
                     e);
         }
         objectName = objName;
         this.catalogFramework = catalogFramework;
+        this.filterBuilder = filterBuilder;
     }
 
     public void init() {
@@ -224,13 +234,23 @@ public class AdminSourcePollerServiceBean implements AdminSourcePollerServiceBea
     }
 
     @Override
-    public boolean publish(String source, List<String> destinations) {
+    public boolean publish(String source, List<String> destinations)
+            throws UnsupportedQueryException, SourceUnavailableException, FederationException {
         //query the framework based on the source id
         //in the metacard there will be a list of ids where it is currently published
-        //catalogFramework.query(new QueryRequestImpl(new QueryImpl());
+
+
+        Filter filter = filterBuilder.attribute(Metacard.ID).is().equalTo().text(source);
+        Query query = new QueryImpl(filter);
+
+        QueryResponse queryResponse = catalogFramework.query(new QueryRequestImpl(query));
+        List<Result> metacards = queryResponse.getResults();
+        Metacard metacard = metacards.get(0).getMetacard();
+
 
         //find the diff of that list and destinations
         //use that to decide what's published/unpublished
+        /*
         List<String> currentlyPublishedLocations = null;
 
         // Destinations is where I want to publish to...
@@ -254,6 +274,7 @@ public class AdminSourcePollerServiceBean implements AdminSourcePollerServiceBea
 
         //update the metacard
 
+*/
         return false;
     }
 
@@ -265,7 +286,7 @@ public class AdminSourcePollerServiceBean implements AdminSourcePollerServiceBea
         protected ConfigurationAdmin configurationAdmin;
 
         private BundleContext getBundleContext() {
-            Bundle bundle = FrameworkUtil.getBundle(AdminSourcePollerServiceBean.class);
+            Bundle bundle = FrameworkUtil.getBundle(AdminPollerServiceBean.class);
             if (bundle != null) {
                 return bundle.getBundleContext();
             }

@@ -20,11 +20,14 @@
 
     <reference id="catalogFramework" interface="ddf.catalog.CatalogFramework"/>
 
+    <reference id="filterBuilder" interface="ddf.catalog.filter.FilterBuilder"/>
+
     <bean id="adminSourcePoller"
-          class="org.codice.ddf.catalog.admin.poller.AdminSourcePollerServiceBean"
+          class="org.codice.ddf.catalog.admin.poller.AdminPollerServiceBean"
           init-method="init"
           destroy-method="destroy">
         <argument ref="configurationAdmin"/>
         <argument ref="catalogFramework"/>
+        <argument ref="filterBuilder"/>
     </bean>
 </blueprint>

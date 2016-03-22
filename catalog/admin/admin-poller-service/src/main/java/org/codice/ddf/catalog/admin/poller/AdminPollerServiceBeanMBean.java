@@ -17,12 +17,17 @@ package org.codice.ddf.catalog.admin.poller;
 import java.util.List;
 import java.util.Map;
 
-public interface AdminSourcePollerServiceBeanMBean {
+import ddf.catalog.federation.FederationException;
+import ddf.catalog.source.SourceUnavailableException;
+import ddf.catalog.source.UnsupportedQueryException;
+
+public interface AdminPollerServiceBeanMBean {
     boolean sourceStatus(String servicePID);
 
     List<Map<String, Object>> allSourceInfo();
 
     // Rename this. This method will be used for both publish and unpublish
-    boolean publish(String source, List<String> destinations);
+    boolean publish(String source, List<String> destinations)
+            throws UnsupportedQueryException, SourceUnavailableException, FederationException;
 
 }

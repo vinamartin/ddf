@@ -321,6 +321,12 @@
         <feature prerequisite="true">catalog-app</feature>
         <bundle>mvn:ddf.catalog.admin/catalog-admin-module-sources/${project.version}</bundle>
     </feature>
+
+    <feature name="admin-poller-service-bean" install="auto" version="${project.version}"
+             description="DDF Admin Poller">
+        <feature prerequisite="true">catalog-app</feature>
+        <bundle>mvn:ddf.catalog.admin/catalog-admin-poller-service/${project.version}</bundle>
+    </feature>
     
     <feature name="catalog-plugin-resource-usage" install="manual" version="${project.version}"
              description="DDF Resource Plugin tracking data usage ">

@@ -37,11 +37,12 @@ import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
 
 import ddf.catalog.CatalogFramework;
+import ddf.catalog.filter.FilterBuilder;
 import ddf.catalog.service.ConfiguredService;
 import ddf.catalog.source.Source;
 import ddf.catalog.source.opensearch.OpenSearchSource;
 
-public class AdminSourcePollerTest {
+public class AdminPollerTest {
 
     public static final String CONFIG_PID = "properPid";
 
@@ -49,11 +50,11 @@ public class AdminSourcePollerTest {
 
     public static final String FPID = "OpenSearchSource";
 
-    public static MockedAdminSourcePoller poller;
+    public static MockedAdminPoller poller;
 
     @BeforeClass
     public static void setup() {
-        poller = new AdminSourcePollerTest().new MockedAdminSourcePoller(null, null);
+        poller = new AdminPollerTest().new MockedAdminPoller(null, null, null);
     }
 
     @Test
@@ -75,9 +76,9 @@ public class AdminSourcePollerTest {
         assertFalse(poller.sourceStatus("FAKE SOURCE"));
     }
 
-    private class MockedAdminSourcePoller extends AdminSourcePollerServiceBean {
-        public MockedAdminSourcePoller(ConfigurationAdmin configAdmin, CatalogFramework catalogFramework) {
-            super(configAdmin, catalogFramework);
+    private class MockedAdminPoller extends AdminPollerServiceBean {
+        public MockedAdminPoller(ConfigurationAdmin configAdmin, CatalogFramework catalogFramework, FilterBuilder filterBuilder) {
+            super(configAdmin, catalogFramework, filterBuilder);
         }
 
         @Override
