@@ -81,7 +81,7 @@
                             catalog-core-api-impl
                         </Embeded-Dependency>
                         <Import-Package>
-                            !ddf.catalog.operation.impl
+                            !ddf.catalog.operation.impl,*
                         </Import-Package>
                     </instructions>
                 </configuration>
