@@ -39,6 +39,7 @@ import org.osgi.service.cm.ConfigurationAdmin;
 import ddf.catalog.CatalogFramework;
 import ddf.catalog.filter.FilterBuilder;
 import ddf.catalog.service.ConfiguredService;
+import ddf.catalog.source.CatalogStore;
 import ddf.catalog.source.Source;
 import ddf.catalog.source.opensearch.OpenSearchSource;
 
@@ -54,7 +55,7 @@ public class AdminPollerTest {
 
     @BeforeClass
     public static void setup() {
-        poller = new AdminPollerTest().new MockedAdminPoller(null, null, null);
+        poller = new AdminPollerTest().new MockedAdminPoller(null, null, null, null);
     }
 
     @Test
@@ -77,8 +78,8 @@ public class AdminPollerTest {
     }
 
     private class MockedAdminPoller extends AdminPollerServiceBean {
-        public MockedAdminPoller(ConfigurationAdmin configAdmin, CatalogFramework catalogFramework, FilterBuilder filterBuilder) {
-            super(configAdmin, catalogFramework, filterBuilder);
+        public MockedAdminPoller(ConfigurationAdmin configAdmin, CatalogFramework catalogFramework, FilterBuilder filterBuilder, Map<String, CatalogStore> catalogStoreMap) {
+            super(configAdmin, catalogFramework, filterBuilder, catalogStoreMap);
         }
 
         @Override

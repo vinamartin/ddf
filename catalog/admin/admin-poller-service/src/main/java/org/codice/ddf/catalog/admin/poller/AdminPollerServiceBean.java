@@ -15,6 +15,7 @@
 package org.codice.ddf.catalog.admin.poller;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +24,7 @@ import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.MBeanServer;
@@ -46,15 +48,22 @@ import org.slf4j.LoggerFactory;
 import ddf.catalog.CatalogFramework;
 import ddf.catalog.data.Metacard;
 import ddf.catalog.data.Result;
+import ddf.catalog.data.impl.AttributeImpl;
 import ddf.catalog.federation.FederationException;
 import ddf.catalog.filter.FilterBuilder;
+import ddf.catalog.operation.CreateRequest;
+import ddf.catalog.operation.DeleteRequest;
 import ddf.catalog.operation.Query;
 import ddf.catalog.operation.QueryResponse;
+import ddf.catalog.operation.impl.CreateRequestImpl;
+import ddf.catalog.operation.impl.DeleteRequestImpl;
 import ddf.catalog.operation.impl.QueryImpl;
 import ddf.catalog.operation.impl.QueryRequestImpl;
 import ddf.catalog.service.ConfiguredService;
+import ddf.catalog.source.CatalogStore;
 import ddf.catalog.source.ConnectedSource;
 import ddf.catalog.source.FederatedSource;
+import ddf.catalog.source.IngestException;
 import ddf.catalog.source.Source;
 import ddf.catalog.source.SourceUnavailableException;
 import ddf.catalog.source.UnsupportedQueryException;
@@ -96,8 +105,10 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
 
     private FilterBuilder filterBuilder;
 
+    private Map<String, CatalogStore> catalogStoreMap;
+
     public AdminPollerServiceBean(ConfigurationAdmin configurationAdmin,
-            CatalogFramework catalogFramework, FilterBuilder filterBuilder) {
+            CatalogFramework catalogFramework, FilterBuilder filterBuilder, Map<String, CatalogStore> catalogStoreMap) {
         helper = getHelper();
         helper.configurationAdmin = configurationAdmin;
 
@@ -113,6 +124,7 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
         objectName = objName;
         this.catalogFramework = catalogFramework;
         this.filterBuilder = filterBuilder;
+        this.catalogStoreMap = catalogStoreMap;
     }
 
     public void init() {
@@ -235,46 +247,61 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
 
     @Override
     public boolean publish(String source, List<String> destinations)
-            throws UnsupportedQueryException, SourceUnavailableException, FederationException {
+            throws UnsupportedQueryException, SourceUnavailableException, FederationException,
+            IngestException {
         //query the framework based on the source id
         //in the metacard there will be a list of ids where it is currently published
 
-
-        Filter filter = filterBuilder.attribute(Metacard.ID).is().equalTo().text(source);
+        Filter filter = filterBuilder.attribute(Metacard.ID)
+                .is()
+                .equalTo()
+                .text(source);
         Query query = new QueryImpl(filter);
 
         QueryResponse queryResponse = catalogFramework.query(new QueryRequestImpl(query));
         List<Result> metacards = queryResponse.getResults();
-        Metacard metacard = metacards.get(0).getMetacard();
+        if (metacards != null && metacards.size() > 0) {
+            Metacard metacard = metacards.get(0)
+                    .getMetacard();
+            if (metacard != null) {
+                List<Serializable> currentlyPublishedLocations = metacard.getAttribute(
+                        "fillthisinlaterwhenimplemented")
+                        .getValues();
 
+                // Destinations is where I want to publish to...
+                // Things that are not in this list that are in currently Published locations should be unpublished
+                List<String> publishLocations = destinations;
+                List<String> unpublishLocations = new ArrayList<>();
 
-        //find the diff of that list and destinations
-        //use that to decide what's published/unpublished
-        /*
-        List<String> currentlyPublishedLocations = null;
+                unpublishLocations.addAll(currentlyPublishedLocations.stream()
+                        .filter(location -> !destinations.contains((String) location))
+                        .map(location -> (String) location)
+                        .collect(Collectors.toList()));
 
-        // Destinations is where I want to publish to...
-        // Things that are not in this list that are in currently Published locations should be unpublished
-        List<String> publishLocations = destinations;
-        List<String> unpublishLocations = new ArrayList<>();
+                //call publish on the list of things to publish
+                //create
+                for (String id : publishLocations) {
+                    CreateRequest createRequest = new CreateRequestImpl(metacard);
+                    catalogStoreMap.get(id).create(createRequest);
+                    // create ....
+                    //get the catalog store that we want to publish to by getting the list
+                    //of catalog stores
 
-        for (String location : currentlyPublishedLocations) {
-            if (!destinations.contains(location)) {
-                unpublishLocations.add(location);
+                }
+                for(String id : unpublishLocations) {
+                    DeleteRequest deleteRequest = new DeleteRequestImpl(metacard.getId());
+                    catalogStoreMap.get(id).delete(deleteRequest);
+                }
+                //call unpublish on the list of things to unpublish
+                //delete
+
+                //update the metacard
+                List<Serializable> newCurrentlyPublishedLocations = destinations.stream()
+                        .collect(Collectors.toList());
+                metacard.setAttribute(new AttributeImpl("fillthisinlaterwhenimplemented", newCurrentlyPublishedLocations));
             }
         }
 
-        //call publish on the list of things to publish
-        //create
-        for (String id : publishLocations) {
-            // create ....
-        }
-        //call unpublish on the list of things to unpublish
-        //delete
-
-        //update the metacard
-
-*/
         return false;
     }
 

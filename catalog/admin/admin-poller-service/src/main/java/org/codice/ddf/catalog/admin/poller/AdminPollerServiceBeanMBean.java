@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import ddf.catalog.federation.FederationException;
+import ddf.catalog.source.IngestException;
 import ddf.catalog.source.SourceUnavailableException;
 import ddf.catalog.source.UnsupportedQueryException;
 
@@ -28,6 +29,7 @@ public interface AdminPollerServiceBeanMBean {
 
     // Rename this. This method will be used for both publish and unpublish
     boolean publish(String source, List<String> destinations)
-            throws UnsupportedQueryException, SourceUnavailableException, FederationException;
+            throws UnsupportedQueryException, SourceUnavailableException, FederationException,
+            IngestException;
 
 }
