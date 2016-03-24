@@ -46,6 +46,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ddf.catalog.CatalogFramework;
+import ddf.catalog.content.operation.impl.UpdateStorageRequestImpl;
 import ddf.catalog.data.Metacard;
 import ddf.catalog.data.Result;
 import ddf.catalog.data.impl.AttributeImpl;
@@ -59,6 +60,7 @@ import ddf.catalog.operation.impl.CreateRequestImpl;
 import ddf.catalog.operation.impl.DeleteRequestImpl;
 import ddf.catalog.operation.impl.QueryImpl;
 import ddf.catalog.operation.impl.QueryRequestImpl;
+import ddf.catalog.operation.impl.UpdateRequestImpl;
 import ddf.catalog.service.ConfiguredService;
 import ddf.catalog.source.CatalogStore;
 import ddf.catalog.source.ConnectedSource;
@@ -273,6 +275,10 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
                 List<String> publishLocations = destinations;
                 List<String> unpublishLocations = new ArrayList<>();
 
+                unpublishLocations.add(0, "element");
+
+                //Things that are not in destinations that are currently in the list of pulbished locations
+                //should be unpublished
                 unpublishLocations.addAll(currentlyPublishedLocations.stream()
                         .filter(location -> !destinations.contains((String) location))
                         .map(location -> (String) location)
@@ -299,6 +305,8 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
                 List<Serializable> newCurrentlyPublishedLocations = destinations.stream()
                         .collect(Collectors.toList());
                 metacard.setAttribute(new AttributeImpl("fillthisinlaterwhenimplemented", newCurrentlyPublishedLocations));
+                catalogFramework.update(new UpdateRequestImpl(metacard.getId(), metacard));
+                return true;
             }
         }
 

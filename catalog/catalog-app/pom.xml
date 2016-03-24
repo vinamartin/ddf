@@ -473,5 +473,10 @@
             <artifactId>catalog-registry-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>ddf.catalog.admin</groupId>
+            <artifactId>catalog-admin-poller-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

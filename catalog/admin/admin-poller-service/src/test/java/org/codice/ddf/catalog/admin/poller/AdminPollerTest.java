@@ -77,8 +77,14 @@ public class AdminPollerTest {
         assertFalse(poller.sourceStatus("FAKE SOURCE"));
     }
 
+    @Test
+    public void testPublish() {
+
+    }
+
     private class MockedAdminPoller extends AdminPollerServiceBean {
-        public MockedAdminPoller(ConfigurationAdmin configAdmin, CatalogFramework catalogFramework, FilterBuilder filterBuilder, Map<String, CatalogStore> catalogStoreMap) {
+        public MockedAdminPoller(ConfigurationAdmin configAdmin, CatalogFramework catalogFramework,
+                FilterBuilder filterBuilder, Map<String, CatalogStore> catalogStoreMap) {
             super(configAdmin, catalogFramework, filterBuilder, catalogStoreMap);
         }
 
