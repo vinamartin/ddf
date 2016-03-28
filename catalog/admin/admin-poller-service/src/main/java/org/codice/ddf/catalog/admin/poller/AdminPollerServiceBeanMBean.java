@@ -17,6 +17,7 @@ package org.codice.ddf.catalog.admin.poller;
 import java.util.List;
 import java.util.Map;
 
+import ddf.catalog.data.Metacard;
 import ddf.catalog.federation.FederationException;
 import ddf.catalog.source.IngestException;
 import ddf.catalog.source.SourceUnavailableException;
@@ -28,7 +29,7 @@ public interface AdminPollerServiceBeanMBean {
     List<Map<String, Object>> allSourceInfo();
 
     // Rename this. This method will be used for both publish and unpublish
-    boolean publish(String source, List<String> destinations)
+    Metacard publish(String source, List<String> destinations)
             throws UnsupportedQueryException, SourceUnavailableException, FederationException,
             IngestException;
 

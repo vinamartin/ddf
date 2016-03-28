@@ -46,7 +46,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ddf.catalog.CatalogFramework;
-import ddf.catalog.content.operation.impl.UpdateStorageRequestImpl;
 import ddf.catalog.data.Metacard;
 import ddf.catalog.data.Result;
 import ddf.catalog.data.impl.AttributeImpl;
@@ -248,7 +247,7 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
     }
 
     @Override
-    public boolean publish(String source, List<String> destinations)
+    public Metacard publish(String source, List<String> destinations)
             throws UnsupportedQueryException, SourceUnavailableException, FederationException,
             IngestException {
         //query the framework based on the source id
@@ -274,8 +273,6 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
                 // Things that are not in this list that are in currently Published locations should be unpublished
                 List<String> publishLocations = destinations;
                 List<String> unpublishLocations = new ArrayList<>();
-
-                unpublishLocations.add(0, "element");
 
                 //Things that are not in destinations that are currently in the list of pulbished locations
                 //should be unpublished
@@ -306,11 +303,11 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
                         .collect(Collectors.toList());
                 metacard.setAttribute(new AttributeImpl("fillthisinlaterwhenimplemented", newCurrentlyPublishedLocations));
                 catalogFramework.update(new UpdateRequestImpl(metacard.getId(), metacard));
-                return true;
+                return metacard;
             }
         }
 
-        return false;
+        return null;
     }
 
     protected AdminSourceHelper getHelper() {
