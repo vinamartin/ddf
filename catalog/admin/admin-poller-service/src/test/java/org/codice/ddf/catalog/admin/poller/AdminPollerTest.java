@@ -64,6 +64,7 @@ import ddf.catalog.operation.UpdateRequest;
 import ddf.catalog.operation.UpdateResponse;
 import ddf.catalog.operation.impl.QueryRequestImpl;
 import ddf.catalog.operation.impl.QueryResponseImpl;
+import ddf.catalog.registry.api.metacard.RegistryObjectMetacardType;
 import ddf.catalog.resource.ResourceNotFoundException;
 import ddf.catalog.resource.ResourceNotSupportedException;
 import ddf.catalog.service.ConfiguredService;
@@ -140,10 +141,10 @@ public class AdminPollerTest {
         destinations.add("destination2");
 
         Metacard metacard1 = new MetacardImpl();
-        metacard1.setAttribute(new AttributeImpl("fillthisinlaterwhenimplemented",
+        metacard1.setAttribute(new AttributeImpl(RegistryObjectMetacardType.PUBLISHED_LOCATIONS,
                 publishedPlaces));
         Metacard metacard2 = new MetacardImpl();
-        metacard2.setAttribute(new AttributeImpl("fillthisinlaterwhenimplemented",
+        metacard2.setAttribute(new AttributeImpl(RegistryObjectMetacardType.PUBLISHED_LOCATIONS,
                 publishedPlaces));
 
         List<Result> results = new ArrayList<>();

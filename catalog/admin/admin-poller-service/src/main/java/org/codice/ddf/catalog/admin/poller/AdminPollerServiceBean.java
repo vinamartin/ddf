@@ -60,6 +60,7 @@ import ddf.catalog.operation.impl.DeleteRequestImpl;
 import ddf.catalog.operation.impl.QueryImpl;
 import ddf.catalog.operation.impl.QueryRequestImpl;
 import ddf.catalog.operation.impl.UpdateRequestImpl;
+import ddf.catalog.registry.api.metacard.RegistryObjectMetacardType;
 import ddf.catalog.service.ConfiguredService;
 import ddf.catalog.source.CatalogStore;
 import ddf.catalog.source.ConnectedSource;
@@ -248,8 +249,7 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
 
     @Override
     public List<Serializable> publish(String source, List<String> destinations)
-            throws UnsupportedQueryException, SourceUnavailableException, FederationException,
-            IngestException {
+            throws UnsupportedQueryException, SourceUnavailableException, FederationException {
         //query the framework based on the source id
         //in the metacard there will be a list of ids where it is currently published
 
@@ -266,13 +266,14 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
                     .getMetacard();
             if (metacard != null) {
                 List<Serializable> currentlyPublishedLocations = metacard.getAttribute(
-                        "fillthisinlaterwhenimplemented")
+                        RegistryObjectMetacardType.PUBLISHED_LOCATIONS)
                         .getValues();
 
                 // Destinations is where I want to publish to...
                 // Things that are not in this list that are in currently Published locations should be unpublished
                 List<String> publishLocations = destinations;
                 List<String> unpublishLocations = new ArrayList<>();
+                List<String> newPublishLocations = new ArrayList<>();
 
                 //Things that are not in destinations that are currently in the list of pulbished locations
                 //should be unpublished
@@ -285,7 +286,12 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
                 //create
                 for (String id : publishLocations) {
                     CreateRequest createRequest = new CreateRequestImpl(metacard);
-                    catalogStoreMap.get(id).create(createRequest);
+                    try {
+                        catalogStoreMap.get(id).create(createRequest);
+                        newPublishLocations.add(id);
+                    } catch (IngestException e) {
+                        LOGGER.error(e.getMessage());
+                    }
                     // create ....
                     //get the catalog store that we want to publish to by getting the list
                     //of catalog stores
@@ -293,16 +299,25 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
                 }
                 for(String id : unpublishLocations) {
                     DeleteRequest deleteRequest = new DeleteRequestImpl(metacard.getId());
-                    catalogStoreMap.get(id).delete(deleteRequest);
+                    try {
+                        catalogStoreMap.get(id).delete(deleteRequest);
+                    } catch (IngestException e) {
+                        LOGGER.error(e.getMessage());
+                        newPublishLocations.add(id);
+                    }
                 }
                 //call unpublish on the list of things to unpublish
                 //delete
 
                 //update the metacard
-                List<Serializable> newCurrentlyPublishedLocations = destinations.stream()
+                List<Serializable> newCurrentlyPublishedLocations = newPublishLocations.stream()
                         .collect(Collectors.toList());
-                metacard.setAttribute(new AttributeImpl("fillthisinlaterwhenimplemented", newCurrentlyPublishedLocations));
-                catalogFramework.update(new UpdateRequestImpl(metacard.getId(), metacard));
+                metacard.setAttribute(new AttributeImpl(RegistryObjectMetacardType.PUBLISHED_LOCATIONS, newCurrentlyPublishedLocations));
+                try {
+                    catalogFramework.update(new UpdateRequestImpl(metacard.getId(), metacard));
+                } catch (IngestException e) {
+                    LOGGER.error(e.getMessage());
+                }
                 return newCurrentlyPublishedLocations;
             }
         }

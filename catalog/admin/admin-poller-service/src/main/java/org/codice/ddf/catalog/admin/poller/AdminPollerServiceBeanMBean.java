@@ -18,7 +18,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import ddf.catalog.data.Metacard;
 import ddf.catalog.federation.FederationException;
 import ddf.catalog.source.IngestException;
 import ddf.catalog.source.SourceUnavailableException;
