@@ -110,7 +110,8 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
     private Map<String, CatalogStore> catalogStoreMap;
 
     public AdminPollerServiceBean(ConfigurationAdmin configurationAdmin,
-            CatalogFramework catalogFramework, FilterBuilder filterBuilder, Map<String, CatalogStore> catalogStoreMap) {
+            CatalogFramework catalogFramework, FilterBuilder filterBuilder,
+            Map<String, CatalogStore> catalogStoreMap) {
         helper = getHelper();
         helper.configurationAdmin = configurationAdmin;
 
@@ -194,8 +195,18 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
 
     @Override
     public List<Map<String, Object>> allSourceInfo() {
+        return allMetatypeInfo(
+                "(|(service.factoryPid=*source*)(service.factoryPid=*Source*)(service.factoryPid=*service*)(service.factoryPid=*Service*))");
+    }
+
+    @Override
+    public List<Map<String, Object>> allRegistryInfo() {
+        return allMetatypeInfo("service.factoryPid=*Registry_Store*");
+    }
+
+    private List<Map<String, Object>> allMetatypeInfo(String filterSpec) {
         // Get list of metatypes
-        List<Map<String, Object>> metatypes = helper.getMetatypes();
+        List<Map<String, Object>> metatypes = helper.getMetatypes(filterSpec);
 
         // Loop through each metatype and find its configurations
         for (Map metatype : metatypes) {
@@ -287,7 +298,8 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
                 for (String id : publishLocations) {
                     CreateRequest createRequest = new CreateRequestImpl(metacard);
                     try {
-                        catalogStoreMap.get(id).create(createRequest);
+                        catalogStoreMap.get(id)
+                                .create(createRequest);
                         newPublishLocations.add(id);
                     } catch (IngestException e) {
                         LOGGER.error(e.getMessage());
@@ -297,10 +309,11 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
                     //of catalog stores
 
                 }
-                for(String id : unpublishLocations) {
+                for (String id : unpublishLocations) {
                     DeleteRequest deleteRequest = new DeleteRequestImpl(metacard.getId());
                     try {
-                        catalogStoreMap.get(id).delete(deleteRequest);
+                        catalogStoreMap.get(id)
+                                .delete(deleteRequest);
                     } catch (IngestException e) {
                         LOGGER.error(e.getMessage());
                         newPublishLocations.add(id);
@@ -312,7 +325,8 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
                 //update the metacard
                 List<Serializable> newCurrentlyPublishedLocations = newPublishLocations.stream()
                         .collect(Collectors.toList());
-                metacard.setAttribute(new AttributeImpl(RegistryObjectMetacardType.PUBLISHED_LOCATIONS, newCurrentlyPublishedLocations));
+                metacard.setAttribute(new AttributeImpl(RegistryObjectMetacardType.PUBLISHED_LOCATIONS,
+                        newCurrentlyPublishedLocations));
                 try {
                     catalogFramework.update(new UpdateRequestImpl(metacard.getId(), metacard));
                 } catch (IngestException e) {
@@ -355,7 +369,7 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
             return sources;
         }
 
-        protected List<Map<String, Object>> getMetatypes() {
+        protected List<Map<String, Object>> getMetatypes(String filterSpec) {
             ConfigurationAdminExt configAdminExt = new ConfigurationAdminExt(configurationAdmin);
             return configAdminExt.addMetaTypeNamesToMap(configAdminExt.getFactoryPidObjectClasses(),
                     "(|(service.factoryPid=*source*)(service.factoryPid=*Source*)(service.factoryPid=*service*)(service.factoryPid=*Service*))",

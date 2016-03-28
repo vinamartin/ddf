@@ -111,7 +111,7 @@ public class AdminPollerTest {
 
     @Test
     public void testAllSourceInfo() {
-        List<Map<String, Object>> sources = poller.allSourceInfo();
+        List<Map<String, Object>> sources = poller.allMetatypeInfo();
         assertNotNull(sources);
         assertEquals(2, sources.size());
 
