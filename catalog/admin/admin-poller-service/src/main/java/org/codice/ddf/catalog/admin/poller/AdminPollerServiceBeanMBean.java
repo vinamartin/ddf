@@ -14,6 +14,7 @@
 
 package org.codice.ddf.catalog.admin.poller;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,8 @@ public interface AdminPollerServiceBeanMBean {
     List<Map<String, Object>> allSourceInfo();
 
     // Rename this. This method will be used for both publish and unpublish
-    Metacard publish(String source, List<String> destinations)
+    //Returns the new list of destinations
+    List<Serializable> publish(String source, List<String> destinations)
             throws UnsupportedQueryException, SourceUnavailableException, FederationException,
             IngestException;
 

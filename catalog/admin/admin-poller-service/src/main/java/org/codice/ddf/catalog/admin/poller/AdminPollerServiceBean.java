@@ -247,7 +247,7 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
     }
 
     @Override
-    public Metacard publish(String source, List<String> destinations)
+    public List<Serializable> publish(String source, List<String> destinations)
             throws UnsupportedQueryException, SourceUnavailableException, FederationException,
             IngestException {
         //query the framework based on the source id
@@ -303,7 +303,7 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
                         .collect(Collectors.toList());
                 metacard.setAttribute(new AttributeImpl("fillthisinlaterwhenimplemented", newCurrentlyPublishedLocations));
                 catalogFramework.update(new UpdateRequestImpl(metacard.getId(), metacard));
-                return metacard;
+                return newCurrentlyPublishedLocations;
             }
         }
 

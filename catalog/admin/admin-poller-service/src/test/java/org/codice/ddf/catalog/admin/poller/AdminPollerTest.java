@@ -14,7 +14,7 @@
 
 package org.codice.ddf.catalog.admin.poller;
 
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -22,7 +22,6 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyMap;
-import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -152,13 +151,9 @@ public class AdminPollerTest {
         when(catalogFramework.query(any())).thenReturn(new QueryResponseImpl(new QueryRequestImpl(
                 null), results, 1));
 
-        Metacard updatedMetacard = poller.publish("mySource", destinations);
-        List<Serializable> newPublishedPlaces = updatedMetacard.getAttribute(
-                "fillthisinlaterwhenimplemented")
-                .getValues();
-        assertThat(newPublishedPlaces, hasItem("destination1"));
-        assertThat(newPublishedPlaces, hasItem("destination2"));
-        //assertThat(newPublishedPlaces, hasItem("destination3"));
+        List<Serializable> newPublishedPlaces = poller.publish("mySource", destinations);
+        assertThat(newPublishedPlaces, hasItems("destination1", "destination2"));
+        assertFalse(newPublishedPlaces.contains("destination3"));
     }
 
     public static class MockCatalogStore implements CatalogStore {
