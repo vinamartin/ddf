@@ -361,6 +361,8 @@ public class AdminPollerServiceBean implements AdminPollerServiceBeanMBean {
                     .getServiceReferences(FederatedSource.class, null));
             refs.addAll(helper.getBundleContext()
                     .getServiceReferences(ConnectedSource.class, null));
+            refs.addAll(helper.getBundleContext()
+                    .getServiceReferences(CatalogStore.class, null));
 
             for (ServiceReference<? extends Source> ref : refs) {
                 sources.add(getBundleContext().getService(ref));
