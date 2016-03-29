@@ -247,7 +247,7 @@ public abstract class AbstractIntegrationTest {
 
     public static final DynamicUrl ADMIN_ALL_SOURCES_PATH = new DynamicUrl(SECURE_ROOT,
             HTTPS_PORT,
-            "/jolokia/exec/org.codice.ddf.catalog.admin.poller.AdminPollerServiceBean:service=admin-source-poller-service/allMetatypeInfo");
+            "/jolokia/exec/org.codice.ddf.catalog.admin.poller.AdminPollerServiceBean:service=admin-source-poller-service/allSourceInfo");
 
     public static final DynamicUrl ADMIN_STATUS_PATH = new DynamicUrl(SECURE_ROOT,
             HTTPS_PORT,

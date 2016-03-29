@@ -111,7 +111,7 @@ public class AdminPollerTest {
 
     @Test
     public void testAllSourceInfo() {
-        List<Map<String, Object>> sources = poller.allMetatypeInfo();
+        List<Map<String, Object>> sources = poller.allSourceInfo();
         assertNotNull(sources);
         assertEquals(2, sources.size());
 
@@ -301,8 +301,9 @@ public class AdminPollerTest {
                 noConfigMetaType.put("id", "No Configurations");
                 noConfigMetaType.put("metatype", new ArrayList<Map<String, Object>>());
 
-                when(helper.getMetatypes()).thenReturn(CollectionUtils.asList(metatype,
-                        noConfigMetaType));
+                when(helper.getMetatypes(
+                        "(|(service.factoryPid=*source*)(service.factoryPid=*Source*)(service.factoryPid=*service*)(service.factoryPid=*Service*))")).thenReturn(
+                        CollectionUtils.asList(metatype, noConfigMetaType));
             } catch (Exception e) {
 
             }
