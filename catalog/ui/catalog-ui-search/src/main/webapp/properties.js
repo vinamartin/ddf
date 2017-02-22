@@ -26,7 +26,7 @@ define(function (require) {
     }
 
     var properties = {
-        product: 'Catalog',
+        product: 'Intrigue',
         canvasThumbnailScaleFactor : 10,
         slidingAnimationDuration : 150,
 
