@@ -23,20 +23,6 @@
     <groupId>ddf.security.encryption</groupId>
     <name>DDF Security Encryption</name>
     <packaging>pom</packaging>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>ddf.security.encryption</groupId>
-                <artifactId>security-encryption-impl</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ddf.security.encryption</groupId>
-                <artifactId>security-encryption-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
     <modules>
         <module>platform-security-encryption-api</module>
         <module>platform-security-encryption-impl</module>

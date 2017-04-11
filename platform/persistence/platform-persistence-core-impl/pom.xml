@@ -25,31 +25,27 @@
     <artifactId>persistence-core-impl</artifactId>
     <name>DDF :: Persistence :: Core :: Internal Implementation</name>
     <packaging>bundle</packaging>
-    <dependencyManagement>
-        <dependencies>
-            <!--
-                Important: version 2.1.4 of restlet is being used to address security vulnerabilities CVE-2013-4221 and
-                CVE-2013-4271. As these are Solr transitive dependencies, the restlet dependencies should be removed
-                when the version of Solr is updated (see DDF-1110).
-            -->
-            <dependency>
-                <groupId>org.restlet.jee</groupId>
-                <artifactId>org.restlet</artifactId>
-                <version>2.1.4</version>
-            </dependency>
-            <dependency>
-                <groupId>org.restlet.jee</groupId>
-                <artifactId>org.restlet.ext.servlet</artifactId>
-                <version>2.1.4</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-fileupload</groupId>
-                <artifactId>commons-fileupload</artifactId>
-                <version>${commons.fileupload.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
     <dependencies>
+        <!--
+            Important: version 2.1.4 of restlet is being used to address security vulnerabilities CVE-2013-4221 and
+            CVE-2013-4271. As these are Solr transitive dependencies, the restlet dependencies should be removed
+            when the version of Solr is updated (see DDF-1110).
+        -->
+        <dependency>
+            <groupId>org.restlet.jee</groupId>
+            <artifactId>org.restlet</artifactId>
+            <version>2.1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.restlet.jee</groupId>
+            <artifactId>org.restlet.ext.servlet</artifactId>
+            <version>2.1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons.fileupload.version}</version>
+        </dependency>
         <dependency>
             <groupId>ddf.platform.solr</groupId>
             <artifactId>solr-factory</artifactId>

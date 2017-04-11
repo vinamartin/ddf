@@ -38,7 +38,6 @@
         <javax.inject.bundle.version>${javax.inject.version}_2</javax.inject.bundle.version>
         <cas.client.bundle.version>${cas.client.version}_1</cas.client.bundle.version>
         <solr.version>6.4.2</solr.version>
-        <commons.fileupload.version>1.3.2</commons.fileupload.version>
         <woodstox.core.version>4.4.1</woodstox.core.version>
     </properties>
     <dependencyManagement>
@@ -325,30 +324,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.cxf</groupId>
-                    <artifactId>cxf-codegen-plugin</artifactId>
-                    <version>${cxf.version}</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.8.1</version>
-                <configuration>
-                    <argLine>${argLine} -Djava.awt.headless=true</argLine>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
     <modules>
         <module>platform-api</module>
         <module>branding-api</module>
