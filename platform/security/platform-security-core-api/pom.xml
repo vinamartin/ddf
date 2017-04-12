@@ -150,21 +150,6 @@
             <version>${bouncy.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${httpclient.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
-            <version>${httpcore.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.wss4j</groupId>
-            <artifactId>wss4j-ws-security-dom</artifactId>
-            <version>${wss4j.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.opensaml</groupId>
             <artifactId>opensaml-xmlsec-impl</artifactId>
             <version>${opensaml.version}</version>
