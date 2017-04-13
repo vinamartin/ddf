@@ -52,41 +52,6 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>ddf.security.pdp</groupId>
-                <artifactId>security-pdp-authzrealm</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ddf.security.encryption</groupId>
-                <artifactId>security-encryption-impl</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ddf.security.encryption</groupId>
-                <artifactId>security-encryption-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ddf.security.expansion</groupId>
-                <artifactId>security-expansion-impl</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ddf.security.expansion</groupId>
-                <artifactId>security-expansion-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ddf.security.core</groupId>
-                <artifactId>security-core-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ddf.security.core</groupId>
-                <artifactId>security-core-impl</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-ws-policy</artifactId>
                 <version>${cxf.version}</version>
@@ -127,24 +92,9 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>ddf.platform.security</groupId>
-                <artifactId>security</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.jasig.cas</groupId>
                 <artifactId>cas-client-core</artifactId>
                 <version>${cas.client.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ddf.security</groupId>
-                <artifactId>ddf-security-common</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ddf.security.handler</groupId>
-                <artifactId>security-handler-api</artifactId>
-                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jasypt</groupId>

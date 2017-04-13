@@ -146,6 +146,11 @@
         </dependency>
         <dependency>
             <groupId>ddf.security.expansion</groupId>
+            <artifactId>security-expansion-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ddf.security.expansion</groupId>
             <artifactId>security-expansion-impl</artifactId>
             <version>${project.version}</version>
         </dependency>

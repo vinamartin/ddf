@@ -33,6 +33,7 @@
         <dependency>
             <groupId>ddf.platform.migration</groupId>
             <artifactId>platform-migratable-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

@@ -26,6 +26,7 @@
         <dependency>
             <groupId>ddf.security.core</groupId>
             <artifactId>security-core-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <build>

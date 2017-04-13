@@ -38,6 +38,7 @@
         <dependency>
             <groupId>ddf.security.handler</groupId>
             <artifactId>security-handler-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.validation</groupId>
@@ -64,6 +65,7 @@
         <dependency>
             <groupId>ddf.platform.util</groupId>
             <artifactId>platform-util</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <build>

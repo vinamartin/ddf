@@ -26,6 +26,7 @@
         <dependency>
             <groupId>ddf.security.expansion</groupId>
             <artifactId>security-expansion-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>

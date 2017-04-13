@@ -35,6 +35,7 @@
         <dependency>
             <groupId>ddf.platform</groupId>
             <artifactId>platform-configuration</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <build>
