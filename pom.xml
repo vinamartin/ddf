@@ -182,6 +182,9 @@
         <hazelcast.version>3.2.1</hazelcast.version>
         <xalan.version>2.7.2</xalan.version>
 
+        <!-- See DDF-1397 for issues with the upgrade to 2.2.1-->
+        <rrd4j.version>2.2</rrd4j.version>
+
         <!-- gitflow-incremental-builder -->
         <!-- See https://github.com/vackosar/gitflow-incremental-builder for a list of all the options -->
         <gib.referenceBranch>refs/remotes/origin/master</gib.referenceBranch>
@@ -201,22 +204,6 @@
     </scm>
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.rrd4j</groupId>
-                <artifactId>rrd4j</artifactId>
-                <!-- See DDF-1397 for issues with the upgrade to 2.2.1-->
-                <version>2.2</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-fileupload</groupId>
-                <artifactId>commons-fileupload</artifactId>
-                <version>${commons.fileupload.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.shiro</groupId>
-                <artifactId>shiro-core</artifactId>
-                <version>${apache.shiro.version}</version>
-            </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>

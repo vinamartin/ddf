@@ -27,6 +27,7 @@
         <dependency>
             <groupId>org.rrd4j</groupId>
             <artifactId>rrd4j</artifactId>
+            <version>${rrd4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>

@@ -22,7 +22,7 @@
     </parent>
     <artifactId>admin-core-appservice</artifactId>
     <name>DDF :: Admin :: Core :: Application Service</name>
-    <description>Exposes and application service that allows operations on DDF applications.
+    <description>Exposes an application service that allows operations on DDF applications.
     </description>
     <packaging>bundle</packaging>
     <properties>
