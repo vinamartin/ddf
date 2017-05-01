@@ -32,8 +32,8 @@ import ddf.catalog.operation.impl.QueryImpl;
 import ddf.catalog.operation.impl.QueryRequestImpl;
 import ddf.util.XPathHelper;
 
-@Service
 @Command(scope = CatalogCommands.NAMESPACE, name = "search", description = "Searches records in the Catalog Provider.")
+@Service
 public class SearchCommand extends CqlCommands {
 
     private static final String ID = "ID ";

@@ -19,13 +19,15 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
+import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.Option;
+import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.codice.ddf.persistence.PersistenceException;
 import org.codice.ddf.persistence.PersistentItem;
 
 @Command(scope = "store", name = "list",
         description = "Lists entries that are available in the persistent store.")
+@Service
 public class StoreListCommand extends AbstractStoreCommand {
 
     @Option(name = "User ID", aliases = {"-u", "--user"}, required = false,

@@ -61,8 +61,8 @@ import ddf.catalog.transform.MetacardTransformer;
 import ddf.catalog.transform.QueryResponseTransformer;
 import ddf.security.common.audit.SecurityLogger;
 
-@Service
 @Command(scope = CatalogCommands.NAMESPACE, name = "dump", description = "Exports Metacards from the current Catalog. Does not remove them.")
+@Service
 public class DumpCommand extends CqlCommands {
 
     public static final String FILE_PATH = "filePath";

@@ -30,8 +30,8 @@ import ddf.catalog.operation.SourceResponse;
 import ddf.catalog.operation.impl.QueryImpl;
 import ddf.catalog.operation.impl.QueryRequestImpl;
 
-@Service
 @Command(scope = CatalogCommands.NAMESPACE, name = "inspect", description = "Provides the various fields of a metacard for inspection.")
+@Service
 public class InspectCommand extends CatalogCommands {
 
     @Argument(name = "ID", description = "The id of the document that is to be inspected.", index = 0, multiValued = false, required = true)

@@ -13,17 +13,17 @@
  */
 package org.codice.ddf.persistence.commands;
 
-import java.io.IOException;
+//import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.felix.gogo.commands.Command;
+import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.codice.ddf.persistence.PersistenceException;
-
-import jline.console.ConsoleReader;
 
 @Command(scope = "store", name = "delete",
         description = "Deletes entries from the persistence store.")
+@Service
 public class StoreDeleteCommand extends AbstractStoreCommand {
 
     @Override
@@ -31,28 +31,27 @@ public class StoreDeleteCommand extends AbstractStoreCommand {
 
         List<Map<String, Object>> results = persistentStore.get(type, cql);
         if (!results.isEmpty()) {
-            console.println(results.size() + " results matched cql.");
-            String message = "\nAre you sure you want to delete? (yes/no): ";
-            ConsoleReader reader = (ConsoleReader) session.get(".jline.reader");
-            while (true) {
-                try {
-                    String confirmation = reader.readLine(message);
-                    if ("yes".equalsIgnoreCase(confirmation.toLowerCase())) {
-                        int numDeleted = persistentStore.delete(type, cql);
-                        console.println("Successfully deleted " + numDeleted + " items.");
-                        break;
-                    } else if ("no".equalsIgnoreCase(confirmation)) {
-                        console.println("Delete canceled. No entries were deleted.");
-                        break;
-                    }
-                } catch (IOException ioe) {
-                    break;
-                }
-            }
+//            console.println(results.size() + " results matched cql.");
+//            String message = "\nAre you sure you want to delete? (yes/no): ";
+//            ConsoleReader reader = (ConsoleReader) session.get(".jline.reader");
+//            while (true) {
+//                try {
+//                    String confirmation = reader.readLine(message);
+//                    if ("yes".equalsIgnoreCase(confirmation.toLowerCase())) {
+//                        int numDeleted = persistentStore.delete(type, cql);
+//                        console.println("Successfully deleted " + numDeleted + " items.");
+//                        break;
+//                    } else if ("no".equalsIgnoreCase(confirmation)) {
+//                        console.println("Delete canceled. No entries were deleted.");
+//                        break;
+//                    }
+//                } catch (IOException ioe) {
+//                    break;
+//                }
+//            }
 
         } else {
             console.println("0 results matched cql statement. No items were deleted.");
         }
-
     }
 }

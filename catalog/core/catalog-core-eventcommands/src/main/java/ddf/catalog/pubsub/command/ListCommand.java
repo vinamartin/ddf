@@ -16,9 +16,10 @@ package ddf.catalog.pubsub.command;
 import java.io.PrintStream;
 import java.util.Map;
 
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
+import org.apache.karaf.shell.api.action.Argument;
+import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.Option;
+import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.fusesource.jansi.Ansi;
 import org.osgi.framework.ServiceReference;
 
@@ -26,6 +27,7 @@ import ddf.catalog.event.Subscription;
 import ddf.catalog.operation.Pingable;
 
 @Command(scope = SubscriptionsCommand.NAMESPACE, name = "list", description = "Allows users to view registered subscriptions.")
+@Service
 public class ListCommand extends SubscriptionsCommand {
     static final String DEFAULT_CONSOLE_COLOR = Ansi.ansi()
             .reset()
@@ -90,8 +92,8 @@ public class ListCommand extends SubscriptionsCommand {
         PrintStream console = System.out;
         Subscription subscription = bundleContext.getService(entry.getValue());
         String rowColor = "";
-        if (subscription != null && subscription.getDeliveryMethod() instanceof Pingable &&
-                !((Pingable) subscription.getDeliveryMethod()).ping()) {
+        if (subscription != null && subscription.getDeliveryMethod() instanceof Pingable
+                && !((Pingable) subscription.getDeliveryMethod()).ping()) {
             rowColor = RED_CONSOLE_COLOR;
         }
         console.println(String.format("%s%s\t %s%s",

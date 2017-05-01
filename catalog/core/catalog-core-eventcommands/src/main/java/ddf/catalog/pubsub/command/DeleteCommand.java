@@ -16,9 +16,10 @@ package ddf.catalog.pubsub.command;
 import java.io.PrintStream;
 import java.util.Map;
 
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
+import org.apache.karaf.shell.api.action.Argument;
+import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.Option;
+import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.fusesource.jansi.Ansi;
 import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ import ddf.catalog.event.Subscriber;
 import ddf.catalog.event.Subscription;
 
 @Command(scope = SubscriptionsCommand.NAMESPACE, name = "delete", description = "Allows users to delete registered subscriptions.")
+@Service
 public class DeleteCommand extends SubscriptionsCommand {
     static final String DEFAULT_CONSOLE_COLOR = Ansi.ansi()
             .reset()
@@ -71,7 +73,8 @@ public class DeleteCommand extends SubscriptionsCommand {
 
         PrintStream console = System.out;
 
-        Map<String, ServiceReference<Subscription>> subscriptionIds = getSubscriptions(id, ldapFilter);
+        Map<String, ServiceReference<Subscription>> subscriptionIds = getSubscriptions(id,
+                ldapFilter);
         if (subscriptionIds.size() == 0) {
             console.println(RED_CONSOLE_COLOR + NO_SUBSCRIPTIONS_FOUND_MSG + DEFAULT_CONSOLE_COLOR);
         } else {
@@ -113,7 +116,9 @@ public class DeleteCommand extends SubscriptionsCommand {
                     }
 
                     // Verify the subscription was deleted and print appropriate message to console
-                    Map<String, ServiceReference<Subscription>> ids = getSubscriptions(subscriptionId, false);
+                    Map<String, ServiceReference<Subscription>> ids = getSubscriptions(
+                            subscriptionId,
+                            false);
                     if (ids.size() == 0) {
                         console.println(DELETE_MSG + subscriptionId);
                         deletedSubscriptionsCount++;

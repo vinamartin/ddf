@@ -34,8 +34,8 @@ import ddf.catalog.operation.SourceResponse;
 import ddf.catalog.operation.impl.QueryImpl;
 import ddf.catalog.operation.impl.QueryRequestImpl;
 
-@Service
 @Command(scope = CatalogCommands.NAMESPACE, name = "latest", description = "Retrieves the latest records from the Catalog based on a filter.")
+@Service
 public class LatestCommand extends CatalogCommands {
 
     private static final int MAX_LENGTH = 40;

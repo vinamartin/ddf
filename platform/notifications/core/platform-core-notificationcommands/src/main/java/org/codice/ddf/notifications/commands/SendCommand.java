@@ -15,9 +15,10 @@ package org.codice.ddf.notifications.commands;
 
 import java.util.UUID;
 
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
+import org.apache.karaf.shell.api.action.Argument;
+import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.Option;
+import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.apache.karaf.shell.console.OsgiCommandSupport;
 import org.codice.ddf.notifications.Notification;
 import org.osgi.framework.ServiceReference;
@@ -27,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Command(scope = "notifications", name = "send", description = "Send notification(s).")
+@Service
 public class SendCommand extends OsgiCommandSupport {
 
     public static final String SERVICE_PID = "org.osgi.service.event.EventAdmin";

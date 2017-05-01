@@ -16,9 +16,10 @@ package org.codice.ddf.commands.spatial.geonames;
 
 import java.io.PrintStream;
 
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
+import org.apache.karaf.shell.api.action.Argument;
+import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.Option;
+import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.apache.karaf.shell.console.OsgiCommandSupport;
 import org.codice.ddf.spatial.geocoding.GeoEntryExtractionException;
 import org.codice.ddf.spatial.geocoding.GeoEntryExtractor;
@@ -32,6 +33,7 @@ import org.slf4j.LoggerFactory;
 @Command(scope = "geonames", name = "update",
         description = "Adds new entries to an existing local GeoNames index. " + "Attempting to " +
                 "add entries when no index exists is an error.")
+@Service
 public final class GeoNamesUpdateCommand extends OsgiCommandSupport {
     private static final Logger LOGGER = LoggerFactory.getLogger(GeoNamesUpdateCommand.class);
 

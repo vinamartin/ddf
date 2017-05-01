@@ -183,7 +183,6 @@
                             javax.xml.transform.sax,
                             javax.xml.transform.stream,
                             javax.xml.xpath,
-                            jline,
                             org.apache.commons.logging,
                             org.codice.ddf.persistence;version=1.0.0-SNAPSHOT,
                             org.geotools.factory,

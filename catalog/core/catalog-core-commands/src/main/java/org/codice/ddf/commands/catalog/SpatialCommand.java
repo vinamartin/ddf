@@ -23,8 +23,8 @@ import org.codice.ddf.commands.catalog.facade.CatalogFacade;
 import org.codice.ddf.commands.util.SpatialOperations;
 
 //TODO DDF-1282 Implement Spatial queries in Catalog Commands
-@Service
 @Command(scope = CatalogCommands.NAMESPACE, name = "spatial", description = "Searches spatially the Catalog Provider.")
+@Service
 public class SpatialCommand extends CatalogCommands {
 
     private static final String ID = "ID ";

@@ -17,10 +17,11 @@ import java.io.IOException;
 import java.net.URI;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.Option;
+import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.request.CollectionAdminRequest;
@@ -31,8 +32,8 @@ import org.apache.solr.common.util.NamedList;
 import org.codice.solr.factory.impl.HttpSolrClientFactory;
 import org.osgi.service.cm.Configuration;
 
-
 @Command(scope = SolrCommands.NAMESPACE, name = "backup", description = "Makes a backup of the selected Solr core/collection.")
+@Service
 public class BackupCommand extends SolrCommands {
 
     @Option(name = "-d", aliases = {"--dir"}, multiValued = false, required = false, description =

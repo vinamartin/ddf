@@ -46,8 +46,8 @@ import ddf.catalog.source.SourceUnavailableException;
 import ddf.catalog.source.UnsupportedQueryException;
 import ddf.catalog.util.impl.ServiceComparator;
 
-@Service
 @Command(scope = CatalogCommands.NAMESPACE, name = "migrate", description = "Migrates Metacards from one Provider to another Provider.")
+@Service
 public class MigrateCommand extends DuplicateCommands {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MigrateCommand.class);

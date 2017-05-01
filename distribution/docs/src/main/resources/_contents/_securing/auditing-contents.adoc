@@ -33,6 +33,8 @@ The logs themselves could be used to generate such reports outside the scope of 
 
 ===== Enabling Fallback Audit Logging
 
+TODO update this
+
 * *{hardening-step}*
 
 In the event the system is unable to write to the `security.log` file, ${branding} must be configured to fall back to report the error in the application log:

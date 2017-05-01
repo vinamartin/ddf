@@ -15,7 +15,7 @@ package org.codice.ddf.persistence.commands;
 
 import java.io.PrintStream;
 
-import org.apache.felix.gogo.commands.Option;
+import org.apache.karaf.shell.api.action.Option;
 import org.apache.karaf.shell.console.OsgiCommandSupport;
 import org.codice.ddf.persistence.PersistenceException;
 import org.codice.ddf.persistence.PersistentStore;

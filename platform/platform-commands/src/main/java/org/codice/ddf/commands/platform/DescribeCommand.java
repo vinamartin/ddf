@@ -13,11 +13,13 @@
  */
 package org.codice.ddf.commands.platform;
 
-import org.apache.felix.gogo.commands.Command;
+import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.codice.ddf.configuration.SystemBaseUrl;
 import org.codice.ddf.configuration.SystemInfo;
 
 @Command(scope = PlatformCommands.NAMESPACE, name = "describe", description = "Provides a description of the platform")
+@Service
 public class DescribeCommand extends PlatformCommands {
 
     @Override

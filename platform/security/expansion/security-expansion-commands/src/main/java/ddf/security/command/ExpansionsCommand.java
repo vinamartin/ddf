@@ -16,7 +16,8 @@ package ddf.security.command;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.felix.gogo.commands.Command;
+import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.apache.karaf.shell.console.OsgiCommandSupport;
 import org.fusesource.jansi.Ansi;
 
@@ -27,6 +28,7 @@ import ddf.security.expansion.Expansion;
  * expansion service.
  */
 @Command(scope = "security", name = "expansions", description = "Dumps the current expansion tables.")
+@Service
 public class ExpansionsCommand extends OsgiCommandSupport {
     // live list of expansion services
     private List<Expansion> expansionList = null;

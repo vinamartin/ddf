@@ -69,12 +69,12 @@
         <json-smart.version>2.2.1</json-smart.version>
         <httpclient.version>4.5.2</httpclient.version>
         <httpcore.version>4.4.5</httpcore.version>
-        <cxf.version>3.1.10</cxf.version>
+        <cxf.version>3.1.11</cxf.version>
         <cxf.xpp3.bundle.version>1.1.4c_6</cxf.xpp3.bundle.version>
         <bouncy.version>1.54</bouncy.version>
         <xmlsec.version>2.0.8</xmlsec.version>
         <jts.bundle.version>1.12_1</jts.bundle.version>
-        <karaf.version>4.0.7</karaf.version>
+        <karaf.version>4.1.1</karaf.version>
         <lux.version>1.2</lux.version>
         <opengis.bundle.version>${org.geotools.version}_1</opengis.bundle.version>
         <org.geotools.bundle.version>${org.geotools.version}_2</org.geotools.bundle.version>
@@ -95,7 +95,7 @@
         <guava.version>18.0</guava.version>
         <findbugs.version>3.0.1</findbugs.version>
         <commons-codec.version>1.10</commons-codec.version>
-        <spring.version>4.2.5.RELEASE</spring.version>
+        <spring.version>4.3.5.RELEASE</spring.version>
         <jetty.version>9.2.19.v20160908</jetty.version>
         <pax.cdi.version>0.12.0</pax.cdi.version>
         <validation.version>1.1.0.Final</validation.version>
@@ -299,7 +299,7 @@
                 <plugin>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>maven-bundle-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>3.3.0</version>
                     <extensions>true</extensions>
                     <configuration>
                         <instructions>

@@ -238,6 +238,7 @@
     <feature name="security-certificate" install="manual"
              version="${project.version}"
              description="Keystore editor MBean and associated web application.">
+        <bundle dependency="true">mvn:org.codice.thirdparty/commons-httpclient/3.1.0_1</bundle>
         <bundle>
             mvn:ddf.security.certificate/security-certificate-keystoreeditor/${project.version}
         </bundle>
