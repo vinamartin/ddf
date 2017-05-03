@@ -14,8 +14,7 @@
 -->
 <Configuration status="WARN">
     <Properties>
-        <Property name="log-pattern">%-5.5p | %-16.16t | %-32.32c{1} | %-32.32C %4L | %X{bundle.id}
-            - %X{bundle.name} - %X{bundle.version} | %m%n
+        <Property name="log-pattern">%-5.5p | %-16.16t | %-32.32c{1} | %-32.32C %4L | %X{bundle.id} - %X{bundle.name} - %X{bundle.version} | %m%n
         </Property>
     </Properties>
 
@@ -50,31 +49,32 @@
             <DefaultRolloverStrategy max="10"/>
         </RollingFile>
 
-        <RollingFile name="securityMain" append="true" ignoreExceptions="false"
-                     fileName="${sys:karaf.data}/log/security.log"
-                     filePattern="${sys:karaf.data}/log/security.log-%d{yyyy-MM-dd-HH}-%i.log.gz">
-            <PatternLayout pattern="[%-5p] %d{ISO8601} | %-16.16t | %-15.20c{1} |  %m%n"/>
-            <Policies>
-                <SizeBasedTriggeringPolicy size="200 MB"/>
-            </Policies>
-            <DefaultRolloverStrategy max="10"/>
-        </RollingFile>
+        <!--TODO add failover stuff back in-->
+        <!--        <RollingFile name="securityMain" append="true" ignoreExceptions="false"
+                             fileName="${sys:karaf.data}/log/security.log"
+                             filePattern="${sys:karaf.data}/log/security.log-%d{yyyy-MM-dd-HH}-%i.log.gz">
+                    <PatternLayout pattern="[%-5p] %d{ISO8601} | %-16.16t | %-15.20c{1} |  %m%n"/>
+                    <Policies>
+                        <SizeBasedTriggeringPolicy size="200 MB"/>
+                    </Policies>
+                    <DefaultRolloverStrategy max="10"/>
+                </RollingFile>
 
-        <RollingFile name="securityBackup" append="true" ignoreExceptions="false"
-                     fileName="${sys:karaf.data}/log/securityBackup.log"
-                     filePattern="${sys:karaf.data}/log/securityBackup.log-%d{yyyy-MM-dd-HH}-%i.log.gz">
-            <PatternLayout pattern="[%-5p] %d{ISO8601} | %-16.16t | %-15.20c{1} |  %m%n"/>
-            <Policies>
-                <SizeBasedTriggeringPolicy size="200 MB"/>
-            </Policies>
-            <DefaultRolloverStrategy max="10"/>
-        </RollingFile>
+                <RollingFile name="securityBackup" append="true" ignoreExceptions="false"
+                             fileName="${sys:karaf.data}/log/securityBackup.log"
+                             filePattern="${sys:karaf.data}/log/securityBackup.log-%d{yyyy-MM-dd-HH}-%i.log.gz">
+                    <PatternLayout pattern="[%-5p] %d{ISO8601} | %-16.16t | %-15.20c{1} |  %m%n"/>
+                    <Policies>
+                        <SizeBasedTriggeringPolicy size="200 MB"/>
+                    </Policies>
+                    <DefaultRolloverStrategy max="10"/>
+                </RollingFile>
 
-        <Failover name="securityFailover" primary="securityMain">
-            <Failovers>
-                <AppenderRef ref="securityBackup"/>
-            </Failovers>
-        </Failover>
+                <Failover name="securityFailover" primary="securityMain">
+                    <Failovers>
+                        <AppenderRef ref="securityBackup"/>
+                    </Failovers>
+                </Failover>-->
 
         <RollingFile name="solr" append="true"
                      fileName="${sys:karaf.data}/log/solr.log"
@@ -99,13 +99,13 @@
 
     <Loggers>
         <Logger name="securityLogger" level="info" additivity="false">
-            <AppenderRef ref="securityFailover"/>
+            <!--<AppenderRef ref="securityFailover"/>-->
             <AppenderRef ref="syslog"/>
             <AppenderRef ref="osgi-platformLogging"/>
         </Logger>
 
         <Logger name="org.apache.karaf.jaas.modules.audit" level="info" additivity="false">
-            <AppenderRef ref="securityFailover"/>
+            <!--<AppenderRef ref="securityFailover"/>-->
             <AppenderRef ref="syslog"/>
             <AppenderRef ref="osgi-platformLogging"/>
         </Logger>
