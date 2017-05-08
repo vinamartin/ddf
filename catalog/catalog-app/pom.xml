@@ -187,11 +187,6 @@
         </dependency>
         <dependency>
             <groupId>ddf.catalog.core</groupId>
-            <artifactId>catalog-core-solrcommands</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ddf.catalog.core</groupId>
             <artifactId>catalog-core-metacardgroomerplugin</artifactId>
             <version>${project.version}</version>
         </dependency>
