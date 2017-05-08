@@ -88,7 +88,7 @@ public class ApplicationImpl implements Application, Comparable<Application> {
             version = mainFeature.getVersion();
             description = mainFeature.getDescription();
         } else {
-            Optional<Feature> first = autoInstallFeatures.stream()
+            Optional<Feature> first = features.stream()
                     .filter(f -> name.equals(f.getName()))
                     .findFirst();
             if (first.isPresent()) {
