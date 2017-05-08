@@ -97,7 +97,6 @@
         <commons-codec.version>1.10</commons-codec.version>
         <spring.version>4.3.5.RELEASE</spring.version>
         <jetty.version>9.2.19.v20160908</jetty.version>
-        <pax.cdi.version>0.12.0</pax.cdi.version>
         <validation.version>1.1.0.Final</validation.version>
         <commons-configuration.version>1.10</commons-configuration.version>
         <commons.fileupload.version>1.3.2</commons.fileupload.version>
