@@ -54,31 +54,57 @@
     </feature>
     <!--END from kernel features-->
 
-    <!--START Camel Stuff-->
-    <!--<repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>-->
-    <feature name="camel-http" version="${camel.version}" start-level="50">
-        <feature version="${camel.version}">camel-core</feature>
-        <bundle dependency="true">
-            mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-httpclient/3.1_7
-        </bundle>
-        <bundle dependency="true">mvn:commons-codec/commons-codec/1.10</bundle>
-        <bundle dependency="true">mvn:javax.servlet/javax.servlet-api/3.1.0</bundle>
-        <bundle>mvn:org.apache.camel/camel-http-common/${camel.version}</bundle>
-        <bundle>mvn:org.apache.camel/camel-http/${camel.version}</bundle>
-    </feature>
+    <!-- DO NOT EDIT
+        Camel Features; All feature definitions come from 3rd party feature file:
+        <repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
 
-    <feature name="camel-core" version="${camel.version}" start-level="50">
-        <!--replace xml-specs-api with cxf-specs-->
-        <!--We don't want this pulling in additional XML libraries on top of the ones already installed by CXF-->
+        DDF Changes made:
+        - removed resolver="(obr)" from every features
+        - added install="manual" to every feature
+        - replaced 2.19.0 with ${camel.version}
+        - commented out xml-specs-api feature and replaced xml-specs-api with cxf-specs in camel-core feature
+        - moved version for mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-httpclient to root pom property servicemix.bundles.commons-httpclient.version
+        - moved version for mvn:commons-codec/commons-codec to root pom property commons-codec.version
+        - moved version for mvn:javax.servlet/javax.servlet-api to root pom property servlet-api.version
+
+    DO NOT EDIT
+    -->
+    <!--We don't want this pulling in additional XML libraries on top of the ones already installed by CXF-->
+    <!--<feature name="xml-specs-api" install="manual" version="2.8.0" start-level="10">-->
+    <!--<bundle dependency="true">-->
+    <!--mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.activation-api-1.1/2.8.0-->
+    <!--</bundle>-->
+    <!--<bundle dependency="true">-->
+    <!--mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.stax-api-1.0/2.8.0-->
+    <!--</bundle>-->
+    <!--<bundle dependency="true">-->
+    <!--mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxb-api-2.2/2.8.0-->
+    <!--</bundle>-->
+    <!--<bundle>mvn:org.codehaus.woodstox/stax2-api/3.1.4</bundle>-->
+    <!--<bundle>mvn:org.codehaus.woodstox/woodstox-core-asl/4.4.1</bundle>-->
+    <!--<bundle>-->
+    <!--mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jaxb-impl/2.2.11_1-->
+    <!--</bundle>-->
+    <!--</feature>-->
+    <feature name="camel" install="manual" version="${camel.version}" start-level="50">
+        <!--TODO-->
+        <!-- Added cxf as prereq to keep things ordered -->
+        <feature prerequisite="true">cxf</feature>
+        <!--end TODO-->
+        <feature version="${camel.version}">camel-core</feature>
+        <feature version="${camel.version}">camel-blueprint</feature>
+        <!--
+         we no longer install camel-spring by default as spring-dm is deprecated
+        -->
+    </feature>
+    <feature name="camel-core" install="manual" version="${camel.version}" start-level="50">
+        <!--start cxf-specs here instead-->
+        <!--<feature version="2.8.0">xml-specs-api</feature>-->
         <feature version="${cxf.version}">cxf-specs</feature>
         <bundle>mvn:org.apache.camel/camel-core/${camel.version}</bundle>
-        <!--
-         the camel commands requires the camel-catalog to be installed
-        -->
-        <bundle>mvn:org.apache.camel/camel-catalog/${camel.version}</bundle>
-        <bundle>mvn:org.apache.camel/camel-commands-core/${camel.version}</bundle>
         <conditional>
             <condition>shell</condition>
+            <bundle>mvn:org.apache.camel/camel-commands-core/${camel.version}</bundle>
             <bundle>
                 mvn:org.apache.camel.karaf/camel-karaf-commands/${camel.version}
             </bundle>
@@ -88,14 +114,33 @@
         -->
         <config name="jmx.acl.org.apache.camel">* = *</config>
     </feature>
-    <feature name="camel-jetty9" version="${camel.version}" start-level="50">
+    <feature name="camel-blueprint" install="manual" version="${camel.version}" start-level="50">
+        <feature version="${camel.version}">camel-core</feature>
+        <bundle>mvn:org.apache.camel/camel-blueprint/${camel.version}</bundle>
+    </feature>
+    <feature name="camel-http" install="manual" version="${camel.version}" start-level="50">
+        <!--TODO-->
+        <!-- Added camel as prereq to keep things ordered -->
+        <feature prerequisite="true">camel</feature>
+        <!--end TODO-->
+        <feature version="${camel.version}">camel-core</feature>
+        <bundle dependency="true">
+            mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-httpclient/${servicemix.bundles.commons-httpclient.version}
+        </bundle>
+        <bundle dependency="true">mvn:commons-codec/commons-codec/${commons-codec.version}</bundle>
+        <bundle dependency="true">mvn:javax.servlet/javax.servlet-api/${servlet-api.version}
+        </bundle>
+        <bundle>mvn:org.apache.camel/camel-http-common/${camel.version}</bundle>
+        <bundle>mvn:org.apache.camel/camel-http/${camel.version}</bundle>
+    </feature>
+    <feature name="camel-jetty9" install="manual" version="${camel.version}" start-level="50">
         <feature>jetty</feature>
         <feature version="${camel.version}">camel-core</feature>
         <bundle>mvn:org.apache.camel/camel-http-common/${camel.version}</bundle>
         <bundle>mvn:org.apache.camel/camel-jetty-common/${camel.version}</bundle>
         <bundle>mvn:org.apache.camel/camel-jetty9/${camel.version}</bundle>
     </feature>
-    <!--END Camel Stuff-->
+    <!-- End Camel Features -->
 
     <!-- DO NOT EDIT
          CXF 3.1.4 Features; All feature definitions come from 3rd party feature file:
