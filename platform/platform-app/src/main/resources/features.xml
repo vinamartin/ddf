@@ -88,9 +88,9 @@
         -->
         <config name="jmx.acl.org.apache.camel">* = *</config>
     </feature>
-    <feature name='camel-jetty9' version='${camel.version}' start-level='50'>
+    <feature name="camel-jetty9" version="${camel.version}" start-level="50">
         <feature>jetty</feature>
-        <feature version='${camel.version}'>camel-core</feature>
+        <feature version="${camel.version}">camel-core</feature>
         <bundle>mvn:org.apache.camel/camel-http-common/${camel.version}</bundle>
         <bundle>mvn:org.apache.camel/camel-jetty-common/${camel.version}</bundle>
         <bundle>mvn:org.apache.camel/camel-jetty9/${camel.version}</bundle>
@@ -148,8 +148,8 @@
         <bundle start-level="35">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.abdera-parser/${cxf.abdera.osgi.version}</bundle>
         <bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jdom/${cxf.jdom.bundle.version}</bundle>
         <bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.dom4j/${cxf.dom4j.bundle.version}</bundle>
-        <!--bundle start-level='35'>mvn:org.apache.abdera/abdera-extensions-html/${cxf.abdera.version}</bundle>
-        <bundle start-level='35'>mvn:org.apache.abdera/abdera-extensions-json/${cxf.abdera.version}</bundle>-->
+        <!--bundle start-level="35">mvn:org.apache.abdera/abdera-extensions-html/${cxf.abdera.version}</bundle>
+        <bundle start-level="35">mvn:org.apache.abdera/abdera-extensions-json/${cxf.abdera.version}</bundle>-->
     </feature>
     <feature name="wss4j" version="${cxf.wss4j.version}" install="manual">
         <feature version="${cxf.version}">cxf-specs</feature>
@@ -394,7 +394,7 @@
     </feature>
     <feature name="cxf-features-metrics" version="${cxf.version}" install="manual">
         <feature version="${cxf.version}">cxf-core</feature>
-        <bundle start-level="40" dependency='true'>mvn:io.dropwizard.metrics/metrics-core/${cxf.dropwizard.version}</bundle>
+        <bundle start-level="40" dependency="true">mvn:io.dropwizard.metrics/metrics-core/${cxf.dropwizard.version}</bundle>
         <bundle start-level="40">mvn:org.apache.cxf/cxf-rt-features-metrics/${cxf.version}</bundle>
     </feature>
     <feature name="cxf-bindings-corba" version="${cxf.version}" install="manual">
@@ -428,13 +428,13 @@
     </feature-->
     <feature name="cxf-transports-websocket-client" version="${cxf.version}" install="manual">
         <feature version="[3,4)">cxf-http</feature>
-        <bundle dependency='true'>mvn:com.ning/async-http-client/${cxf.ahc.version}</bundle>
-        <bundle dependency='true'>mvn:io.netty/netty/${cxf.netty3.version}</bundle>
+        <bundle dependency="true">mvn:com.ning/async-http-client/${cxf.ahc.version}</bundle>
+        <bundle dependency="true">mvn:io.netty/netty/${cxf.netty3.version}</bundle>
         <bundle start-level="40">mvn:org.apache.cxf/cxf-rt-transports-websocket/${cxf.version}</bundle>
     </feature>
     <feature name="cxf-transports-websocket-server" version="${cxf.version}" install="manual">
         <feature version="[3,4)">cxf-http</feature>
-        <bundle dependency='true'>mvn:org.atmosphere/atmosphere-runtime/${cxf.atmosphere.version}</bundle>
+        <bundle dependency="true">mvn:org.atmosphere/atmosphere-runtime/${cxf.atmosphere.version}</bundle>
         <bundle start-level="40">mvn:org.apache.cxf/cxf-rt-transports-websocket/${cxf.version}</bundle>
     </feature>
     <feature name="cxf-javascript" version="${cxf.version}" install="manual">
@@ -944,7 +944,7 @@
         <feature>platform-migratable</feature>
     </feature>
 
-    <feature name='platform-email' install="manual" version='${project.version}' start-level='50'>
+    <feature name="platform-email" install="manual" version="${project.version}" start-level="50">
         <bundle dependency="true">mvn:commons-lang/commons-lang/${commons-lang.version}</bundle>
         <bundle dependency="true">mvn:com.sun.mail/javax.mail/1.5.5</bundle>
         <feature dependency="true">security-core-api</feature>
