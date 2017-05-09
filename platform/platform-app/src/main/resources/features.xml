@@ -97,10 +97,9 @@
     </feature>
     <!--END Camel Stuff-->
 
-
     <!-- DO NOT EDIT
          CXF 3.1.4 Features; All feature definitions come from 3rd party feature file:
-         apache-cxf-3.1.4-src/osgi/karaf/features/src/main/resources/features.xml
+         <repository>mvn:org.apache.cxf.karaf/apache-cxf/3.1.11/xml/features</repository>
 
          DDF Changes made:
          cxf-transports-udp, cxf-ws-discovery-api, cxf-wsn, and cxf-ws-discovery
