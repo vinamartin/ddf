@@ -246,7 +246,7 @@
     </feature>
     <feature name="cxf-http-jetty" version="${cxf.version}" install="manual">
         <feature version="[3,4)">cxf-http</feature>
-        <feature version="[7,10)">jetty</feature>
+        <!--<feature version="[7,10)">jetty</feature>-->
         <bundle start-level="40">mvn:org.apache.cxf/cxf-rt-transports-http-jetty/${cxf.version}</bundle>
     </feature>
     <feature name="cxf-http-async" version="${cxf.version}" install="manual">
@@ -490,7 +490,7 @@
         <feature version="${cxf.version}">cxf-http-jetty</feature>
         <feature version="${cxf.version}">cxf-transports-local</feature>
         <feature version="${cxf.version}">cxf-transports-jms</feature>
-        <feature version="${cxf.version}">cxf-transports-udp</feature>
+        <!--<feature version="${cxf.version}">cxf-transports-udp</feature>-->
         <feature version="${cxf.version}">cxf-xjc-runtime</feature>
         <feature version="${cxf.version}">cxf-ws-security</feature>
         <feature version="${cxf.version}">cxf-ws-rm</feature>
