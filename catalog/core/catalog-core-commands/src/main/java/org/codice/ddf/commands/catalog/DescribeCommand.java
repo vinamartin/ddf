@@ -17,8 +17,8 @@ import org.apache.karaf.shell.api.action.Command;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.codice.ddf.commands.catalog.facade.CatalogFacade;
 
-@Service
 @Command(scope = CatalogCommands.NAMESPACE, name = "describe", description = "Provides a basic description of the Catalog implementation.")
+@Service
 public class DescribeCommand extends CatalogCommands {
 
     @Override

@@ -18,8 +18,8 @@ import java.util.Map;
 import org.apache.karaf.shell.api.action.Command;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
 
-@Service
 @Command(scope = CatalogCommands.NAMESPACE, name = "envlist", description = "(Deprecated) Provides a list of environment variables.")
+@Service
 public class EnvListCommand extends CommandSupport {
 
     @Override

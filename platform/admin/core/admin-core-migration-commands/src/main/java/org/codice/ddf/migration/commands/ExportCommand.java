@@ -18,8 +18,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
+import org.apache.karaf.shell.api.action.Argument;
+import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.codice.ddf.configuration.migration.ConfigurationMigrationService;
 import org.codice.ddf.migration.MigrationWarning;
 import org.codice.ddf.platform.util.PathBuilder;
@@ -33,6 +34,7 @@ import ddf.security.service.SecurityServiceException;
 @Command(scope = MigrationCommands.NAMESPACE, name = "export", description =
         "The export command delegates to all "
                 + "registered Migratable services to export bundle specific configuration and data.")
+@Service
 public class ExportCommand extends MigrationCommands {
     private static final String STARTING_EXPORT_MESSAGE = "Exporting current configurations to %s.";
 

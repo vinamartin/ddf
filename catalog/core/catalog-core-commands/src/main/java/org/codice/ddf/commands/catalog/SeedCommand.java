@@ -49,7 +49,6 @@ import ddf.catalog.resource.ResourceNotFoundException;
 import ddf.catalog.resource.ResourceNotSupportedException;
 
 //@formatter:off
-@Service
 @Command(
         scope = CatalogCommands.NAMESPACE,
         name = "seed",
@@ -64,6 +63,7 @@ import ddf.catalog.resource.ResourceNotSupportedException;
                 + "control is returned to the console. Also, resource caching must be enabled in the Catalog Framework "
                 + "for this command to seed the resource cache.")
 //@formatter:on
+@Service
 public class SeedCommand extends CqlCommands {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SeedCommand.class);

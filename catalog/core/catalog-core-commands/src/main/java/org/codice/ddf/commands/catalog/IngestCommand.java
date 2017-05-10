@@ -88,8 +88,8 @@ import ddf.security.common.audit.SecurityLogger;
 /**
  * Custom Karaf command for ingesting records into the Catalog.
  */
-@Service
 @Command(scope = CatalogCommands.NAMESPACE, name = "ingest", description = "Ingests Metacards into the Catalog.")
+@Service
 public class IngestCommand extends CatalogCommands {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IngestCommand.class);

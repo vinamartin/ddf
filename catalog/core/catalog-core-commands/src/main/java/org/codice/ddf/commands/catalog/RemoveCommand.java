@@ -37,8 +37,8 @@ import ddf.catalog.operation.impl.QueryRequestImpl;
 /**
  * Deletes records by ID.
  */
-@Service
 @Command(scope = CatalogCommands.NAMESPACE, name = "remove", description = "Deletes records from the Catalog.")
+@Service
 public class RemoveCommand extends CqlCommands {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(RemoveCommand.class);

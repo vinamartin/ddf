@@ -49,8 +49,8 @@ import ddf.catalog.validation.MetacardValidator;
 /**
  * Custom Karaf command to validate XML files against services that implement MetacardValidator
  */
-@Service
 @Command(scope = CatalogCommands.NAMESPACE, name = "validate", description = "Validates an XML file against all installed validators.")
+@Service
 public class ValidateCommand extends CqlCommands {
 
     @Option(name = "--path", aliases = "-p", description = "The path to the file to be validated")

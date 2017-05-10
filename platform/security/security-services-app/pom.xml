@@ -107,6 +107,7 @@
             <plugin>
                 <groupId>org.apache.karaf.tooling</groupId>
                 <artifactId>karaf-maven-plugin</artifactId>
+                <version>${karaf.version}</version>
                 <extensions>true</extensions>
                 <executions>
                     <execution>
@@ -359,6 +360,11 @@
             <groupId>ddf.platform.security</groupId>
             <artifactId>security-rest-authentication</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codice.thirdparty</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1.0_1</version>
         </dependency>
     </dependencies>
 </project>

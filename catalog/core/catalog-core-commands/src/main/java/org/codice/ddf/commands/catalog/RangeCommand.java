@@ -35,8 +35,8 @@ import ddf.catalog.operation.SourceResponse;
 import ddf.catalog.operation.impl.QueryImpl;
 import ddf.catalog.operation.impl.QueryRequestImpl;
 
-@Service
 @Command(scope = CatalogCommands.NAMESPACE, name = "range", description = "Searches by the given date range arguments (exclusively).")
+@Service
 public class RangeCommand extends CatalogCommands {
 
     private static final int MAX_LENGTH = 40;

@@ -20,7 +20,8 @@ import java.util.Collection;
 
 import javax.validation.constraints.NotNull;
 
-import org.apache.felix.gogo.commands.Command;
+import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.codice.ddf.configuration.status.ConfigurationStatusService;
 import org.codice.ddf.migration.MigrationWarning;
 
@@ -28,6 +29,7 @@ import org.codice.ddf.migration.MigrationWarning;
         "Lists import status of configuration files "
                 + "that were imported through the Migration Service. Files that failed to import correctly will be moved to the "
                 + "etc/failed directory. All successful imports will be moved to the etc/processed directory")
+@Service
 public class MigrationStatusCommand extends MigrationCommands {
 
     static final String SUCCESSFUL_IMPORT_MESSAGE = "All config files imported successfully.";

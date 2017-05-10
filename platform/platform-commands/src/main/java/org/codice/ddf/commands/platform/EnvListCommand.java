@@ -15,9 +15,11 @@ package org.codice.ddf.commands.platform;
 
 import java.util.Map;
 
-import org.apache.felix.gogo.commands.Command;
+import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.lifecycle.Service;
 
 @Command(scope = PlatformCommands.NAMESPACE, name = "envlist", description = "Provides a list of environment variables")
+@Service
 public class EnvListCommand extends PlatformCommands {
 
     @Override

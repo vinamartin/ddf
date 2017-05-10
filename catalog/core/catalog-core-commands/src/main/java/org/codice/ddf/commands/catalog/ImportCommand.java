@@ -54,8 +54,8 @@ import ddf.security.common.audit.SecurityLogger;
  * <b> This code is experimental. While this interface is functional and tested, it may change or be
  * removed in a future version of the library. </b>
  */
-@Service
 @Command(scope = CatalogCommands.NAMESPACE, name = "import", description = "Imports Metacards and history into the current Catalog")
+@Service
 public class ImportCommand extends CatalogCommands {
     private static final Logger LOGGER = LoggerFactory.getLogger(ImportCommand.class);
 

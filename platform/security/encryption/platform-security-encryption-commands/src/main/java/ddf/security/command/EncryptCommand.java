@@ -13,14 +13,16 @@
  */
 package ddf.security.command;
 
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
+import org.apache.karaf.shell.api.action.Argument;
+import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.apache.karaf.shell.console.OsgiCommandSupport;
 import org.fusesource.jansi.Ansi;
 
 import ddf.security.encryption.EncryptionService;
 
 @Command(scope = "security", name = "encrypt", description = "Encrypts a plain text value.")
+@Service
 public class EncryptCommand extends OsgiCommandSupport {
     @Argument(name = "plainTextValue", description = "The plain text value to be encrypted.", index = 0, multiValued = false, required = true)
     private String plainTextValue = null;

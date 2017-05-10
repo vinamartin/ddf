@@ -38,8 +38,8 @@ import ddf.catalog.operation.impl.QueryRequestImpl;
 import ddf.catalog.source.SourceUnavailableException;
 import ddf.catalog.source.UnsupportedQueryException;
 
-@Service
 @Command(scope = CatalogCommands.NAMESPACE, name = "replicate", description = "Replicates Metacards from a Federated Source into the Catalog.")
+@Service
 public class ReplicateCommand extends DuplicateCommands {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReplicateCommand.class);

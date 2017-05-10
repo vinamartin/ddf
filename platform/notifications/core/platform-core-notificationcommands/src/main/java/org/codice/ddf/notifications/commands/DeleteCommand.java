@@ -16,8 +16,9 @@ package org.codice.ddf.notifications.commands;
 import java.io.PrintStream;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
+import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.Option;
+import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.apache.karaf.shell.console.OsgiCommandSupport;
 import org.codice.ddf.notifications.Notification;
 import org.codice.ddf.persistence.PersistenceException;
@@ -28,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Command(scope = "notifications", name = "delete", description = "Allows users to delete notifications for a specified user.")
+@Service
 public class DeleteCommand extends OsgiCommandSupport {
 
     public static final String SERVICE_PID = "org.codice.ddf.persistence.PersistentStore";

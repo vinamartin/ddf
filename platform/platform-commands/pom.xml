@@ -20,7 +20,7 @@
         <version>2.11.0-SNAPSHOT</version>
     </parent>
     <artifactId>platform-commands</artifactId>
-    <name>DDF Platform Commands</name>
+    <name>DDF :: Platform :: Commands</name>
     <packaging>bundle</packaging>
     <dependencies>
         <dependency>
@@ -46,7 +46,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <Export-Package />
+                        <Export-Package/>
                         <Import-Package>
                             org.apache.felix.service.command,
                             org.apache.felix.gogo.commands,

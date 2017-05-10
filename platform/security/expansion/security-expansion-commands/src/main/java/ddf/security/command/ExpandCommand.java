@@ -16,8 +16,9 @@ package ddf.security.command;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
+import org.apache.karaf.shell.api.action.Argument;
+import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.apache.karaf.shell.console.OsgiCommandSupport;
 import org.fusesource.jansi.Ansi;
 
@@ -28,6 +29,7 @@ import ddf.security.expansion.Expansion;
  * what the expansion of that value is using the currently-configured expansion service.
  */
 @Command(scope = "security", name = "expand", description = "Expands a given key and set of values.")
+@Service
 public class ExpandCommand extends OsgiCommandSupport {
     @Argument(name = "key", description = "The of the value to be encrypted.", index = 0, multiValued = false, required = true)
     private String key = null;

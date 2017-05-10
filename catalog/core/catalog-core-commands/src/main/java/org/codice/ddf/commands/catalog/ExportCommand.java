@@ -83,8 +83,8 @@ import net.lingala.zip4j.model.ZipParameters;
  * <b> This code is experimental. While this interface is functional and tested, it may change or be
  * removed in a future version of the library. </b>
  */
-@Service
 @Command(scope = CatalogCommands.NAMESPACE, name = "export", description = "Exports Metacards and history from the current Catalog")
+@Service
 public class ExportCommand extends CqlCommands {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExportCommand.class);
