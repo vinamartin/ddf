@@ -25,17 +25,16 @@
         <feature prerequisite="true" version="${karaf.version}">http</feature>
     </feature>
 
-    <feature name="branding-api" version="${project.version}" description="Branding API">
+    <feature name="branding-api" install="manual" version="${project.version}" description="Branding API">
         <bundle dependency="true">mvn:com.google.guava/guava/${guava.version}</bundle>
-        <bundle dependency="true">mvn:commons-io/commons-io/${commons-io.version}</bundle>
-        <bundle dependency="true">mvn:org.springframework/spring-core/3.0.6.RELEASE</bundle>
         <bundle>mvn:ddf.distribution/branding-api/${project.version}</bundle>
     </feature>
 
-    <feature name="ddf-branding" version="${project.version}" description="DDF Branding">
-        <feature prerequisite="true">webconsole</feature>
+    <feature name="ddf-branding" install="manual" version="${project.version}" description="DDF Branding">
+        <feature prerequisite="true">web-container</feature>
         <feature prerequisite="true">branding-api</feature>
-        <bundle>mvn:commons-configuration/commons-configuration/${commons-configuration.version}</bundle>
+        <bundle dependency="true">mvn:commons-io/commons-io/${commons-io.version}</bundle>
+        <bundle dependency="true">mvn:commons-configuration/commons-configuration/${commons-configuration.version}</bundle>
         <bundle>mvn:ddf.distribution/ddf-branding-plugin/${project.version}</bundle>
     </feature>
 

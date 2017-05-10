@@ -66,6 +66,9 @@
                             <addTransitiveFeatures>false</addTransitiveFeatures>
                             <descriptors>
                                 <descriptor>
+                                    mvn:org.codice.ddf/kernel/${project.version}/xml/features
+                                </descriptor>
+                                <descriptor>
                                     mvn:ddf.platform/platform-app/${project.version}/xml/features
                                 </descriptor>
                                 <descriptor>
@@ -250,6 +253,13 @@
     </profiles>
     <dependencies>
         <dependency>
+            <groupId>org.codice.ddf</groupId>
+            <artifactId>kernel</artifactId>
+            <version>${project.version}</version>
+            <classifier>features</classifier>
+            <type>xml</type>
+        </dependency>
+        <dependency>
             <groupId>ddf.platform</groupId>
             <artifactId>platform-app</artifactId>
             <version>${project.version}</version>
@@ -299,13 +309,6 @@
             <type>xml</type>
         </dependency>
         <dependency>
-            <groupId>org.codice.ddf.spatial</groupId>
-            <artifactId>geowebcache-app</artifactId>
-            <version>${project.version}</version>
-            <classifier>features</classifier>
-            <type>xml</type>
-        </dependency>
-        <dependency>
             <groupId>ddf.ui</groupId>
             <artifactId>search-ui-app</artifactId>
             <version>${project.version}</version>
@@ -320,13 +323,6 @@
             <type>xml</type>
         </dependency>
         <dependency>
-            <groupId>org.codice.ddf.broker</groupId>
-            <artifactId>broker-app</artifactId>
-            <version>${project.version}</version>
-            <classifier>features</classifier>
-            <type>xml</type>
-        </dependency>
-        <dependency>
             <groupId>org.codice.ddf.resourcemanagement</groupId>
             <artifactId>resourcemanagement-app</artifactId>
             <version>${project.version}</version>
@@ -334,8 +330,22 @@
             <type>xml</type>
         </dependency>
         <dependency>
+            <groupId>org.codice.ddf.spatial</groupId>
+            <artifactId>geowebcache-app</artifactId>
+            <version>${project.version}</version>
+            <classifier>features</classifier>
+            <type>xml</type>
+        </dependency>
+        <dependency>
             <groupId>ddf.distribution</groupId>
             <artifactId>install-profiles</artifactId>
+            <version>${project.version}</version>
+            <classifier>features</classifier>
+            <type>xml</type>
+        </dependency>
+        <dependency>
+            <groupId>org.codice.ddf.broker</groupId>
+            <artifactId>broker-app</artifactId>
             <version>${project.version}</version>
             <classifier>features</classifier>
             <type>xml</type>
