@@ -339,8 +339,8 @@
         </dependency>
     </dependencies>
     <properties>
-        <!-- CXF Properties used in used in platform-app's features.xml
-        DO NOT EDIT UNLESS UPDATING CXF-->
+        <!-- CXF Properties used in platform-app's features.xml -->
+        <!-- DO NOT EDIT UNLESS UPDATING CXF-->
         <!-- Copied from apache-cxf-3.1.11-src/parent/pom.xml -->
         <cxf.protect-xmlschema-collections>false</cxf.protect-xmlschema-collections>
         <cxf.surefire.fork.mode>once</cxf.surefire.fork.mode>
@@ -537,7 +537,6 @@
         <cxf.resources.base.path />
         <!-- End apache-cxf-3.1.11-src/parent/pom.xml-->
         <!-- Copied from apache-cxf-3.0.4-src/pom.xml -->
-        <cxf.build-utils.version>3.2.1</cxf.build-utils.version>
         <cxf.xjc-utils.version>3.0.5</cxf.xjc-utils.version>
         <!-- End apache-cxf-3.0.4-src/pom.xml -->
         <!-- END CXF properties -->
@@ -637,6 +636,7 @@
             <plugin>
                 <groupId>org.apache.karaf.tooling</groupId>
                 <artifactId>karaf-maven-plugin</artifactId>
+                <version>${karaf.version}</version>
                 <executions>
                     <execution>
                         <id>kar</id>

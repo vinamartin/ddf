@@ -41,7 +41,6 @@ public abstract class AbstractApplicationCommand implements Action {
         if (applicationService == null) {
             throw new IllegalStateException("ApplicationService not found");
         }
-        long start = System.currentTimeMillis();
         try {
             doExecute(applicationService);
         } catch (ApplicationServiceException ase) {
@@ -49,12 +48,6 @@ public abstract class AbstractApplicationCommand implements Action {
                     "Encountered error while trying to perform command. Check log for more details.");
             logger.debug("Error while performing command.", ase);
         }
-
-        long end = System.currentTimeMillis();
-        final double msPerSecond = 1000.0;
-        console.println(String.format(
-                "Command completed in %3.3f seconds.",
-                (end - start) / msPerSecond));
         return null;
     }
 
