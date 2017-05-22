@@ -19,6 +19,6 @@
 
     <service ref="metacardResourceStatus" interface="ddf.catalog.plugin.PostQueryPlugin"/>
     
-    <reference id="resourceCache" interface="ddf.catalog.cache.ResourceCacheInterface"/>
+    <reference id="resourceCache" interface="ddf.catalog.cache.ResourceCacheInterface" availability="optional"/>
 
 </blueprint>
