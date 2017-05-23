@@ -19,7 +19,7 @@ pipeline {
                             }
                             timeout(time: 10, unit: 'MINUTES') {
                                 withMaven(maven: 'M3', globalMavenSettingsConfig: 'default-global-settings', mavenSettingsConfig: 'codice-maven-settings') {
-                                    sh 'mvn verify -Dit.test=TESTNAME#Test'
+                                    sh 'mvn verify'
                                 }
                             }
                         }
