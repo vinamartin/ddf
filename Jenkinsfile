@@ -15,7 +15,7 @@ pipeline {
                             echo sh(returnStdout: true, script: 'env')
                             checkout scm
                             withMaven(maven: 'M3', globalMavenSettingsConfig: 'default-global-settings', mavenSettingsConfig: 'codice-maven-settings') {
-                                sh 'mvn -DskipStatic=true -DskipTests=true -pl !distribution/docs'
+                                sh 'mvn install -DskipStatic=true -DskipTests=true -pl !distribution/docs'
                             }
                             timeout(time: 10, unit: 'MINUTES') {
                                 withMaven(maven: 'M3', globalMavenSettingsConfig: 'default-global-settings', mavenSettingsConfig: 'codice-maven-settings') {
