@@ -30,7 +30,7 @@ pipeline {
     }
      post {
             failure {
-                slackSend color: '#ea0017', message: "FAILURE: ${JOB_NAME} ${BUILD_NUMBER}. See the results here: ${BUILD_URL}"
+                slackSend color: '#ea0017', message: "FAILURE: @vina @emily ${JOB_NAME} ${BUILD_NUMBER}. See the results here: ${BUILD_URL}"
             }
         }
 }
