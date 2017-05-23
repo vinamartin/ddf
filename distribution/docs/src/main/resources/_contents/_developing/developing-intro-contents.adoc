@@ -185,6 +185,7 @@ This feature should only declare the `prerequisite` features of the app and any 
 ----
 install='auto'
 ----
+TODO
 +
 * Each feature should declare its `prerequisite` features. These are the features that are required to be installed prior to this feature starting up. At a minimum this should include the application feature, so that the application prerequisites and required dependencies are satisified before this feature starts.
 +

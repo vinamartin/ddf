@@ -18,7 +18,6 @@
           xsi:schemaLocation="http://karaf.apache.org/xmlns/features/v1.3.0 http://karaf.apache.org/xmlns/features/v1.3.0">
 
     <feature name="ddf-itest-dependencies" version="${project.version}">
-        <feature prerequisite="true">wrap</feature>
         <feature>third-party-dependencies</feature>
         <feature>ddf-dependencies</feature>
     </feature>

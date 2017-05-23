@@ -20,10 +20,10 @@
     <repository>mvn:org.ops4j.pax.cdi/pax-cdi-features/${pax.cdi.version}/xml/features</repository>
 
     <feature name="kernel" install="manual" version="${project.version}">
-        <feature prerequisite="true" version="${karaf.version}">standard</feature>
-        <feature prerequisite="true" version="${karaf.version}">eventadmin</feature>
-        <feature prerequisite="true" version="${karaf.version}">jasypt-encryption</feature>
-        <feature prerequisite="true" version="${karaf.version}">http</feature>
+        <feature version="${karaf.version}">standard</feature>
+        <feature version="${karaf.version}">eventadmin</feature>
+        <feature version="${karaf.version}">jasypt-encryption</feature>
+        <feature version="${karaf.version}">http</feature>
     </feature>
 
     <feature name="branding-api" version="${project.version}" description="Branding API">
@@ -31,8 +31,8 @@
     </feature>
 
     <feature name="ddf-branding" version="${project.version}" description="DDF Branding">
-        <feature prerequisite="true">web-container</feature>
-        <feature prerequisite="true">branding-api</feature>
+        <feature>web-container</feature>
+        <feature>branding-api</feature>
         <bundle>mvn:commons-io/commons-io/${commons-io.version}</bundle>
         <bundle>mvn:commons-configuration/commons-configuration/${commons-configuration.version}</bundle>
         <bundle>mvn:ddf.distribution/ddf-branding-plugin/${project.version}</bundle>
