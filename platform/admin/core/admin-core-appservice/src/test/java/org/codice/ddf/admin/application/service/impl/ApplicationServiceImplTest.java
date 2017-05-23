@@ -113,9 +113,6 @@ public class ApplicationServiceImplTest {
     private static final String TEST_INSTALL_PROFILE_FILE_NAME =
             "test-features-install-profiles.xml";
 
-    private static final String TEST_PREREQ_MAIN_FEATURE_FILE_NAME =
-            "test-features-prereq-main-feature.xml";
-
     private static final String TEST_FEATURE_1_NAME = "TestFeature";
 
     private static final String TEST_FEATURE_2_NAME = "TestFeature2";
@@ -953,31 +950,6 @@ public class ApplicationServiceImplTest {
             ApplicationStatus status = appService.getApplicationStatus(curApp);
             assertEquals(curApp, status.getApplication());
             assertEquals(ApplicationState.ACTIVE, status.getState());
-            assertTrue(status.getErrorBundles()
-                    .isEmpty());
-            assertTrue(status.getErrorFeatures()
-                    .isEmpty());
-        }
-
-    }
-
-    @Test
-    public void testGetApplicationStatusCoreFeature() throws Exception {
-        Set<Repository> activeRepos = new HashSet<Repository>(Arrays.asList(createRepo(
-                TEST_PREREQ_MAIN_FEATURE_FILE_NAME)));
-
-        FeaturesService featuresService = createMockFeaturesService(activeRepos, null, null);
-        when(bundleContext.getService(mockFeatureRef)).thenReturn(featuresService);
-        when(featuresService.isInstalled(any())).thenReturn(false);
-
-        ApplicationService appService = createPermittedApplicationServiceImpl();
-
-        Set<Application> applications = appService.getApplications();
-        assertEquals(1, applications.size());
-        for (Application curApp : applications) {
-            ApplicationStatus status = appService.getApplicationStatus(curApp);
-            assertEquals(curApp, status.getApplication());
-            assertEquals(ApplicationState.INACTIVE, status.getState());
             assertTrue(status.getErrorBundles()
                     .isEmpty());
             assertTrue(status.getErrorFeatures()

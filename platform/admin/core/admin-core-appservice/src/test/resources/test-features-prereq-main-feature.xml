@@ -14,8 +14,7 @@
 <features name="test-app3-1.0.0">
 
     <feature name="prereq-feature2" install="auto" version="1.0.2" description="Main Feature 2 Test">
-        <!--TODO-->
-        <feature prerequisite="true">main-feature</feature>
+        <feature>main-feature</feature>
     </feature>
 
 </features>
