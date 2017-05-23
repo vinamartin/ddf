@@ -21,7 +21,7 @@
 
     <reference id="mimeTypeMapper" interface="ddf.mime.MimeTypeMapper"/>
 
-    <reference id="framework" interface="ddf.catalog.CatalogFramework" availability="optional"/>
+    <reference id="framework" interface="ddf.catalog.CatalogFramework"/>
 
     <reference id="uuidGenerator"
                interface="org.codice.ddf.platform.util.uuidgenerator.UuidGenerator"

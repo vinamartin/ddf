@@ -21,6 +21,6 @@
 
     <service ref="metacardResourceSizePlugin" interface="ddf.catalog.plugin.PostQueryPlugin"/>
     
-    <reference id="resourceCache" interface="ddf.catalog.cache.ResourceCacheInterface" availability="optional"/>
+    <reference id="resourceCache" interface="ddf.catalog.cache.ResourceCacheInterface"/>
 
 </blueprint>
