@@ -19,7 +19,7 @@ pipeline {
                             }
                             timeout(time: 10, unit: 'MINUTES') {
                                 withMaven(maven: 'M3', globalMavenSettingsConfig: 'default-global-settings', mavenSettingsConfig: 'codice-maven-settings') {
-                                    sh 'mvn verify'
+                                    sh 'mvn install -B -Dmaven.test.redirectTestOutputToFile=true -pl distribution/test/itests/test-itests-ddf -nsu'
                                 }
                             }
                         }
