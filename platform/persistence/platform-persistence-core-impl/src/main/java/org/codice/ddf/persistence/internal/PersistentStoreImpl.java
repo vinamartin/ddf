@@ -16,6 +16,7 @@ package org.codice.ddf.persistence.internal;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -48,6 +51,7 @@ import org.opengis.filter.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 public class PersistentStoreImpl implements PersistentStore {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PersistentStoreImpl.class);
@@ -61,38 +65,43 @@ public class PersistentStoreImpl implements PersistentStore {
     }
 
     @Override
-    // Input Map is expected to have the suffixes on the key names
-    public void add(String type, Map<String, Object> properties) throws PersistenceException {
+    public void add(String type, Collection<Map<String, Object>> items) throws PersistenceException {
         LOGGER.debug("type = {}", type);
-        if (type == null || type.isEmpty()) {
+        if (StringUtils.isEmpty(type)) {
             throw new PersistenceException(
                     "The type of object(s) to retrieve must be non-null and not blank, e.g., notification, metacard, etc.");
         }
-        if (properties == null || properties.isEmpty() || properties.containsValue("guest")) {
+        if (CollectionUtils.isEmpty(items)) {
             return;
         }
-
-        LOGGER.debug("Adding entry of type {}", type);
 
         // Set Solr Core name to type and create solr client
         SolrClient solrClient = getSolrClient(type);
         if (solrClient == null) {
             throw new PersistenceException("Unable to create Solr client.");
         }
+        List<SolrInputDocument> inputDocuments = new ArrayList<>();
+        for (Map<String, Object> properties : items) {
 
-        Date now = new Date();
-        //DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-        //String createdDate = df.format(now);
+            if (MapUtils.isEmpty(properties) || properties.containsValue("guest")) {
+                continue;
+            }
 
-        SolrInputDocument solrInputDocument = new SolrInputDocument();
-        solrInputDocument.addField("createddate_tdt", now);
+            LOGGER.debug("Adding entry of type {}", type);
 
-        for (Map.Entry<String, Object> entry : properties.entrySet()) {
-            solrInputDocument.addField(entry.getKey(), entry.getValue());
+            Date now = new Date();
+
+            SolrInputDocument solrInputDocument = new SolrInputDocument();
+            solrInputDocument.addField("createddate_tdt", now);
+
+            for (Map.Entry<String, Object> entry : properties.entrySet()) {
+                solrInputDocument.addField(entry.getKey(), entry.getValue());
+            }
+            inputDocuments.add(solrInputDocument);
         }
 
         try {
-            UpdateResponse response = solrClient.add(solrInputDocument);
+            UpdateResponse response = solrClient.add(inputDocuments);
             LOGGER.debug("UpdateResponse from add of SolrInputDocument:  {}", response);
         } catch (SolrServerException e) {
             LOGGER.info("SolrServerException while adding Solr index for persistent type {}",
@@ -115,6 +124,11 @@ public class PersistentStoreImpl implements PersistentStore {
                     "RuntimeException while adding Solr index for persistent type " + type,
                     e);
         }
+    }
+    @Override
+    // Input Map is expected to have the suffixes on the key names
+    public void add(String type, Map<String, Object> properties) throws PersistenceException {
+        add(type, Collections.singletonList(properties));
     }
 
     private void doRollback(SolrClient solrClient, String type) {

@@ -129,6 +129,11 @@
             <artifactId>solr-xpath</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${commons-collections4.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -140,6 +145,7 @@
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Embed-Dependency>
                             commons-codec,
+                            commons-collections4,
                             gt-cql,
                             solr-factory,
                             solr-query,

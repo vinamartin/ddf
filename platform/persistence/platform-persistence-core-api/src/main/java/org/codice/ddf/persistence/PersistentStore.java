@@ -14,6 +14,7 @@
 package org.codice.ddf.persistence;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,15 @@ public interface PersistentStore {
      * @throws PersistenceException
      */
     public void add(String type, Map<String, Object> properties) throws PersistenceException;
+
+    /**
+     * Adds a collection of item of specified type.
+     *
+     * @param type
+     * @param items
+     * @throws PersistenceException
+     */
+    public void add(String type, Collection<Map<String, Object>> items) throws PersistenceException;
 
     /**
      * Get all of the items of the specified type.
