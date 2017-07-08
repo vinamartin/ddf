@@ -15,12 +15,16 @@ package org.codice.solr.query;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
+import org.opengis.filter.And;
+import org.opengis.filter.Filter;
+import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +37,14 @@ public class SolrQueryFilterVisitor extends DefaultFilterVisitor {
     private static final Logger LOGGER = LoggerFactory.getLogger(SolrQueryFilterVisitor.class);
 
     private static final String QUOTE = "\"";
+
+    private static final String END_PAREN = " ) ";
+
+    private static final String START_PAREN = " ( ";
+
+    private static final String OR = " OR ";
+
+    private static final String AND = " AND ";
 
     // *, ?, and / are escaped by the filter adapter
     private static final String[] LUCENE_SPECIAL_CHARACTERS =
@@ -67,6 +79,58 @@ public class SolrQueryFilterVisitor extends DefaultFilterVisitor {
     public SolrQueryFilterVisitor(SolrClient client, String solrCoreName) {
         schemaFieldResolver = new SchemaFieldResolver(client);
         this.solrCoreName = solrCoreName;
+    }
+    @Override
+    public Object visit(And filter, Object data) {
+        List<Filter> childList = filter.getChildren();
+        return logicalOperator(childList, AND, data);
+    }
+
+    @Override
+    public Object visit(Or filter, Object data) {
+        List<Filter> childList = filter.getChildren();
+        return logicalOperator(childList, OR, data);
+    }
+
+    private Object logicalOperator(List<Filter> filters, String operator, Object data) {
+        if (filters == null || filters.isEmpty()) {
+            throw new UnsupportedOperationException(
+                    "[" + operator + "] operation must contain 1 or more filters.");
+        }
+        int startIndex = 0;
+        Filter child = filters.get(startIndex);
+        startIndex++;
+        StringBuilder builder = new StringBuilder();
+        builder.append(START_PAREN);
+        builder.append(getQuery(child.accept(this, data)));
+
+        for (int i = startIndex; i < filters.size(); i++) {
+            Filter localFilter = filters.get(i);
+
+            if (localFilter != null) {
+                String query = getQuery(localFilter.accept(this, data));
+                if(query == null){
+                    throw new UnsupportedOperationException(
+                            "Query operation "+localFilter+" is not supported.");
+                }
+                builder.append(operator)
+                        .append(query);
+            } else {
+                throw new UnsupportedOperationException(
+                        "Query was not interpreted properly. Query should not be null.");
+            }
+
+        }
+        builder.append(END_PAREN);
+
+        return new SolrQuery(builder.toString());
+    }
+
+    private String getQuery(Object data) {
+        if (data instanceof SolrQuery) {
+            return ((SolrQuery) data).getQuery();
+        }
+        return null;
     }
 
     @Override
