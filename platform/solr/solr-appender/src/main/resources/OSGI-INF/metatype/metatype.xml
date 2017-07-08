@@ -1,0 +1,34 @@
+<!--
+/**
+ * Copyright (c) Codice Foundation
+ *
+ * This is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either
+ * version 3 of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details. A copy of the GNU Lesser General Public License is distributed along with this program and can be found at
+ * <http://www.gnu.org/licenses/lgpl.html>.
+ *
+ **/
+-->
+<metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0">
+
+    <OCD description="Decanter Solr Appender"
+         name="Solr Appender" id="org.codice.solr.appender.SolrAppender">
+
+        <AD description="The maximum batch size for solr writes."
+                name="Batch Size" id="batchSize"
+                required="true" type="Integer" default="100"/>
+
+        <AD description="Items to be written to solr are accumulated and written as a batch every batch flush interval."
+                name="Batch Flush Interval (seconds)" id="period" required="true"
+                type="Integer" default="5">
+        </AD>
+
+    </OCD>
+
+    <Designate pid="org.codice.solr.appender.SolrAppender">
+        <Object ocdref="org.codice.solr.appender.SolrAppender"/>
+    </Designate>
+
+</metatype:MetaData>
