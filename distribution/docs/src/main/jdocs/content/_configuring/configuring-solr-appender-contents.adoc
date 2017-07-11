@@ -1,0 +1,43 @@
+:title: Configuring Solr Appender
+:type: configuringAdminConsole
+:status: published
+:summary: Configuring Solr appender.
+:order: 19
+
+==== Solr Appender
+
+The Solr Appender is a Decanter collector which persists to Solr all events posted to `decanter/collect/*`.
+The batch size and and flush interval for the appender can be configured.
+
+===== Configure Solr Appender
+
+. Navigate to the *${admin-console}*.
+. Select the *${ddf-platform}* application.
+. Select the *Configuration* tab.
+. Select the *Solr Appender*.
+.. A dialogue will pop up that allows you to edit the Solr appender properties.
+
+.[[Solr_Appender]]Solr Appender Configuration
+[cols="1,1m,1,3,1,1" options="header"]
+|===
+|Name
+|Property
+|Type
+|Description
+|Default Value
+|Required
+
+|Batch Size
+|batchSize
+|Integer
+|The maximum batch size for solr writes.
+|100
+|true
+
+|Batch Flush Interval (seconds)
+|period
+|Integer
+|Items to be written to solr are accumulated and written as a batch every batch flush interval.
+|5
+|true
+|===

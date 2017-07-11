@@ -1,0 +1,38 @@
+:title: Configuring Alert Listener
+:type: configuringAdminConsole
+:status: published
+:summary: Configuring alert listener.
+:order: 18
+
+==== Alert Listener
+
+Alert events are fired when when something important happens in the system and the Alert Listener captures and handles those events.
+Once an alert has been sent it will be periodically resent until it has been dismissed by an administrator indicating that it is no longer an issue.
+The Alert Listener receives alerts on the topic `decanter/alert/*` and post periodic events to topic `ddf/periodic/notification/alert`.
+It also listens to the topic `ddf/alert/dismiss` to dismiss active alerts.
+
+===== Setting the resend period
+
+. Navigate to the *${admin-console}*.
+. Select the *${ddf-platform}* application.
+. Select the *Configuration* tab.
+. Select the *Alert Listener*.
+.. A dialogue will pop up that allows you to edit the alert listeners Periodic Alert Interval.
+
+.[[Alert_Listener]]Alert Listener Configuration
+[cols="1,1m,1,3,1,1" options="header"]
+|===
+|Name
+|Property
+|Type
+|Description
+|Default Value
+|Required
+
+|Periodic Alert Interval (minutes)
+|period
+|Integer
+|The periodic interval on which active alert events should be resent.
+|1440 (24 hrs)
+|true
+|===
