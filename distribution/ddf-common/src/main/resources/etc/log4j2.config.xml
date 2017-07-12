@@ -23,7 +23,10 @@
         <PaxOsgi name="osgi-platformLogging"
                  filter="org.codice.ddf.platform.logging.LoggingService"/>
 
-        <PaxOsgi name="osgi-all" filter="*"/>
+        <PaxOsgi name="osgi-adminAlertAppender"
+                 filter="ddf.security.common.audit.AdminAlertAppender"/>
+
+        <PaxOsgi name="osgi-karafConsole" filter="VmLogAppender"/>
 
         <Syslog name="syslog" facility="AUTH" host="localhost" protocol="UDP" port="514"/>
 
@@ -61,11 +64,7 @@
             <DefaultRolloverStrategy max="10"/>
         </RollingFile>
 
-        <!--TODO DDF-3073
-        The karaf upgrade from 4.0.7 to 4.1.1 introduced a bug with the log4j2 failover
-        appender: "ERROR appender Failover has no parameter that matches element Failovers". See
-        https://issues.apache.org/jira/browse/LOG4J2-1163.-->
-        <!--<RollingFile name="securityBackup" append="true" ignoreExceptions="false"
+        <RollingFile name="securityBackup" append="true" ignoreExceptions="false"
                      fileName="${sys:karaf.data}/log/securityBackup.log"
                      filePattern="${sys:karaf.data}/log/securityBackup.log-%d{yyyy-MM-dd-HH}-%i.log.gz">
             <PatternLayout pattern="[%-5p] %d{ISO8601} | %-16.16t | %-15.20c{1} |  %m%n"/>
@@ -73,13 +72,14 @@
                 <SizeBasedTriggeringPolicy size="20 MB"/>
             </Policies>
             <DefaultRolloverStrategy max="10"/>
-        </RollingFile>-->
+        </RollingFile>
 
-        <!--<Failover name="securityFailover" primary="securityMain">
+        <Failover name="securityFailover" primary="securityMain">
             <Failovers>
                 <AppenderRef ref="securityBackup"/>
+                <AppenderRef ref="osgi-adminAlertAppender"/>
             </Failovers>
-        </Failover>-->
+        </Failover>
 
         <RollingFile name="solr" append="true"
                      fileName="${sys:karaf.data}/log/solr.log"
@@ -104,15 +104,13 @@
 
     <Loggers>
         <Logger name="securityLogger" level="info" additivity="false">
-            <!--<AppenderRef ref="securityFailover"/>-->
-            <AppenderRef ref="securityMain"/>
+            <AppenderRef ref="securityFailover"/>
             <AppenderRef ref="syslog"/>
             <AppenderRef ref="osgi-platformLogging"/>
         </Logger>
 
         <Logger name="org.apache.karaf.jaas.modules.audit" level="info" additivity="false">
-            <!--<AppenderRef ref="securityFailover"/>-->
-            <AppenderRef ref="securityMain"/>
+            <AppenderRef ref="securityFailover"/>
             <AppenderRef ref="syslog"/>
             <AppenderRef ref="osgi-platformLogging"/>
         </Logger>
