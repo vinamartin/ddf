@@ -25,6 +25,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +44,7 @@ import ddf.catalog.operation.impl.SourceResponseImpl;
 import ddf.catalog.resource.ResourceNotFoundException;
 import ddf.catalog.resource.ResourceNotSupportedException;
 import ddf.catalog.resource.ResourceReader;
+import ddf.catalog.service.ConfiguredService;
 import ddf.catalog.source.FederatedSource;
 import ddf.catalog.source.SourceMonitor;
 import ddf.catalog.source.UnsupportedQueryException;
@@ -53,9 +58,11 @@ import twitter4j.TwitterFactory;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
-public class TwitterSource implements FederatedSource {
+public class TwitterSource implements FederatedSource, ConfiguredService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TwitterSource.class);
+
+    private String configurationPid;
 
     TwitterFactory twitterFactory;
 
@@ -183,15 +190,17 @@ public class TwitterSource implements FederatedSource {
         metacard.setSourceId(id);
         metacard.setId(String.valueOf(status.getId()));
         metacard.setTitle(status.getText());
-        metacard.setMetadata("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
-                "<Resource>" +
-                "<name>" + status.getText() + "</name>" +
-                "</Resource>");
+        metacard.setMetadata(
+                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" + "<Resource>"
+                        + "<name>" + status.getText() + "</name>" + "</Resource>");
         metacard.setCreatedDate(status.getCreatedAt());
         metacard.setModifiedDate(status.getCreatedAt());
         metacard.setEffectiveDate(status.getCreatedAt());
-        metacard.setPointOfContact(status.getUser()
-                .getName());
+        metacard.setPointOfContact("@" + status.getUser()
+                .getScreenName());
+        metacard.setDescription(formatDescription(status.getSource()));
+        metacard.setAttribute("likes", status.getFavoriteCount());
+        metacard.setAttribute("retweets", status.getRetweetCount());
         if (status.getURLEntities() != null && status.getURLEntities().length > 0) {
             try {
                 metacard.setResourceURI(new URI(status.getURLEntities()[0].getExpandedURL()));
@@ -207,8 +216,7 @@ public class TwitterSource implements FederatedSource {
         } else if (status.getExtendedMediaEntities() != null
                 && status.getExtendedMediaEntities().length > 0) {
             try {
-                metacard.setResourceURI(
-                        new URI(status.getExtendedMediaEntities()[0].getExpandedURL()));
+                metacard.setResourceURI(new URI(status.getExtendedMediaEntities()[0].getExpandedURL()));
             } catch (URISyntaxException e) {
                 LOGGER.error("Unable to set resource URI.", e);
             }
@@ -220,6 +228,17 @@ public class TwitterSource implements FederatedSource {
         }
 
         return metacard;
+    }
+
+    private String formatDescription(String source) {
+        String description = "";
+        Document doc = Jsoup.parse(source);
+        Elements links = doc.getElementsByTag("a");
+        for (Element link : links) {
+            String linkHref = link.attr("href");
+            description = link.text();
+        }
+        return description;
     }
 
     @Override
@@ -274,5 +293,15 @@ public class TwitterSource implements FederatedSource {
 
     public void setResourceReader(ResourceReader resourceReader) {
         this.resourceReader = resourceReader;
+    }
+
+    @Override
+    public String getConfigurationPid() {
+        return configurationPid;
+    }
+
+    @Override
+    public void setConfigurationPid(String configurationPid) {
+        this.configurationPid = configurationPid;
     }
 }
