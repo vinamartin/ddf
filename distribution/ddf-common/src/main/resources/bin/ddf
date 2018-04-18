@@ -1,10 +1,33 @@
 #!/bin/sh
 
 SCRIPTDIR=$(dirname "$0")
+DDF_HOME=$(cd "${SCRIPTDIR}/.."; pwd -P)
+SOLR_PID="0"
+SOLR_PORT=8994
+SOLR_VER=6.6.2
 
 while true; do
   # Remove the restart file indicator so we can detect later if restart was requested
   rm -f "${SCRIPTDIR}/restart.jvm"
+
+  #Start SOLR
+  #####################################################################################
+  #
+  #  ___      _
+  # / __| ___| |_ _
+  # \__ \/ _ \ | '_|
+  # |___/\___/_|_|
+  # TODO (RCZ) Probably need to actually organize this in a smart way.. but for now
+  # probs should do some checks on whether solr is already running and all that jazz
+  # (or if they're doing solr cloud and we don't want to even start this up right now)
+  #####################################################################################
+  echo "Starting Solr on port $SOLR_PORT"
+  ${DDF_HOME}/solr-${SOLR_VER}/bin/solr start -p $SOLR_PORT
+  SOLR_START_RC=$?
+  if [ "$SOLR_START_RC" -ne 0 ]; then
+      echo "WARNING! solr start process returned non-zero error code, please check solr logs"
+  fi
+  ####################################################################################
 
   # Argument to Karaf is optional.
   # Provides ability to start Karaf in different modes, e.g., server, client, etc.
@@ -17,6 +40,8 @@ while true; do
     if [ -f "${SCRIPTDIR}/restart.jvm" ]; then
       echo "Restarting JVM..."
     else
+      echo "Stopping solr process on port $SOLR_PORT"
+      ${DDF_HOME}/solr-${SOLR_VER}/bin/solr stop -p $SOLR_PORT
       exit $RC
     fi
   fi

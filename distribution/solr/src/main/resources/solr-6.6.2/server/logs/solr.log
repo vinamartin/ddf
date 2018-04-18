@@ -1,0 +1,144 @@
+2018-04-16 19:37:12.691 INFO  (main) [   ] o.e.j.s.Server jetty-9.3.14.v20161028
+2018-04-16 19:37:13.178 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter  ___      _       Welcome to Apache Solr™ version 6.6.2
+2018-04-16 19:37:13.179 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter / __| ___| |_ _   Starting in standalone mode on port 8994
+2018-04-16 19:37:13.179 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter \__ \/ _ \ | '_|  Install dir: /Users/vinamartin/Downloads/solr-6.6.2 2
+2018-04-16 19:37:13.207 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter |___/\___/_|_|    Start time: 2018-04-16T19:37:13.180Z
+2018-04-16 19:37:13.208 INFO  (main) [   ] o.a.s.s.StartupLoggingUtils Property solr.log.muteconsole given. Muting ConsoleAppender named CONSOLE
+2018-04-16 19:37:13.242 INFO  (main) [   ] o.a.s.c.SolrResourceLoader Using system property solr.solr.home: /Users/vinamartin/Downloads/solr-6.6.2 2/server/solr
+2018-04-16 19:37:13.248 INFO  (main) [   ] o.a.s.c.SolrXmlConfig Loading container configuration from /Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/solr.xml
+2018-04-16 19:37:13.661 INFO  (main) [   ] o.a.s.u.UpdateShardHandler Creating UpdateShardHandler HTTP client with params: socketTimeout=600000&connTimeout=60000&retry=true
+2018-04-16 19:37:13.936 INFO  (main) [   ] o.a.s.c.CorePropertiesLocator Found 4 core definitions underneath /Users/vinamartin/Downloads/solr-6.6.2 2/server/solr
+2018-04-16 19:37:13.938 INFO  (main) [   ] o.a.s.c.CorePropertiesLocator Cores are: [alerts, catalog, metacard_cache, testcore]
+2018-04-16 19:37:13.943 INFO  (coreLoadExecutor-6-thread-1) [   ] o.a.s.c.TransientSolrCoreCacheDefault Allocating transient cache for 2147483647 transient cores
+2018-04-16 19:37:14.016 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.c.SolrResourceLoader [metacard_cache] Added 2 libs to classloader, from paths: [/Users/vinamartin/Downloads/solr-6.6.2%202/plugins]
+2018-04-16 19:37:14.016 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.c.SolrResourceLoader [catalog] Added 2 libs to classloader, from paths: [/Users/vinamartin/Downloads/solr-6.6.2%202/plugins]
+2018-04-16 19:37:14.016 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.c.SolrResourceLoader [alerts] Added 2 libs to classloader, from paths: [/Users/vinamartin/Downloads/solr-6.6.2%202/plugins]
+2018-04-16 19:37:14.157 INFO  (main) [   ] o.e.j.s.Server Started @2150ms
+2018-04-16 19:37:14.274 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.c.SolrConfig Using Lucene MatchVersion: 6.6.2
+2018-04-16 19:37:14.274 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.c.SolrConfig Using Lucene MatchVersion: 6.6.2
+2018-04-16 19:37:14.285 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.c.SolrConfig Using Lucene MatchVersion: 6.6.2
+2018-04-16 19:37:14.555 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.s.IndexSchema [metacard_cache] Schema name=dynamic
+2018-04-16 19:37:14.558 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.s.IndexSchema [alerts] Schema name=dynamic
+2018-04-16 19:37:14.572 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.s.IndexSchema [catalog] Schema name=dynamic
+2018-04-16 19:37:14.775 WARN  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.c.SolrResourceLoader Solr loaded a deprecated plugin/analysis class [solr.LatLonType]. Please consult documentation how to replace it accordingly.
+2018-04-16 19:37:14.776 WARN  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.c.SolrResourceLoader Solr loaded a deprecated plugin/analysis class [solr.LatLonType]. Please consult documentation how to replace it accordingly.
+2018-04-16 19:37:14.778 WARN  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.c.SolrResourceLoader Solr loaded a deprecated plugin/analysis class [solr.LatLonType]. Please consult documentation how to replace it accordingly.
+2018-04-16 19:37:14.824 WARN  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.c.SolrResourceLoader Solr loaded a deprecated plugin/analysis class [solr.SynonymFilterFactory]. Please consult documentation how to replace it accordingly.
+2018-04-16 19:37:15.068 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.s.IndexSchema Loaded schema dynamic/1.6 with uniqueid field id_txt
+2018-04-16 19:37:15.068 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.s.IndexSchema Loaded schema dynamic/1.6 with uniqueid field id_txt
+2018-04-16 19:37:15.071 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.s.IndexSchema Loaded schema dynamic/1.6 with uniqueid field id_txt
+2018-04-16 19:37:15.087 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.c.CoreContainer Creating SolrCore 'metacard_cache' using configuration from instancedir /Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/metacard_cache, trusted=true
+2018-04-16 19:37:15.102 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.c.CoreContainer Creating SolrCore 'catalog' using configuration from instancedir /Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/catalog, trusted=true
+2018-04-16 19:37:15.103 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.c.CoreContainer Creating SolrCore 'alerts' using configuration from instancedir /Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/alerts, trusted=true
+2018-04-16 19:37:15.149 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.c.SolrCore solr.RecoveryStrategy.Builder
+2018-04-16 19:37:15.150 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.c.SolrCore solr.RecoveryStrategy.Builder
+2018-04-16 19:37:15.150 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.c.SolrCore solr.RecoveryStrategy.Builder
+2018-04-16 19:37:15.158 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.c.SolrCore [[catalog] ] Opening new SolrCore at [/Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/catalog], dataDir=[/Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/catalog/data/]
+2018-04-16 19:37:15.159 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.c.SolrCore [[metacard_cache] ] Opening new SolrCore at [/Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/metacard_cache], dataDir=[/Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/metacard_cache/data/]
+2018-04-16 19:37:15.159 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.c.SolrCore [[alerts] ] Opening new SolrCore at [/Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/alerts], dataDir=[/Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/alerts/data/]
+2018-04-16 19:37:15.229 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.r.XSLTResponseWriter xsltCacheLifetimeSeconds=5
+2018-04-16 19:37:15.231 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.r.XSLTResponseWriter xsltCacheLifetimeSeconds=5
+2018-04-16 19:37:15.232 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.r.XSLTResponseWriter xsltCacheLifetimeSeconds=5
+2018-04-16 19:37:15.651 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.u.UpdateHandler Using UpdateLog implementation: org.apache.solr.update.UpdateLog
+2018-04-16 19:37:15.651 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.u.UpdateHandler Using UpdateLog implementation: org.apache.solr.update.UpdateLog
+2018-04-16 19:37:15.651 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.u.UpdateLog Initializing UpdateLog: dataDir= defaultSyncLevel=FLUSH numRecordsToKeep=100 maxNumLogsToKeep=10 numVersionBuckets=65536
+2018-04-16 19:37:15.651 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.u.UpdateLog Initializing UpdateLog: dataDir= defaultSyncLevel=FLUSH numRecordsToKeep=100 maxNumLogsToKeep=10 numVersionBuckets=65536
+2018-04-16 19:37:15.652 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.u.UpdateHandler Using UpdateLog implementation: org.apache.solr.update.UpdateLog
+2018-04-16 19:37:15.652 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.u.UpdateLog Initializing UpdateLog: dataDir= defaultSyncLevel=FLUSH numRecordsToKeep=100 maxNumLogsToKeep=10 numVersionBuckets=65536
+2018-04-16 19:37:15.663 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.u.CommitTracker Hard AutoCommit: if uncommited for 15000ms; 
+2018-04-16 19:37:15.663 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.u.CommitTracker Soft AutoCommit: if uncommited for 1000ms; 
+2018-04-16 19:37:15.677 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.u.CommitTracker Hard AutoCommit: if uncommited for 15000ms; 
+2018-04-16 19:37:15.677 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.u.CommitTracker Soft AutoCommit: if uncommited for 1000ms; 
+2018-04-16 19:37:15.708 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.u.CommitTracker Hard AutoCommit: if uncommited for 15000ms; 
+2018-04-16 19:37:15.708 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.u.CommitTracker Soft AutoCommit: if uncommited for 1000ms; 
+2018-04-16 19:37:15.766 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.s.SolrIndexSearcher Opening [Searcher@66fe9f75[alerts] main]
+2018-04-16 19:37:15.787 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.r.ManagedResourceStorage File-based storage initialized to use dir: /Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/alerts/conf
+2018-04-16 19:37:15.839 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.s.SolrIndexSearcher Opening [Searcher@5ace386[metacard_cache] main]
+2018-04-16 19:37:15.841 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.r.ManagedResourceStorage File-based storage initialized to use dir: /Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/metacard_cache/conf
+2018-04-16 19:37:15.847 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.h.c.SpellCheckComponent Initializing spell checkers
+2018-04-16 19:37:15.847 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.h.c.SpellCheckComponent Initializing spell checkers
+2018-04-16 19:37:15.857 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.s.DirectSolrSpellChecker init: {name=default,field=text,classname=solr.DirectSolrSpellChecker,distanceMeasure=internal,accuracy=0.5,maxEdits=2,minPrefix=1,maxInspections=5,minQueryLength=4,maxQueryFrequency=0.01}
+2018-04-16 19:37:15.859 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.s.DirectSolrSpellChecker init: {name=default,field=text,classname=solr.DirectSolrSpellChecker,distanceMeasure=internal,accuracy=0.5,maxEdits=2,minPrefix=1,maxInspections=5,minQueryLength=4,maxQueryFrequency=0.01}
+2018-04-16 19:37:15.872 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.h.c.SuggestComponent Initializing SuggestComponent
+2018-04-16 19:37:15.875 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.h.c.SuggestComponent Initializing SuggestComponent
+2018-04-16 19:37:15.877 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.s.s.SolrSuggester init: {name=suggestPlace,storeDir=place_suggest_index,lookupImpl=BlendedInfixLookupFactory,dictionaryImpl=DocumentDictionaryFactory,suggestAnalyzerFieldType=lowercase,field=title_txt,contextField=metacard-tags_txt,weightField=ext.population_lng,payloadField=description_txt,buildOnStartup=true}
+2018-04-16 19:37:15.880 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.s.s.SolrSuggester init: {name=suggestPlace,storeDir=place_suggest_index,lookupImpl=BlendedInfixLookupFactory,dictionaryImpl=DocumentDictionaryFactory,suggestAnalyzerFieldType=lowercase,field=title_txt,contextField=metacard-tags_txt,weightField=ext.population_lng,payloadField=description_txt,buildOnStartup=true}
+2018-04-16 19:37:15.908 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.s.s.SolrSuggester Dictionary loaded with params: {name=suggestPlace,storeDir=place_suggest_index,lookupImpl=BlendedInfixLookupFactory,dictionaryImpl=DocumentDictionaryFactory,suggestAnalyzerFieldType=lowercase,field=title_txt,contextField=metacard-tags_txt,weightField=ext.population_lng,payloadField=description_txt,buildOnStartup=true}
+2018-04-16 19:37:15.908 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.s.s.SolrSuggester Dictionary loaded with params: {name=suggestPlace,storeDir=place_suggest_index,lookupImpl=BlendedInfixLookupFactory,dictionaryImpl=DocumentDictionaryFactory,suggestAnalyzerFieldType=lowercase,field=title_txt,contextField=metacard-tags_txt,weightField=ext.population_lng,payloadField=description_txt,buildOnStartup=true}
+2018-04-16 19:37:15.909 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.h.c.SuggestComponent Registering searcher listener for suggester: suggestPlace - SuggesterListener [core=org.apache.solr.core.SolrCore@482bc24e, suggester=SolrSuggester [ name=suggestPlace, sourceLocation=null, storeDir=/Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/metacard_cache/data/place_suggest_index, lookupImpl=BlendedInfixLookupFactory, dictionaryImpl=DocumentDictionaryFactory, sizeInBytes=64 ], buildOnCommit=false, buildOnOptimize=false, buildOnStartup=true, isCoreReload=false]
+2018-04-16 19:37:15.909 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.h.c.SuggestComponent Registering searcher listener for suggester: suggestPlace - SuggesterListener [core=org.apache.solr.core.SolrCore@2e73d87e, suggester=SolrSuggester [ name=suggestPlace, sourceLocation=null, storeDir=/Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/alerts/data/place_suggest_index, lookupImpl=BlendedInfixLookupFactory, dictionaryImpl=DocumentDictionaryFactory, sizeInBytes=64 ], buildOnCommit=false, buildOnOptimize=false, buildOnStartup=true, isCoreReload=false]
+2018-04-16 19:37:15.915 INFO  (coreLoadExecutor-6-thread-3) [   x:metacard_cache] o.a.s.h.ReplicationHandler Commits will be reserved for  10000
+2018-04-16 19:37:15.916 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.h.ReplicationHandler Commits will be reserved for  10000
+2018-04-16 19:37:15.968 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.s.SolrIndexSearcher Opening [Searcher@47ed0f24[catalog] main]
+2018-04-16 19:37:15.970 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.r.ManagedResourceStorage File-based storage initialized to use dir: /Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/catalog/conf
+2018-04-16 19:37:15.971 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.h.c.SpellCheckComponent Initializing spell checkers
+2018-04-16 19:37:15.971 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.s.DirectSolrSpellChecker init: {name=default,field=text,classname=solr.DirectSolrSpellChecker,distanceMeasure=internal,accuracy=0.5,maxEdits=2,minPrefix=1,maxInspections=5,minQueryLength=4,maxQueryFrequency=0.01}
+2018-04-16 19:37:15.971 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.h.c.SuggestComponent Initializing SuggestComponent
+2018-04-16 19:37:15.971 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.s.s.SolrSuggester init: {name=suggestPlace,storeDir=place_suggest_index,lookupImpl=BlendedInfixLookupFactory,dictionaryImpl=DocumentDictionaryFactory,suggestAnalyzerFieldType=lowercase,field=title_txt,contextField=metacard-tags_txt,weightField=ext.population_lng,payloadField=description_txt,buildOnStartup=true}
+2018-04-16 19:37:15.974 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.s.s.SolrSuggester Dictionary loaded with params: {name=suggestPlace,storeDir=place_suggest_index,lookupImpl=BlendedInfixLookupFactory,dictionaryImpl=DocumentDictionaryFactory,suggestAnalyzerFieldType=lowercase,field=title_txt,contextField=metacard-tags_txt,weightField=ext.population_lng,payloadField=description_txt,buildOnStartup=true}
+2018-04-16 19:37:15.974 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.h.c.SuggestComponent Registering searcher listener for suggester: suggestPlace - SuggesterListener [core=org.apache.solr.core.SolrCore@4b9cf27a, suggester=SolrSuggester [ name=suggestPlace, sourceLocation=null, storeDir=/Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/catalog/data/place_suggest_index, lookupImpl=BlendedInfixLookupFactory, dictionaryImpl=DocumentDictionaryFactory, sizeInBytes=64 ], buildOnCommit=false, buildOnOptimize=false, buildOnStartup=true, isCoreReload=false]
+2018-04-16 19:37:15.975 INFO  (coreLoadExecutor-6-thread-2) [   x:catalog] o.a.s.h.ReplicationHandler Commits will be reserved for  10000
+2018-04-16 19:37:16.007 INFO  (searcherExecutor-8-thread-1-processing-x:metacard_cache) [   x:metacard_cache] o.a.s.c.QuerySenderListener QuerySenderListener sending requests to Searcher@5ace386[metacard_cache] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_0(6.6.2):C1)))}
+2018-04-16 19:37:16.007 INFO  (searcherExecutor-7-thread-1-processing-x:catalog) [   x:catalog] o.a.s.c.QuerySenderListener QuerySenderListener sending requests to Searcher@47ed0f24[catalog] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_b(6.6.2):C6751) Uninverting(_n(6.6.2):C7939) Uninverting(_z(6.6.2):C11380) Uninverting(_1k(6.6.2):C13288) Uninverting(_18(6.6.2):C10500) Uninverting(_1v(6.6.2):C11766) Uninverting(_24(6.6.2):C8581)))}
+2018-04-16 19:37:16.008 INFO  (searcherExecutor-8-thread-1-processing-x:metacard_cache) [   x:metacard_cache] o.a.s.c.QuerySenderListener QuerySenderListener done.
+2018-04-16 19:37:16.008 INFO  (searcherExecutor-7-thread-1-processing-x:catalog) [   x:catalog] o.a.s.c.QuerySenderListener QuerySenderListener done.
+2018-04-16 19:37:16.008 INFO  (searcherExecutor-8-thread-1-processing-x:metacard_cache) [   x:metacard_cache] o.a.s.h.c.SpellCheckComponent Loading spell index for spellchecker: default
+2018-04-16 19:37:16.008 INFO  (searcherExecutor-7-thread-1-processing-x:catalog) [   x:catalog] o.a.s.h.c.SpellCheckComponent Loading spell index for spellchecker: default
+2018-04-16 19:37:16.008 INFO  (searcherExecutor-8-thread-1-processing-x:metacard_cache) [   x:metacard_cache] o.a.s.h.c.SpellCheckComponent Loading spell index for spellchecker: wordbreak
+2018-04-16 19:37:16.008 INFO  (searcherExecutor-7-thread-1-processing-x:catalog) [   x:catalog] o.a.s.h.c.SpellCheckComponent Loading spell index for spellchecker: wordbreak
+2018-04-16 19:37:16.008 INFO  (searcherExecutor-8-thread-1-processing-x:metacard_cache) [   x:metacard_cache] o.a.s.h.c.SuggestComponent buildOnStartup: suggestPlace
+2018-04-16 19:37:16.008 INFO  (searcherExecutor-7-thread-1-processing-x:catalog) [   x:catalog] o.a.s.h.c.SuggestComponent buildOnStartup: suggestPlace
+2018-04-16 19:37:16.008 INFO  (searcherExecutor-7-thread-1-processing-x:catalog) [   x:catalog] o.a.s.s.s.SolrSuggester SolrSuggester.build(suggestPlace)
+2018-04-16 19:37:16.008 INFO  (searcherExecutor-8-thread-1-processing-x:metacard_cache) [   x:metacard_cache] o.a.s.s.s.SolrSuggester SolrSuggester.build(suggestPlace)
+2018-04-16 19:37:16.029 INFO  (searcherExecutor-9-thread-1-processing-x:alerts) [   x:alerts] o.a.s.c.QuerySenderListener QuerySenderListener sending requests to Searcher@66fe9f75[alerts] main{ExitableDirectoryReader(UninvertingDirectoryReader())}
+2018-04-16 19:37:16.029 INFO  (searcherExecutor-9-thread-1-processing-x:alerts) [   x:alerts] o.a.s.c.QuerySenderListener QuerySenderListener done.
+2018-04-16 19:37:16.029 INFO  (searcherExecutor-9-thread-1-processing-x:alerts) [   x:alerts] o.a.s.h.c.SpellCheckComponent Loading spell index for spellchecker: default
+2018-04-16 19:37:16.029 INFO  (searcherExecutor-9-thread-1-processing-x:alerts) [   x:alerts] o.a.s.h.c.SpellCheckComponent Loading spell index for spellchecker: wordbreak
+2018-04-16 19:37:16.029 INFO  (searcherExecutor-9-thread-1-processing-x:alerts) [   x:alerts] o.a.s.h.c.SuggestComponent buildOnStartup: suggestPlace
+2018-04-16 19:37:16.029 INFO  (searcherExecutor-9-thread-1-processing-x:alerts) [   x:alerts] o.a.s.s.s.SolrSuggester SolrSuggester.build(suggestPlace)
+2018-04-16 19:37:16.044 INFO  (coreLoadExecutor-6-thread-1) [   x:alerts] o.a.s.u.UpdateLog Could not find max version in index or recent updates, using new clock 1597932763657273344
+2018-04-16 19:37:16.061 ERROR (searcherExecutor-9-thread-1-processing-x:alerts) [   x:alerts] o.a.s.s.s.SolrSuggester Store Lookup build failed
+2018-04-16 19:37:16.062 INFO  (searcherExecutor-9-thread-1-processing-x:alerts) [   x:alerts] o.a.s.c.SolrCore [alerts] Registered new searcher Searcher@66fe9f75[alerts] main{ExitableDirectoryReader(UninvertingDirectoryReader())}
+2018-04-16 19:37:16.091 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.c.SolrResourceLoader [testcore] Added 55 libs to classloader, from paths: [/Users/vinamartin/Downloads/solr-6.6.2%202/contrib/clustering/lib, /Users/vinamartin/Downloads/solr-6.6.2%202/contrib/extraction/lib, /Users/vinamartin/Downloads/solr-6.6.2%202/contrib/langid/lib, /Users/vinamartin/Downloads/solr-6.6.2%202/contrib/velocity/lib, /Users/vinamartin/Downloads/solr-6.6.2%202/dist, /Users/vinamartin/Downloads/solr-6.6.2%202/plugins]
+2018-04-16 19:37:16.310 ERROR (searcherExecutor-8-thread-1-processing-x:metacard_cache) [   x:metacard_cache] o.a.s.s.s.SolrSuggester Store Lookup build failed
+2018-04-16 19:37:16.311 INFO  (searcherExecutor-8-thread-1-processing-x:metacard_cache) [   x:metacard_cache] o.a.s.c.SolrCore [metacard_cache] Registered new searcher Searcher@5ace386[metacard_cache] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_0(6.6.2):C1)))}
+2018-04-16 19:37:16.419 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.c.SolrConfig Using Lucene MatchVersion: 6.6.2
+2018-04-16 19:37:16.483 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.s.IndexSchema [testcore] Schema name=example-data-driven-schema
+2018-04-16 19:37:17.157 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.s.IndexSchema Loaded schema example-data-driven-schema/1.6 with uniqueid field id
+2018-04-16 19:37:17.219 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.c.CoreContainer Creating SolrCore 'testcore' using configuration from instancedir /Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/testcore, trusted=true
+2018-04-16 19:37:17.219 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.c.SolrCore solr.RecoveryStrategy.Builder
+2018-04-16 19:37:17.220 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.c.SolrCore [[testcore] ] Opening new SolrCore at [/Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/testcore], dataDir=[/Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/testcore/data/]
+2018-04-16 19:37:17.222 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.r.XSLTResponseWriter xsltCacheLifetimeSeconds=5
+2018-04-16 19:37:17.402 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.u.UpdateHandler Using UpdateLog implementation: org.apache.solr.update.UpdateLog
+2018-04-16 19:37:17.402 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.u.UpdateLog Initializing UpdateLog: dataDir= defaultSyncLevel=FLUSH numRecordsToKeep=100 maxNumLogsToKeep=10 numVersionBuckets=65536
+2018-04-16 19:37:17.403 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.u.CommitTracker Hard AutoCommit: if uncommited for 15000ms; 
+2018-04-16 19:37:17.403 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.u.CommitTracker Soft AutoCommit: disabled
+2018-04-16 19:37:17.411 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.s.SolrIndexSearcher Opening [Searcher@353b9563[testcore] main]
+2018-04-16 19:37:17.411 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.r.ManagedResourceStorage File-based storage initialized to use dir: /Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/testcore/conf
+2018-04-16 19:37:17.412 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.h.c.SpellCheckComponent Initializing spell checkers
+2018-04-16 19:37:17.412 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.s.DirectSolrSpellChecker init: {name=default,field=_text_,classname=solr.DirectSolrSpellChecker,distanceMeasure=internal,accuracy=0.5,maxEdits=2,minPrefix=1,maxInspections=5,minQueryLength=4,maxQueryFrequency=0.01}
+2018-04-16 19:37:17.414 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.h.c.QueryElevationComponent Loading QueryElevation from: /Users/vinamartin/Downloads/solr-6.6.2 2/server/solr/testcore/conf/elevate.xml
+2018-04-16 19:37:17.429 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.h.ReplicationHandler Commits will be reserved for  10000
+2018-04-16 19:37:17.430 INFO  (searcherExecutor-22-thread-1) [   ] o.a.s.c.QuerySenderListener QuerySenderListener sending requests to Searcher@353b9563[testcore] main{ExitableDirectoryReader(UninvertingDirectoryReader())}
+2018-04-16 19:37:17.430 INFO  (searcherExecutor-22-thread-1) [   ] o.a.s.c.QuerySenderListener QuerySenderListener done.
+2018-04-16 19:37:17.430 INFO  (searcherExecutor-22-thread-1) [   ] o.a.s.h.c.SpellCheckComponent Loading spell index for spellchecker: default
+2018-04-16 19:37:17.435 INFO  (searcherExecutor-22-thread-1) [   ] o.a.s.c.SolrCore [testcore] Registered new searcher Searcher@353b9563[testcore] main{ExitableDirectoryReader(UninvertingDirectoryReader())}
+2018-04-16 19:37:17.441 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.u.UpdateLog Could not find max version in index or recent updates, using new clock 1597932765122134016
+2018-04-16 19:37:32.411 ERROR (searcherExecutor-7-thread-1-processing-x:catalog) [   x:catalog] o.a.s.s.s.SolrSuggester Store Lookup build failed
+2018-04-16 19:37:32.412 INFO  (searcherExecutor-7-thread-1-processing-x:catalog) [   x:catalog] o.a.s.c.SolrCore [catalog] Registered new searcher Searcher@47ed0f24[catalog] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_b(6.6.2):C6751) Uninverting(_n(6.6.2):C7939) Uninverting(_z(6.6.2):C11380) Uninverting(_1k(6.6.2):C13288) Uninverting(_18(6.6.2):C10500) Uninverting(_1v(6.6.2):C11766) Uninverting(_24(6.6.2):C8581)))}
+2018-04-16 19:45:32.736 INFO  (qtp581374081-13) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1523907931832} status=0 QTime=9
+2018-04-16 19:45:32.818 INFO  (qtp581374081-21) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1523907931833} status=0 QTime=90
+2018-04-16 19:45:32.849 INFO  (qtp581374081-18) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1523907931833} status=0 QTime=23
+2018-04-16 19:56:59.005 INFO  (qtp581374081-18) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1523908617923} status=0 QTime=2
+2018-04-16 19:56:59.054 INFO  (qtp581374081-14) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1523908617925} status=0 QTime=37
+2018-04-16 19:56:59.055 INFO  (qtp581374081-21) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1523908617925} status=0 QTime=38
+2018-04-16 19:57:01.698 INFO  (qtp581374081-19) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1523908617923} status=0 QTime=0
+2018-04-16 19:57:01.727 INFO  (qtp581374081-13) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1523908617925} status=0 QTime=25
+2018-04-16 19:57:01.731 INFO  (qtp581374081-12) [   x:catalog] o.a.s.c.S.Request [catalog]  webapp=/solr path=/admin/ping params={action=status&wt=json&_=1523908617925&ts=1523908617925} status=503 QTime=9
+2018-04-16 19:57:01.732 INFO  (qtp581374081-18) [   x:catalog] o.a.s.c.S.Request [catalog]  webapp=/solr path=/admin/luke params={numTerms=0&show=index&wt=json&_=1523908621685} status=0 QTime=20
+2018-04-16 19:57:01.735 INFO  (qtp581374081-21) [   x:catalog] o.a.s.c.S.Request [catalog]  webapp=/solr path=/replication params={wt=json&command=details&_=1523908621685} status=0 QTime=17
+2018-04-16 19:57:01.745 INFO  (qtp581374081-14) [   x:catalog] o.a.s.c.S.Request [catalog]  webapp=/solr path=/admin/system params={wt=json&_=1523908621685} status=0 QTime=27
+2018-04-16 19:57:05.544 INFO  (qtp581374081-21) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1523908617923} status=0 QTime=0
+2018-04-16 19:57:05.567 INFO  (qtp581374081-12) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1523908617925} status=0 QTime=22
+2018-04-16 19:57:07.104 INFO  (qtp581374081-14) [   x:catalog] o.a.s.c.S.Request [catalog]  webapp=/solr path=/select params={q=*:*&indent=on&wt=json&_=1523908625372} hits=70205 status=0 QTime=74
+2018-04-16 19:57:36.896 INFO  (qtp581374081-18) [   x:catalog] o.a.s.c.S.Request [catalog]  webapp=/solr path=/select params={q=metacard-tags_txt:resource&indent=on&wt=json&_=1523908625372} hits=1 status=0 QTime=19

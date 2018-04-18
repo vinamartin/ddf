@@ -227,6 +227,13 @@
             <fileMode>0644</fileMode>
         </fileSet>
 
+        <!-- Solr -->
+        <fileSet>
+            <directory>${setup.folder}/solr-6.6.2</directory>
+            <outputDirectory>/solr-6.6.2</outputDirectory>
+            <fileMode>0755</fileMode>
+        </fileSet>
+
         <!-- DDF Files -->
         <fileSet>
             <directory>${setup.folder}/security</directory>

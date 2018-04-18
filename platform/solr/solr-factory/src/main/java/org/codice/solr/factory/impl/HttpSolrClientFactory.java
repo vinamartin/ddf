@@ -370,7 +370,7 @@ public final class HttpSolrClientFactory implements SolrClientFactory {
 
     try (HttpSolrClient client =
         (httpClient != null ? new HttpSolrClient(url, httpClient) : new HttpSolrClient(url))) {
-
+      client.setFollowRedirects(true);
       HttpResponse ping = client.getHttpClient().execute(new HttpHead(url));
       if (ping != null && ping.getStatusLine().getStatusCode() == 200) {
         ConfigurationFileProxy configProxy =
