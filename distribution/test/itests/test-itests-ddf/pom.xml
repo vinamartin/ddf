@@ -325,7 +325,7 @@
                             <executable>chmod</executable>
                             <arguments>
                                 <argument>+x</argument>
-                                <argument>${basedir}/target/solr/solr-6.6.2/bin/solr.sh</argument>
+                                <argument>${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}</argument>
                             </arguments>
                         </configuration>
                     </execution>
@@ -336,7 +336,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>${basedir}/target/solr/solr-6.6.2/bin/solr.sh</executable>
+                            <executable>${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}</executable>
                             <arguments>
                                 <argument>start</argument>
                                 <argument>-p</argument>
@@ -351,7 +351,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>${basedir}/target/solr/solr-6.6.2/bin/solr.sh</executable>
+                            <executable>${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}</executable>
                             <arguments>
                                 <argument>stop</argument>
                                 <argument>-p</argument>
@@ -404,4 +404,28 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>Windows</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                </os>
+            </activation>
+            <properties>
+                <script.extension>.cmd</script.extension>
+            </properties>
+        </profile>
+        <profile>
+            <id>unix</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                </os>
+            </activation>
+            <properties>
+                <script.extension>.sh</script.extension>
+            </properties>
+        </profile>
+    </profiles>
 </project>
