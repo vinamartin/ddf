@@ -12,10 +12,14 @@
  *
  **/
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <properties>
+        <itest.solr.port>9994</itest.solr.port>
+    </properties>
     <parent>
         <groupId>ddf.test.itests</groupId>
         <artifactId>itests</artifactId>
@@ -281,6 +285,13 @@
             <artifactId>solr-distro</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>ddf</groupId>
+            <artifactId>solr-distro2</artifactId>
+            <version>${project.version}</version>
+            <type>zip</type>
+            <classifier>assembly</classifier>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -312,6 +323,34 @@
 
     <build>
         <plugins>
+            <!--Unpack Solr distribution-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack-solr</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>ddf</groupId>
+                                    <artifactId>solr-distro2</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
+                                    <classifier>assembly</classifier>
+                                    <!--Maven dependency plugin ignores the instruction "destFileName"-->
+                                    <!--if the goal is "unpack"-->
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -340,7 +379,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
                 <executions>
                     <execution>
                         <id>script-chmod</id>
@@ -353,7 +391,9 @@
                             <executable>chmod</executable>
                             <arguments>
                                 <argument>+x</argument>
-                                <argument>${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}</argument>
+                                <argument>
+                                    ${project.build.directory}/solr/solr-6.6.2/bin/solr${script.extension}
+                                </argument>
                             </arguments>
                         </configuration>
                     </execution>
@@ -370,7 +410,7 @@
                             <arguments>
                                 <argument>start</argument>
                                 <argument>-p</argument>
-                                <argument>8994</argument>
+                                <argument>${itest.solr.port}</argument>
                             </arguments>
                             <async>true</async>
                         </configuration>
