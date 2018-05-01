@@ -313,7 +313,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.2.1</version>
+                <version>1.5.0</version>
                 <executions>
                     <execution>
                         <id>script-chmod</id>
@@ -336,7 +336,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}</executable>
+                            <executable>${command.prefix} ${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}</executable>
                             <arguments>
                                 <argument>start</argument>
                                 <argument>-p</argument>
@@ -351,7 +351,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}</executable>
+                            <executable>${command.prefix} ${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}</executable>
                             <arguments>
                                 <argument>stop</argument>
                                 <argument>-p</argument>
@@ -413,6 +413,7 @@
                 </os>
             </activation>
             <properties>
+                <command.prefix>start</command.prefix>
                 <script.extension>.cmd</script.extension>
             </properties>
         </profile>
@@ -425,6 +426,7 @@
             </activation>
             <properties>
                 <script.extension>.sh</script.extension>
+                <command.prefix></command.prefix>
             </properties>
         </profile>
     </profiles>
