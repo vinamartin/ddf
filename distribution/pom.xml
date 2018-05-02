@@ -34,9 +34,9 @@
         <module>ddf-common</module>
         <module>kernel</module>
         <module>docs</module>
+        <module>solr</module>
         <module>ddf</module>
         <module>test</module>
-        <module>solr</module>
     </modules>
     <build>
         <plugins>

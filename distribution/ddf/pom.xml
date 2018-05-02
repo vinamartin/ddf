@@ -78,6 +78,24 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>unpack-solr</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>ddf</groupId>
+                                    <artifactId>solr-distro</artifactId>
+                                    <version>${project.version}</version>
+                                    <outputDirectory>${setup.folder}</outputDirectory>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>copy-docs</id>
                         <!--
                         The unpack needs to run in an earlier phase than the copy,
@@ -223,6 +241,11 @@
             <version>${project.version}</version>
             <classifier>features</classifier>
             <type>xml</type>
+        </dependency>
+        <dependency>
+            <groupId>ddf</groupId>
+            <artifactId>solr-distro</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

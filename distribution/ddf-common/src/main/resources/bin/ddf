@@ -2,7 +2,6 @@
 
 SCRIPTDIR=$(dirname "$0")
 DDF_HOME=$(cd "${SCRIPTDIR}/.."; pwd -P)
-SOLR_PID="0"
 SOLR_PORT=8994
 SOLR_VER=6.6.2
 
@@ -22,7 +21,9 @@ while true; do
   # (or if they're doing solr cloud and we don't want to even start this up right now)
   #####################################################################################
   echo "Starting Solr on port $SOLR_PORT"
-  ${DDF_HOME}/solr-${SOLR_VER}/bin/solr start -p $SOLR_PORT
+  echo "Scriptdir is $SCRIPTDIR"
+  echo "DDF_HOME IS $DDF_HOME"
+  ${DDF_HOME}/solr-${SOLR_VER}/bin/solr.sh start -p $SOLR_PORT
   SOLR_START_RC=$?
   if [ "$SOLR_START_RC" -ne 0 ]; then
       echo "WARNING! solr start process returned non-zero error code, please check solr logs"
@@ -41,7 +42,7 @@ while true; do
       echo "Restarting JVM..."
     else
       echo "Stopping solr process on port $SOLR_PORT"
-      ${DDF_HOME}/solr-${SOLR_VER}/bin/solr stop -p $SOLR_PORT
+      ${DDF_HOME}/solr-${SOLR_VER}/bin/solr.sh stop -p $SOLR_PORT
       exit $RC
     fi
   fi
