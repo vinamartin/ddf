@@ -681,7 +681,8 @@ public abstract class AbstractIntegrationTest {
   private Option[] configureSolr() {
     return options(
         editConfigurationFilePut(SYSTEM_PROPERTIES_REL_PATH, "solr.client", "HttpSolrClient"),
-        editConfigurationFilePut(SYSTEM_PROPERTIES_REL_PATH, "solr.http.url", "http://localhost:8994/solr"),
+        editConfigurationFilePut(
+            SYSTEM_PROPERTIES_REL_PATH, "solr.http.url", "http://localhost:8994/solr"),
         editConfigurationFilePut(
             SYSTEM_PROPERTIES_REL_PATH, "solr.data.dir", "${karaf.home}/data/solr"),
         editConfigurationFilePut(SYSTEM_PROPERTIES_REL_PATH, "solr.cloud.zookeeper", ""));
