@@ -414,8 +414,11 @@
                                 <argument>start</argument>
                                 <argument>-p</argument>
                                 <argument>${itest.solr.port}</argument>
+                                <argument>-m</argument>
+                                <argument>2g</argument>
                             </arguments>
                             <async>true</async>
+                            <asyncDestroyOnShutdown>true</asyncDestroyOnShutdown>
                         </configuration>
                     </execution>
                     <execution>
@@ -434,6 +437,7 @@
                                 <argument>${itest.solr.port}</argument>
                             </arguments>
                             <async>true</async>
+                            <asyncDestroyOnShutdown>true</asyncDestroyOnShutdown>
                         </configuration>
                     </execution>
                 </executions>
