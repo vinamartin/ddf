@@ -322,6 +322,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
+                            <skip>${skipTests}</skip>
                             <executable>chmod</executable>
                             <arguments>
                                 <argument>+x</argument>
@@ -336,6 +337,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
+                            <skip>${skipTests}</skip>
                             <executable>${command.prefix} ${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}</executable>
                             <arguments>
                                 <argument>start</argument>
@@ -351,6 +353,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
+                            <skip>${skipTests}</skip>
                             <executable>${command.prefix} ${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}</executable>
                             <arguments>
                                 <argument>stop</argument>
