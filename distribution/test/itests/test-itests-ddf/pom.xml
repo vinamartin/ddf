@@ -283,6 +283,33 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>Windows</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                </os>
+            </activation>
+            <properties>
+                <executable.command>call ${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}</executable.command>
+                <script.extension>.cmd</script.extension>
+            </properties>
+        </profile>
+        <profile>
+            <id>unix</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                </os>
+            </activation>
+            <properties>
+                <script.extension>.sh</script.extension>
+                <executable.command>${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}</executable.command>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -313,7 +340,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.5.0</version>
+                <version>1.6.0</version>
                 <executions>
                     <execution>
                         <id>script-chmod</id>
@@ -338,12 +365,14 @@
                         </goals>
                         <configuration>
                             <skip>${skipTests}</skip>
-                            <executable>${command.prefix} ${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}</executable>
+                            <longModulepath>false</longModulepath>
+                            <executable>${executable.command}</executable>
                             <arguments>
                                 <argument>start</argument>
                                 <argument>-p</argument>
                                 <argument>8994</argument>
                             </arguments>
+                            <async>true</async>
                         </configuration>
                     </execution>
                     <execution>
@@ -354,12 +383,14 @@
                         </goals>
                         <configuration>
                             <skip>${skipTests}</skip>
-                            <executable>${command.prefix} ${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}</executable>
+                            <longModulepath>false</longModulepath>
+                            <executable>${executable.command}</executable>
                             <arguments>
                                 <argument>stop</argument>
                                 <argument>-p</argument>
                                 <argument>8994</argument>
                             </arguments>
+                            <async>true</async>
                         </configuration>
                     </execution>
                 </executions>
@@ -407,30 +438,4 @@
             </plugin>
         </plugins>
     </build>
-    <profiles>
-        <profile>
-            <id>Windows</id>
-            <activation>
-                <os>
-                    <family>Windows</family>
-                </os>
-            </activation>
-            <properties>
-                <command.prefix>start</command.prefix>
-                <script.extension>.cmd</script.extension>
-            </properties>
-        </profile>
-        <profile>
-            <id>unix</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                </os>
-            </activation>
-            <properties>
-                <script.extension>.sh</script.extension>
-                <command.prefix></command.prefix>
-            </properties>
-        </profile>
-    </profiles>
 </project>
