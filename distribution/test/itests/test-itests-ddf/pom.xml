@@ -13,9 +13,9 @@
  **/
 -->
 <project
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <properties>
         <itest.solr.port>9994</itest.solr.port>
@@ -303,7 +303,9 @@
                 </os>
             </activation>
             <properties>
-                <executable.command>call ${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}</executable.command>
+                <executable.command>call
+                    ${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}
+                </executable.command>
                 <script.extension>.cmd</script.extension>
             </properties>
         </profile>
@@ -316,7 +318,8 @@
             </activation>
             <properties>
                 <script.extension>.sh</script.extension>
-                <executable.command>${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}</executable.command>
+                <executable.command>${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}
+                </executable.command>
             </properties>
         </profile>
     </profiles>
@@ -428,7 +431,7 @@
                             <arguments>
                                 <argument>stop</argument>
                                 <argument>-p</argument>
-                                <argument>8994</argument>
+                                <argument>${itest.solr.port}</argument>
                             </arguments>
                             <async>true</async>
                         </configuration>
