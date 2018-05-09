@@ -35,7 +35,6 @@
         <module>ddf-common</module>
         <module>kernel</module>
         <module>docs</module>
-        <module>solr</module>
         <module>solr-distro</module>
         <module>ddf</module>
         <!--Test needs to be the last module because it depends on artifacts from earlier modules-->

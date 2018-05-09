@@ -13,8 +13,8 @@
  **/
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>distribution</artifactId>
         <groupId>ddf</groupId>
@@ -22,8 +22,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <!--TODO: The name solr-distro2 is temporary. It is there because of a name conflict-->
-    <artifactId>solr-distro2</artifactId>
+    <artifactId>solr-distro</artifactId>
     <packaging>pom</packaging>
 
     <build>
@@ -73,5 +72,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

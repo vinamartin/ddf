@@ -24,7 +24,11 @@
     </parent>
     <artifactId>test-itests-ddf</artifactId>
     <name>DDF :: Integration :: Test</name>
-
+    <properties>
+        <solr.exec>
+            ${project.build.directory}/solr-${solr.version}/bin/solr
+        </solr.exec>
+    </properties>
     <dependencies>
         <!-- Pax Exam Karaf container dependencies -->
         <dependency>
@@ -172,12 +176,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
             <version>${httpcore.version}</version>
@@ -282,13 +280,6 @@
             <artifactId>solr-distro</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>ddf</groupId>
-            <artifactId>solr-distro2</artifactId>
-            <version>${project.version}</version>
-            <type>zip</type>
-            <classifier>assembly</classifier>
-        </dependency>
     </dependencies>
 
     <profiles>
@@ -301,22 +292,9 @@
             </activation>
             <properties>
                 <executable.command>call
-                    ${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}
+                    ${solr.exec}.${script.extension}
                 </executable.command>
-                <script.extension>.cmd</script.extension>
-            </properties>
-        </profile>
-        <profile>
-            <id>unix</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                </os>
-            </activation>
-            <properties>
-                <script.extension>.sh</script.extension>
-                <executable.command>${basedir}/target/solr/solr-6.6.2/bin/solr${script.extension}
-                </executable.command>
+                <script.extension>cmd</script.extension>
             </properties>
         </profile>
     </profiles>
@@ -360,11 +338,11 @@
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>ddf</groupId>
-                                    <artifactId>solr-distro2</artifactId>
+                                    <artifactId>solr-distro</artifactId>
                                     <version>${project.version}</version>
                                     <type>zip</type>
                                     <classifier>assembly</classifier>
-                                    <!--Maven dependency plugin ignores the instruction "destFileName"-->
+                                    <!--FYI: Maven dependency plugin ignores the instruction "destFileName"-->
                                     <!--if the goal is "unpack"-->
                                 </artifactItem>
                             </artifactItems>
@@ -374,51 +352,14 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>unpack</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>ddf</groupId>
-                                    <artifactId>solr-distro</artifactId>
-                                    <version>${project.version}</version>
-                                    <type>jar</type>
-                                    <overWrite>false</overWrite>
-                                </artifactItem>
-                            </artifactItems>
-                            <outputDirectory>${project.build.directory}/solr</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
+                <configuration>
+                    <!--Do not run this plugin exection if the we are skipping tests-->
+                    <skip>${skipTests}</skip>
+                    <longModulepath>false</longModulepath>
+                </configuration>
                 <executions>
-                    <execution>
-                        <id>script-chmod</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skipTests}</skip>
-                            <executable>chmod</executable>
-                            <arguments>
-                                <argument>+x</argument>
-                                <argument>
-                                    ${project.build.directory}/solr/solr-6.6.2/bin/solr${script.extension}
-                                </argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
                     <execution>
                         <id>start-solr</id>
                         <phase>pre-integration-test</phase>
@@ -426,11 +367,10 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <skip>${skipTests}</skip>
-                            <longModulepath>false</longModulepath>
-                            <executable>${executable.command}</executable>
+                            <executable>${solr.exec}</executable>
                             <arguments>
-                                <argument>start</argument>
+                                <!--Restart to stop Solr is already running and the start it.-->
+                                <argument>restart</argument>
                                 <argument>-p</argument>
                                 <!--The maven properties plugin reads the system properties file-->
                                 <!--and provides the solr.http.port property from it.-->
@@ -449,9 +389,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <skip>${skipTests}</skip>
-                            <longModulepath>false</longModulepath>
-                            <executable>${executable.command}</executable>
+                            <executable>${solr.exec}</executable>
                             <arguments>
                                 <argument>stop</argument>
                                 <argument>-p</argument>
