@@ -13,12 +13,29 @@
  **/
 -->
 <assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
     <id>assembly</id>
     <formats>
         <format>zip</format>
     </formats>
+    <dependencySets>
+        <dependencySet>
+            <includes>
+                <include>ddf.platform.solr:solr-xpath</include>
+            </includes>
+            <outputDirectory>/plugins</outputDirectory>
+        </dependencySet>
+        <dependencySet>
+            <includes>
+                <include>
+                    com.vividsolutions:jts
+                </include>
+            </includes>
+            <outputDirectory>/server/lib</outputDirectory>
+        </dependencySet>
+
+    </dependencySets>
     <fileSets>
         <fileSet>
             <!--THE DDF CUSTOM FILES MUST GO FIRST BECAUSE THE ASSEMBLY PLUGIN CANNOT OVERWRITE FILES-->

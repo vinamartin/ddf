@@ -24,7 +24,18 @@
 
     <artifactId>solr-distro</artifactId>
     <packaging>pom</packaging>
-
+    <dependencies>
+        <dependency>
+            <groupId>ddf.platform.solr</groupId>
+            <artifactId>solr-xpath</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vividsolutions</groupId>
+            <artifactId>jts</artifactId>
+            <version>${jts.version}</version>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>
