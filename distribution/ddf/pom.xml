@@ -90,7 +90,8 @@
                                     <artifactId>solr-distro</artifactId>
                                     <version>${project.version}</version>
                                     <outputDirectory>${setup.folder}</outputDirectory>
-                                    <type>jar</type>
+                                    <type>zip</type>
+                                    <classifier>assembly</classifier>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>

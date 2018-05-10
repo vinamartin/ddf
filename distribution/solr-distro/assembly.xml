@@ -34,11 +34,10 @@
             </includes>
             <outputDirectory>/server/lib</outputDirectory>
         </dependencySet>
-
     </dependencySets>
     <fileSets>
         <fileSet>
-            <!--THE DDF CUSTOM FILES MUST GO FIRST BECAUSE THE ASSEMBLY PLUGIN CANNOT OVERWRITE FILES-->
+            <!--THE DDF CUSTOM FILES MUST GO BEFORE THE GENERIC SOLR DISTRO FILES BECAUSE THE ASSEMBLY PLUGIN CANNOT OVERWRITE FILES-->
             <directory>solr-custom-files</directory>
             <outputDirectory>/</outputDirectory>
         </fileSet>

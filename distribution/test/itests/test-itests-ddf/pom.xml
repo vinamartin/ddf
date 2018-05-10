@@ -308,7 +308,7 @@
                 <version>1.0.0</version>
                 <executions>
                     <execution>
-                        <phase>pre-integration-test</phase>
+                        <phase>initialize</phase>
                         <goals>
                             <goal>read-project-properties</goal>
                         </goals>
@@ -330,7 +330,7 @@
                 <executions>
                     <execution>
                         <id>unpack-solr</id>
-                        <phase>package</phase>
+                        <phase>pre-integration-test</phase>
                         <goals>
                             <goal>unpack</goal>
                         </goals>
