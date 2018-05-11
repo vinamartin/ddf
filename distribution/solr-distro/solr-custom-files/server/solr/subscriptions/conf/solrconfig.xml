@@ -98,10 +98,11 @@
     <!-- browse-resources must come before solr-velocity JAR in order to override localized resources -->
     <!--<lib path="${solr.install.dir:../../../..}/example/files/browse-resources"/>-->
     <!--<lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-velocity-\d.*\.jar" />-->
+    <lib dir="${solr.install.dir:../../../..}/plugins/" regex=".*\.jar"/>
     <!-- an exact 'path' can be used instead of a 'dir' to specify a
-         specific jar file.  This will cause a serious error to be logged
-         if it can't be loaded.
-      -->
+             specific jar file.  This will cause a serious error to be logged
+             if it can't be loaded.
+          -->
     <!--
        <lib path="../a-jar-that-does-not-exist.jar" />
     -->
@@ -291,7 +292,7 @@
 
          For more details see http://wiki.apache.org/solr/SolrJmx
       -->
-    <jmx />
+    <jmx/>
     <!-- If you want to connect to a particular server, specify the
          agentId
       -->
@@ -345,8 +346,8 @@
              faster and more near-realtime friendly than a hard commit.
           -->
         <autoSoftCommit>
-         <maxTime>1000</maxTime>
-       </autoSoftCommit>
+            <maxTime>1000</maxTime>
+        </autoSoftCommit>
 
         <!-- Update Related Event Listeners
 
@@ -645,7 +646,7 @@
          handleSelect="true" is not recommended for new users, but is the default
          for backwards compatibility
       -->
-    <requestDispatcher handleSelect="false" >
+    <requestDispatcher handleSelect="false">
         <!-- Request Parsing
 
              These settings indicate how Solr Requests may be parsed, and
@@ -688,7 +689,7 @@
              The options below instruct Solr not to output any HTTP Caching
              related headers
           -->
-        <httpCaching never304="true" />
+        <httpCaching never304="true"/>
         <!-- If you include a <cacheControl> directive, it will be used to
              generate a Cache-Control header (as well as an Expires header
              if the value contains "max-age=")
@@ -837,13 +838,16 @@
     </requestHandler>
 
 
-    <requestHandler name="/browse" class="solr.SearchHandler" useParams="query,facets,velocity,browse">
+    <requestHandler name="/browse" class="solr.SearchHandler"
+                    useParams="query,facets,velocity,browse">
         <lst name="defaults">
             <str name="echoParams">explicit</str>
         </lst>
 
         <lst name="appends">
-            <str name="fq">{!switch v=$type tag=type case='*:*' case.all='*:*' case.unknown='-doc_type:[* TO *]' default=$type_fq}</str>
+            <str name="fq">{!switch v=$type tag=type case='*:*' case.all='*:*'
+                case.unknown='-doc_type:[* TO *]' default=$type_fq}
+            </str>
         </lst>
     </requestHandler>
 
@@ -855,9 +859,9 @@
     </initParams>
 
     <!--<initParams path="/update/**">-->
-        <!--<lst name="defaults">-->
-            <!--<str name="update.chain">files-update-processor</str>-->
-        <!--</lst>-->
+    <!--<lst name="defaults">-->
+    <!--<str name="update.chain">files-update-processor</str>-->
+    <!--</lst>-->
     <!--</initParams>-->
 
     <!-- Solr Cell Update Request Handler
@@ -867,7 +871,7 @@
       -->
     <requestHandler name="/update/extract"
                     startup="lazy"
-                    class="solr.extraction.ExtractingRequestHandler" >
+                    class="solr.extraction.ExtractingRequestHandler">
         <lst name="defaults">
             <str name="xpath">/xhtml:html/xhtml:body/descendant:node()</str>
             <str name="capture">content</str>
@@ -907,7 +911,6 @@
     </requestHandler>
 
 
-
     <!-- Field Analysis Request Handler
 
          RequestHandler that provides much the same functionality as
@@ -928,7 +931,7 @@
      -->
     <requestHandler name="/analysis/field"
                     startup="lazy"
-                    class="solr.FieldAnalysisRequestHandler" />
+                    class="solr.FieldAnalysisRequestHandler"/>
 
 
     <!-- Document Analysis Handler
@@ -963,10 +966,10 @@
     -->
     <requestHandler name="/analysis/document"
                     class="solr.DocumentAnalysisRequestHandler"
-                    startup="lazy" />
+                    startup="lazy"/>
 
     <!-- Echo the request contents back to the client -->
-    <requestHandler name="/debug/dump" class="solr.DumpRequestHandler" >
+    <requestHandler name="/debug/dump" class="solr.DumpRequestHandler">
         <lst name="defaults">
             <str name="echoParams">explicit</str>
             <str name="echoHandler">true</str>
@@ -1224,19 +1227,19 @@
          scoring.
       -->
     <!--<searchComponent name="elevator" class="solr.QueryElevationComponent" >-->
-        <!--&lt;!&ndash; pick a fieldType to analyze queries &ndash;&gt;-->
-        <!--<str name="queryFieldType">string</str>-->
-        <!--<str name="config-file">elevate.xml</str>-->
+    <!--&lt;!&ndash; pick a fieldType to analyze queries &ndash;&gt;-->
+    <!--<str name="queryFieldType">string</str>-->
+    <!--<str name="config-file">elevate.xml</str>-->
     <!--</searchComponent>-->
 
     <!--&lt;!&ndash; A request handler for demonstrating the elevator component &ndash;&gt;-->
     <!--<requestHandler name="/elevate" class="solr.SearchHandler" startup="lazy">-->
-        <!--<lst name="defaults">-->
-            <!--<str name="echoParams">explicit</str>-->
-        <!--</lst>-->
-        <!--<arr name="last-components">-->
-            <!--<str>elevator</str>-->
-        <!--</arr>-->
+    <!--<lst name="defaults">-->
+    <!--<str name="echoParams">explicit</str>-->
+    <!--</lst>-->
+    <!--<arr name="last-components">-->
+    <!--<str>elevator</str>-->
+    <!--</arr>-->
     <!--</requestHandler>-->
 
     <!-- Highlighting Component
@@ -1282,7 +1285,7 @@
 
             <!-- Configure the standard encoder -->
             <encoder name="html"
-                     class="solr.highlight.HtmlEncoder" />
+                     class="solr.highlight.HtmlEncoder"/>
 
             <!-- Configure the standard fragListBuilder -->
             <fragListBuilder name="simple"
@@ -1369,49 +1372,49 @@
          See http://wiki.apache.org/solr/GuessingFieldTypes
       -->
     <!--<updateRequestProcessorChain name="files-update-processor">-->
-        <!--&lt;!&ndash; UUIDUpdateProcessorFactory will generate an id if none is present in the incoming document &ndash;&gt;-->
-        <!--<processor class="solr.UUIDUpdateProcessorFactory" />-->
+    <!--&lt;!&ndash; UUIDUpdateProcessorFactory will generate an id if none is present in the incoming document &ndash;&gt;-->
+    <!--<processor class="solr.UUIDUpdateProcessorFactory" />-->
 
-        <!--<processor class="solr.LogUpdateProcessorFactory"/>-->
-        <!--<processor class="solr.DistributedUpdateProcessorFactory"/>-->
-        <!--<processor class="solr.RemoveBlankFieldUpdateProcessorFactory"/>-->
-        <!--<processor class="solr.FieldNameMutatingUpdateProcessorFactory">-->
-            <!--<str name="pattern">[^\w-\.]</str>-->
-            <!--<str name="replacement">_</str>-->
-        <!--</processor>-->
-        <!--<processor class="solr.ParseBooleanFieldUpdateProcessorFactory"/>-->
-        <!--<processor class="solr.ParseLongFieldUpdateProcessorFactory"/>-->
-        <!--<processor class="solr.ParseDoubleFieldUpdateProcessorFactory"/>-->
-        <!--<processor class="solr.ParseDateFieldUpdateProcessorFactory">-->
-            <!--<arr name="format">-->
-                <!--<str>yyyy-MM-dd'T'HH:mm:ss.SSSZ</str>-->
-                <!--<str>yyyy-MM-dd'T'HH:mm:ss,SSSZ</str>-->
-                <!--<str>yyyy-MM-dd'T'HH:mm:ss.SSS</str>-->
-                <!--<str>yyyy-MM-dd'T'HH:mm:ss,SSS</str>-->
-                <!--<str>yyyy-MM-dd'T'HH:mm:ssZ</str>-->
-                <!--<str>yyyy-MM-dd'T'HH:mm:ss</str>-->
-                <!--<str>yyyy-MM-dd'T'HH:mmZ</str>-->
-                <!--<str>yyyy-MM-dd'T'HH:mm</str>-->
-                <!--<str>yyyy-MM-dd HH:mm:ss.SSSZ</str>-->
-                <!--<str>yyyy-MM-dd HH:mm:ss,SSSZ</str>-->
-                <!--<str>yyyy-MM-dd HH:mm:ss.SSS</str>-->
-                <!--<str>yyyy-MM-dd HH:mm:ss,SSS</str>-->
-                <!--<str>yyyy-MM-dd HH:mm:ssZ</str>-->
-                <!--<str>yyyy-MM-dd HH:mm:ss</str>-->
-                <!--<str>yyyy-MM-dd HH:mmZ</str>-->
-                <!--<str>yyyy-MM-dd HH:mm</str>-->
-                <!--<str>yyyy-MM-dd</str>-->
-            <!--</arr>-->
-        <!--</processor>-->
-        <!--<processor class="solr.AddSchemaFieldsUpdateProcessorFactory">-->
-            <!--<str name="defaultFieldType">strings</str>-->
-            <!--<lst name="typeMapping">-->
-                <!--<str name="valueClass">java.lang.Boolean</str>-->
-                <!--<str name="fieldType">booleans</str>-->
-            <!--</lst>-->
-        <!--</processor>-->
+    <!--<processor class="solr.LogUpdateProcessorFactory"/>-->
+    <!--<processor class="solr.DistributedUpdateProcessorFactory"/>-->
+    <!--<processor class="solr.RemoveBlankFieldUpdateProcessorFactory"/>-->
+    <!--<processor class="solr.FieldNameMutatingUpdateProcessorFactory">-->
+    <!--<str name="pattern">[^\w-\.]</str>-->
+    <!--<str name="replacement">_</str>-->
+    <!--</processor>-->
+    <!--<processor class="solr.ParseBooleanFieldUpdateProcessorFactory"/>-->
+    <!--<processor class="solr.ParseLongFieldUpdateProcessorFactory"/>-->
+    <!--<processor class="solr.ParseDoubleFieldUpdateProcessorFactory"/>-->
+    <!--<processor class="solr.ParseDateFieldUpdateProcessorFactory">-->
+    <!--<arr name="format">-->
+    <!--<str>yyyy-MM-dd'T'HH:mm:ss.SSSZ</str>-->
+    <!--<str>yyyy-MM-dd'T'HH:mm:ss,SSSZ</str>-->
+    <!--<str>yyyy-MM-dd'T'HH:mm:ss.SSS</str>-->
+    <!--<str>yyyy-MM-dd'T'HH:mm:ss,SSS</str>-->
+    <!--<str>yyyy-MM-dd'T'HH:mm:ssZ</str>-->
+    <!--<str>yyyy-MM-dd'T'HH:mm:ss</str>-->
+    <!--<str>yyyy-MM-dd'T'HH:mmZ</str>-->
+    <!--<str>yyyy-MM-dd'T'HH:mm</str>-->
+    <!--<str>yyyy-MM-dd HH:mm:ss.SSSZ</str>-->
+    <!--<str>yyyy-MM-dd HH:mm:ss,SSSZ</str>-->
+    <!--<str>yyyy-MM-dd HH:mm:ss.SSS</str>-->
+    <!--<str>yyyy-MM-dd HH:mm:ss,SSS</str>-->
+    <!--<str>yyyy-MM-dd HH:mm:ssZ</str>-->
+    <!--<str>yyyy-MM-dd HH:mm:ss</str>-->
+    <!--<str>yyyy-MM-dd HH:mmZ</str>-->
+    <!--<str>yyyy-MM-dd HH:mm</str>-->
+    <!--<str>yyyy-MM-dd</str>-->
+    <!--</arr>-->
+    <!--</processor>-->
+    <!--<processor class="solr.AddSchemaFieldsUpdateProcessorFactory">-->
+    <!--<str name="defaultFieldType">strings</str>-->
+    <!--<lst name="typeMapping">-->
+    <!--<str name="valueClass">java.lang.Boolean</str>-->
+    <!--<str name="fieldType">booleans</str>-->
+    <!--</lst>-->
+    <!--</processor>-->
 
-        <!--<processor class="solr.RunUpdateProcessorFactory"/>-->
+    <!--<processor class="solr.RunUpdateProcessorFactory"/>-->
     <!--</updateRequestProcessorChain>-->
 
     <!-- Deduplication
@@ -1585,29 +1588,29 @@
     </admin>
 
     <!--<updateRequestProcessorChain name="lux-update-chain">-->
-        <!--<lst name="fieldAliases">-->
-            <!--&lt;!&ndash; rename lux fields in (unlikely?) event there is a conflict &ndash;&gt;-->
-            <!--&lt;!&ndash;<str name="xmlFieldName">lux_xml</str>&ndash;&gt;-->
-            <!--<str name="uriFieldName">id_txt</str>-->
-        <!--</lst>-->
-        <!--&lt;!&ndash; Enable tinybin storage; saves overhead of parsing when retrieving documents &ndash;&gt;-->
-        <!--<str name="xml-format">tiny</str>-->
-        <!--&lt;!&ndash; Strip all namespaces from indexed content &ndash;&gt;-->
-        <!--<str name="strip-namespaces">yes</str>-->
-        <!--<processor class="lux.solr.LuxUpdateProcessorFactory"/>-->
-        <!--<processor class="solr.LogUpdateProcessorFactory"/>-->
-        <!--<processor class="solr.RunUpdateProcessorFactory"/>-->
+    <!--<lst name="fieldAliases">-->
+    <!--&lt;!&ndash; rename lux fields in (unlikely?) event there is a conflict &ndash;&gt;-->
+    <!--&lt;!&ndash;<str name="xmlFieldName">lux_xml</str>&ndash;&gt;-->
+    <!--<str name="uriFieldName">id_txt</str>-->
+    <!--</lst>-->
+    <!--&lt;!&ndash; Enable tinybin storage; saves overhead of parsing when retrieving documents &ndash;&gt;-->
+    <!--<str name="xml-format">tiny</str>-->
+    <!--&lt;!&ndash; Strip all namespaces from indexed content &ndash;&gt;-->
+    <!--<str name="strip-namespaces">yes</str>-->
+    <!--<processor class="lux.solr.LuxUpdateProcessorFactory"/>-->
+    <!--<processor class="solr.LogUpdateProcessorFactory"/>-->
+    <!--<processor class="solr.RunUpdateProcessorFactory"/>-->
     <!--</updateRequestProcessorChain>-->
 
     <queryParser name="xpath" class="org.codice.solr.xpath.XpathQParserPlugin"/>
 
     <!--<searchComponent name="xquery" class="lux.solr.XQueryComponent"/>-->
     <!--<requestHandler name="/xquery" class="solr.SearchHandler" id="xquery">-->
-        <!--<arr name="components">-->
-            <!--<str>xquery</str>-->
-            <!--<str>stats</str>-->
-            <!--<str>debug</str>-->
-        <!--</arr>-->
+    <!--<arr name="components">-->
+    <!--<str>xquery</str>-->
+    <!--<str>stats</str>-->
+    <!--<str>debug</str>-->
+    <!--</arr>-->
     <!--</requestHandler>-->
 
 </config>
