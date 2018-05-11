@@ -131,9 +131,8 @@
          solr.RAMDirectoryFactory is memory based, not
          persistent, and doesn't work with replication.
       -->
-    <!-- In-memory change -->
     <directoryFactory name="DirectoryFactory"
-                      class="solr.RAMDirectoryFactory"/>
+                      class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}"/>
 
     <!-- The CodecFactory for defining the format of the inverted index.
          The default implementation is SchemaCodecFactory, which is the official Lucene
@@ -240,8 +239,7 @@
              More details on the nuances of each LockFactory...
              http://wiki.apache.org/lucene-java/AvailableLockFactories
         -->
-        <!-- In-memory change -->
-        <lockType>single</lockType>
+        <lockType>${solr.lock.type:native}</lockType>
 
         <!-- Commit Deletion Policy
              Custom deletion policies can be specified here. The class must
@@ -312,10 +310,9 @@
              is recommended (see below).
              "dir" - the target directory for transaction logs, defaults to the
                     solr data directory.  -->
-        <!-- In-memory change -->
-        <!--<updateLog>-->
-            <!--<str name="dir">${solr.ulog.dir:}</str>-->
-        <!--</updateLog>-->
+        <updateLog>
+            <str name="dir">${solr.ulog.dir:}</str>
+        </updateLog>
 
         <!-- AutoCommit
 
@@ -349,8 +346,8 @@
              faster and more near-realtime friendly than a hard commit.
           -->
         <autoSoftCommit>
-            <maxTime>1000</maxTime>
-        </autoSoftCommit>
+         <maxTime>1000</maxTime>
+       </autoSoftCommit>
 
         <!-- Update Related Event Listeners
 
@@ -1144,11 +1141,10 @@
         </arr>
     </requestHandler>
 
-
     <!-- Placename Suggestion Component
 
-        This component can return a list of auto-complete suggestions
-        when entering placenames.
+    This component can return a list of auto-complete suggestions
+    when entering placenames.
     -->
     <searchComponent name="suggest" class="solr.SuggestComponent">
         <lst name="suggester">
@@ -1374,8 +1370,8 @@
          See http://wiki.apache.org/solr/GuessingFieldTypes
       -->
     <!--<updateRequestProcessorChain name="files-update-processor">-->
-        <!--UUIDUpdateProcessorFactory will generate an id if none is present in the incoming document-->
-        <!--<processor class="solr.UUIDUpdateProcessorFactory"/>-->
+        <!--&lt;!&ndash; UUIDUpdateProcessorFactory will generate an id if none is present in the incoming document &ndash;&gt;-->
+        <!--<processor class="solr.UUIDUpdateProcessorFactory" />-->
 
         <!--<processor class="solr.LogUpdateProcessorFactory"/>-->
         <!--<processor class="solr.DistributedUpdateProcessorFactory"/>-->
