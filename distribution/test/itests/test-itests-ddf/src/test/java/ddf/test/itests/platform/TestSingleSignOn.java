@@ -64,6 +64,8 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.codice.ddf.itests.common.AbstractIntegrationTest;
 import org.codice.ddf.itests.common.XmlSearch;
+import org.codice.ddf.itests.common.annotations.ConditionalIgnoreRule;
+import org.codice.ddf.itests.common.annotations.SkipUnstableTest;
 import org.codice.ddf.security.common.Security;
 import org.codice.ddf.security.common.jaxrs.RestSecurity;
 import org.codice.ddf.security.handler.api.SessionHandler;
@@ -90,23 +92,23 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
   private static final String PASSWORD = System.getProperty("javax.net.ssl.keyStorePassword");
 
   private static final DynamicUrl SEARCH_URL =
-      new DynamicUrl(DynamicUrl.SECURE_ROOT, HTTPS_PORT, "/search");
+          new DynamicUrl(DynamicUrl.SECURE_ROOT, HTTPS_PORT, "/search");
 
   private static final DynamicUrl IDP_URL = new DynamicUrl(SERVICE_ROOT, "/idp/login");
 
   private static final DynamicUrl WHO_AM_I_URL =
-      new DynamicUrl(DynamicUrl.SECURE_ROOT, HTTPS_PORT, "/whoami");
+          new DynamicUrl(DynamicUrl.SECURE_ROOT, HTTPS_PORT, "/whoami");
 
   private static final DynamicUrl AUTHENTICATION_REQUEST_ISSUER =
-      new DynamicUrl(SERVICE_ROOT, "/saml/sso");
+          new DynamicUrl(SERVICE_ROOT, "/saml/sso");
 
   private static final DynamicUrl LOGOUT_REQUEST_URL =
-      new DynamicUrl(SERVICE_ROOT, "/logout/actions");
+          new DynamicUrl(SERVICE_ROOT, "/logout/actions");
 
   private static final String RECORD_TITLE_1 = "myTitle";
 
   public static final String BROWSER_USER_AGENT =
-      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
+          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
 
   private String ddfSpMetadataEntityId;
 
@@ -144,15 +146,15 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
 
     // Save the spMetadata entityId
     new MetadataConfigurationParser(
-        Collections.singletonList(ddfSpMetadata), ed -> ddfSpMetadataEntityId = ed.getEntityID());
+            Collections.singletonList(ddfSpMetadata), ed -> ddfSpMetadataEntityId = ed.getEntityID());
 
     // The IdP server can point to multiple Service Providers and as such expects an array.
     // Thus, even though we are only setting a single item, we must wrap it in an array.
     setConfig("org.codice.ddf.security.idp.client.IdpMetadata", "metadata", metadata);
     setConfig(
-        "org.codice.ddf.security.idp.server.IdpEndpoint",
-        "spMetadata",
-        new String[] {ddfSpMetadata});
+            "org.codice.ddf.security.idp.server.IdpEndpoint",
+            "spMetadata",
+            new String[] {ddfSpMetadata});
 
     Security security = Security.getInstance();
     systemSubject = security.runAsAdmin(security::getSystemSubject);
@@ -163,7 +165,7 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
     // Clear all active login sessions to ensure a clean slate
     SessionHandler sessionHandler = getServiceManager().getService(SessionHandler.class);
     Map<String, Set<String>> activeSessions =
-        systemSubject.execute(sessionHandler::getActiveSessions);
+            systemSubject.execute(sessionHandler::getActiveSessions);
     for (String sessionName : activeSessions.keySet()) {
       systemSubject.execute(() -> sessionHandler.invalidateSession(sessionName));
     }
@@ -179,7 +181,7 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
       getServiceManager().waitForAllBundles();
 
       ingest(
-          getFileContent(JSON_RECORD_RESOURCE_PATH + "/SimpleGeoJsonRecord"), "application/json");
+              getFileContent(JSON_RECORD_RESOURCE_PATH + "/SimpleGeoJsonRecord"), "application/json");
 
       getSecurityPolicy().configureWebContextPolicy(null, IDP_AUTH_TYPES, null, null);
       getServiceManager().waitForAllBundles();
@@ -190,8 +192,8 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
       getServiceManager().waitForHttpEndpoint(SERVICE_ROOT + "/saml/sso/metadata");
 
       Map<String, Object> openSearchProperties =
-          getOpenSearchSourceProperties(
-              OPENSEARCH_SOURCE_ID, OPENSEARCH_PATH.getUrl(), getServiceManager());
+              getOpenSearchSourceProperties(
+                      OPENSEARCH_SOURCE_ID, OPENSEARCH_PATH.getUrl(), getServiceManager());
       openSearchProperties.put("username", "admin");
       openSearchProperties.put("password", "admin");
       getServiceManager().createManagedService(OPENSEARCH_FACTORY_PID, openSearchProperties);
@@ -212,9 +214,9 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
     Validator validator = null;
     try {
       validator =
-          SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
-              .newSchema(schemaURL)
-              .newValidator();
+              SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+                      .newSchema(schemaURL)
+                      .newValidator();
     } catch (SAXException e) {
       LOGGER.debug("Exception creating validator. ", e);
     }
@@ -318,34 +320,34 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
   }
 
   private String setupHttpRequestUsingBinding(Binding requestBinding, Binding metadataBinding)
-      throws Exception {
+          throws Exception {
     // Signing is tested in the unit tests, so we don't require signing here to make things simpler
     setConfig("org.codice.ddf.security.idp.server.IdpEndpoint", "strictSignature", false);
 
     // Set the metadata
     String confluenceSpMetadata =
-        String.format(
-            getFileContent("confluence-sp-metadata.xml"),
-            AUTHENTICATION_REQUEST_ISSUER,
-            metadataBinding.toString());
+            String.format(
+                    getFileContent("confluence-sp-metadata.xml"),
+                    AUTHENTICATION_REQUEST_ISSUER,
+                    metadataBinding.toString());
     validateSaml(confluenceSpMetadata, SamlSchema.METADATA);
     setConfig(
-        "org.codice.ddf.security.idp.server.IdpEndpoint",
-        "spMetadata",
-        new String[] {confluenceSpMetadata});
+            "org.codice.ddf.security.idp.server.IdpEndpoint",
+            "spMetadata",
+            new String[] {confluenceSpMetadata});
 
     // Get the authn request
     String mockAuthnRequest =
-        String.format(
-            getFileContent("confluence-sp-authentication-request.xml"),
-            requestBinding.toString(),
-            AUTHENTICATION_REQUEST_ISSUER);
+            String.format(
+                    getFileContent("confluence-sp-authentication-request.xml"),
+                    requestBinding.toString(),
+                    AUTHENTICATION_REQUEST_ISSUER);
     validateSaml(mockAuthnRequest, SamlSchema.PROTOCOL);
     return mockAuthnRequest;
   }
 
   private ResponseHelper performHttpRequestUsingBinding(
-      Binding binding, String relayState, String encodedRequest) throws Exception {
+          Binding binding, String relayState, String encodedRequest) throws Exception {
     // @formatter:off
     Response idpResponse =
         given()
@@ -374,7 +376,7 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
     String mockAuthnRequest = setupHttpRequestUsingBinding(Binding.REDIRECT, Binding.POST);
     String encodedRequest = RestSecurity.deflateAndBase64Encode(mockAuthnRequest);
     ResponseHelper helper =
-        performHttpRequestUsingBinding(Binding.REDIRECT, relayState, encodedRequest);
+            performHttpRequestUsingBinding(Binding.REDIRECT, relayState, encodedRequest);
 
     assertThat(helper.parseBody(), is(Binding.POST));
     assertThat(helper.postRelayState, is(relayState));
@@ -390,8 +392,8 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
     // of interest to really check is that we do get back a post form
     String mockAuthnRequest = setupHttpRequestUsingBinding(Binding.POST, Binding.POST);
     String encodedRequest =
-        Base64.getEncoder()
-            .encodeToString(mockAuthnRequest.getBytes(StandardCharsets.UTF_8.name()));
+            Base64.getEncoder()
+                    .encodeToString(mockAuthnRequest.getBytes(StandardCharsets.UTF_8.name()));
     ResponseHelper helper = performHttpRequestUsingBinding(Binding.POST, "test", encodedRequest);
     assertThat(helper.parseBody(), is(Binding.POST));
   }
@@ -477,6 +479,7 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
   }
 
   @Test
+  @ConditionalIgnoreRule.ConditionalIgnore(condition = SkipUnstableTest.class)
   public void testRedirectFlow() throws Exception {
 
     // Negative test to make sure we aren't admin yet
@@ -508,15 +511,15 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
     String decodedSamlResponse = RestSecurity.base64Decode(idpHelper.postSamlResponse);
     validateSaml(decodedSamlResponse, SamlSchema.PROTOCOL);
     assertThat(
-        decodedSamlResponse,
-        allOf(
-            containsString("urn:oasis:names:tc:SAML:2.0:status:Success"),
-            containsString("ds:SignatureValue"),
-            containsString("saml2:Assertion"),
-            containsString("ds:Signature")));
+            decodedSamlResponse,
+            allOf(
+                    containsString("urn:oasis:names:tc:SAML:2.0:status:Success"),
+                    containsString("ds:SignatureValue"),
+                    containsString("saml2:Assertion"),
+                    containsString("ds:Signature")));
     assertThat(
-        idpHelper.postRelayState.length(),
-        is(both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(80))));
+            idpHelper.postRelayState.length(),
+            is(both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(80))));
 
     // After passing the SAML Assertion to the ACS, we should be redirected back to Search.
     // @formatter:off
@@ -543,20 +546,21 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
 
     // Access search again, but now as an authenticated user.
     given()
-        .cookies(acsResponse.getCookies())
-        .expect()
-        .statusCode(200)
-        .when()
-        .get(acsHelper.redirectUrl)
-        .then()
-        .log()
-        .ifValidationFails();
+            .cookies(acsResponse.getCookies())
+            .expect()
+            .statusCode(200)
+            .when()
+            .get(acsHelper.redirectUrl)
+            .then()
+            .log()
+            .ifValidationFails();
 
     // Make sure we are logged in as admin.
     assertThat(getUserName(acsResponse.getCookies()), is("admin"));
   }
 
   @Test
+  @ConditionalIgnoreRule.ConditionalIgnore(condition = SkipUnstableTest.class)
   public void testLogout() throws Exception {
     Response acsResponse = loginUser("admin", "admin");
 
@@ -638,14 +642,14 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
 
     // Access search again, but now as an authenticated user.
     given()
-        .cookies(acsResponse.getCookies())
-        .expect()
-        .statusCode(200)
-        .when()
-        .get(acsHelper.redirectUrl)
-        .then()
-        .log()
-        .ifValidationFails();
+            .cookies(acsResponse.getCookies())
+            .expect()
+            .statusCode(200)
+            .when()
+            .get(acsHelper.redirectUrl)
+            .then()
+            .log()
+            .ifValidationFails();
 
     // Make sure we are logged in as admin.
     assertThat(getUserName(acsResponse.getCookies()), is(username));
@@ -681,15 +685,15 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
     String decodedResponse = RestSecurity.base64Decode(idpHelper.postSamlResponse);
     validateSaml(decodedResponse, SamlSchema.PROTOCOL);
     assertThat(
-        decodedResponse,
-        allOf(
-            containsString("urn:oasis:names:tc:SAML:2.0:status:Success"),
-            containsString("ds:SignatureValue"),
-            containsString("ds:Signature"),
-            containsString("saml2:Assertion")));
+            decodedResponse,
+            allOf(
+                    containsString("urn:oasis:names:tc:SAML:2.0:status:Success"),
+                    containsString("ds:SignatureValue"),
+                    containsString("ds:Signature"),
+                    containsString("saml2:Assertion")));
     assertThat(
-        idpHelper.postRelayState.length(),
-        is(both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(80))));
+            idpHelper.postRelayState.length(),
+            is(both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(80))));
 
     // After passing the SAML Assertion to the ACS, we should be redirected back to Search.
     // @formatter:off
@@ -715,7 +719,7 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
     acsHelper.parseHeader();
 
     Response response =
-        given().cookies(acsResponse.getCookies()).expect().statusCode(200).when().get(queryUrl);
+            given().cookies(acsResponse.getCookies()).expect().statusCode(200).when().get(queryUrl);
 
     // The federated query using username/password against the IDP auth type on all of /services
     // would fail without ECP
@@ -738,6 +742,7 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
   }
 
   @Test
+  @ConditionalIgnoreRule.ConditionalIgnore(condition = SkipUnstableTest.class)
   public void testSessionManagement() throws Exception {
     // logon a couple of users
     loginUser("tchalla", "password1");
@@ -799,7 +804,7 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
       redirectUrl = url.split("[?]")[0];
 
       List<NameValuePair> paramList =
-          URLEncodedUtils.parse(new URI(url), StandardCharsets.UTF_8.name());
+              URLEncodedUtils.parse(new URI(url), StandardCharsets.UTF_8.name());
       for (NameValuePair param : paramList) {
         params.put(param.getName(), param.getValue());
       }
@@ -849,11 +854,11 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
         parseJson(matcher.group(1));
       } else {
         String failMessage =
-            "Failed to find the javascript var."
-                + "\nPattern: "
-                + pattern.toString()
-                + "\nResponse Body: "
-                + response.body().asString();
+                "Failed to find the javascript var."
+                        + "\nPattern: "
+                        + pattern.toString()
+                        + "\nResponse Body: "
+                        + response.body().asString();
         fail(failMessage);
       }
     }
@@ -867,26 +872,26 @@ public class TestSingleSignOn extends AbstractIntegrationTest {
         parseParamsFromUrl(matcher.group(1));
       } else {
         String failMessage =
-            "Failed to find the javascript var."
-                + "\nPattern: "
-                + pattern.toString()
-                + "\nResponse Body: "
-                + response.body().asString();
+                "Failed to find the javascript var."
+                        + "\nPattern: "
+                        + pattern.toString()
+                        + "\nResponse Body: "
+                        + response.body().asString();
         fail(failMessage);
       }
     }
 
     private void parseBodyPost() throws Exception {
       postSamlResponse =
-          XmlSearch.evaluate(
-              "/html/body/form/input[@name='SAMLResponse']/@value", response.body().asString());
+              XmlSearch.evaluate(
+                      "/html/body/form/input[@name='SAMLResponse']/@value", response.body().asString());
       postRelayState =
-          XmlSearch.evaluate(
-              "/html/body/form/input[@name='RelayState']/@value", response.body().asString());
+              XmlSearch.evaluate(
+                      "/html/body/form/input[@name='RelayState']/@value", response.body().asString());
 
       if (postSamlResponse == null) {
         String failMessage =
-            "Failed to parse POST response." + "\nResponse Body: " + response.body().asString();
+                "Failed to parse POST response." + "\nResponse Body: " + response.body().asString();
         fail(failMessage);
       }
     }
