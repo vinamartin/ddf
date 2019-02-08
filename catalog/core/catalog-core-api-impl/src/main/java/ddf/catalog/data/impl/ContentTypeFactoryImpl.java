@@ -15,23 +15,22 @@ package ddf.catalog.data.impl;
 
 import ddf.catalog.data.ContentType;
 import ddf.catalog.data.ContentTypeFactory;
-
 import java.net.URI;
 
 public class ContentTypeFactoryImpl implements ContentTypeFactory {
 
-    @Override
-    public ContentType getContentType() {
-        return new ContentTypeImpl();
-    }
+  @Override
+  public ContentType getContentType() {
+    return new ContentTypeImpl();
+  }
 
-    @Override
-    public ContentType getContentType(String name, String version) {
-        return new ContentTypeImpl(name, version);
-    }
+  @Override
+  public ContentType getContentType(String name, String version) {
+    return new ContentTypeImpl(name, version);
+  }
 
-    @Override
-    public ContentType getContentType(String name, String version, URI targetNamespace) {
-        return new ContentTypeImpl(name, version, targetNamespace);
-    }
+  @Override
+  public ContentType getContentType(String name, String version, URI targetNamespace) {
+    return new ContentTypeImpl(name, version, targetNamespace);
+  }
 }
