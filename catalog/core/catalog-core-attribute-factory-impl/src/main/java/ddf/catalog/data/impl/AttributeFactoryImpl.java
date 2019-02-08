@@ -11,21 +11,26 @@
  * License is distributed along with this program and can be found at
  * <http://www.gnu.org/licenses/lgpl.html>.
  */
-package ddf.catalog.data.types;
+package ddf.catalog.data.impl;
 
+import ddf.catalog.data.Attribute;
+import ddf.catalog.data.AttributeFactory;
 import java.io.Serializable;
 import java.util.List;
 
-import ddf.catalog.data.Attribute;
+public class AttributeFactoryImpl implements AttributeFactory {
+  @Override
+  public Attribute getAttribute(String name, Serializable value) {
+    return new AttributeImpl(name, value);
+  }
 
-/**
- * Support interface for creating Attributes
- */
-public interface AttributeFactory {
+  @Override
+  public Attribute getAttribute(String name, List<Serializable> values) {
+    return new AttributeImpl(name, values);
+  }
 
-    Attribute getAttribute(String name, Serializable value);
-
-    Attribute getAttribute(String name, List<Serializable> values);
-
-    Attribute getAttribute(Attribute attribute);
+  @Override
+  public Attribute getAttribute(Attribute attribute) {
+    return new AttributeImpl(attribute);
+  }
 }

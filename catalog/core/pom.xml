@@ -73,6 +73,7 @@
         <module>catalog-core-api</module>
         <module>catalog-core-api-impl</module>
         <module>catalog-core-actions</module>
+        <module>catalog-core-attribute-factory-impl</module>
         <module>catalog-core-commons</module>
         <module>catalog-core-commands</module>
         <module>catalog-core-urlresourcereader</module>
