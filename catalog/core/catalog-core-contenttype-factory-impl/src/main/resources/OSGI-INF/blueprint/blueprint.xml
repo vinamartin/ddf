@@ -12,8 +12,8 @@
  **/
 -->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
-    <bean class="org.codice.ddf.catalog.data.impl.ContentTypeFactoryImpl"/>
-    <service id="contentTypeFactoryService" interface="org.codice.ddf.catalog.data.ContentTypeFactory">
+    <bean id="contentTypeFactory" class="ddf.catalog.data.impl.ContentTypeFactoryImpl"/>
+    <service ref="contentTypeFactory" interface="ddf.catalog.data.ContentTypeFactory">
         <service-properties>
             <entry key="name" value="contentTypeFactory"/>
         </service-properties>

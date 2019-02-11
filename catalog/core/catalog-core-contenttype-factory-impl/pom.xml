@@ -16,10 +16,17 @@
         <dependency>
             <groupId>ddf.catalog.core</groupId>
             <artifactId>catalog-core-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>ddf.catalog.core</groupId>
             <artifactId>catalog-core-api-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ddf.platform.util</groupId>
+            <artifactId>platform-util</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <build>
@@ -33,7 +40,8 @@
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.name}</Bundle-Name>
                         <Embed-Dependency>
-                            catalog-core-api-impl
+                            catalog-core-api-impl,
+                            platform-util
                         </Embed-Dependency>
                     </instructions>
                 </configuration>
