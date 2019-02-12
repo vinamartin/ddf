@@ -64,8 +64,10 @@
         </property>
         <property name="filterErrors" value="true"/>
         <property name="filterWarnings" value="false"/>
+        <property name="attributeFactory" ref="attributeFactory"/>
     </bean>
 
+    <reference id="attributeFactory" interface="ddf.catalog.data.AttributeFactory"/>
 
     <!-- Register in the OSGi Service Registry -->
     <service ref="pre-ingest-plugin" interface="ddf.catalog.plugin.PreIngestPlugin" ranking="-1"/>

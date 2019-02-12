@@ -18,9 +18,9 @@ import static org.codice.ddf.catalog.ui.metacard.workspace.WorkspaceConstants.WO
 
 import ddf.catalog.CatalogFramework;
 import ddf.catalog.data.Attribute;
+import ddf.catalog.data.AttributeFactory;
 import ddf.catalog.data.Metacard;
 import ddf.catalog.data.Result;
-import ddf.catalog.data.impl.AttributeImpl;
 import ddf.catalog.data.types.Core;
 import ddf.catalog.filter.FilterBuilder;
 import ddf.catalog.migrate.migration.api.DataMigratable;
@@ -67,6 +67,8 @@ public class WorkspaceQueryMigration implements DataMigratable {
 
   private Security security;
 
+  private AttributeFactory attributeFactory;
+
   public WorkspaceQueryMigration(
       CatalogFramework catalogFramework,
       FilterBuilder filterBuilder,
@@ -76,6 +78,19 @@ public class WorkspaceQueryMigration implements DataMigratable {
     this.filterBuilder = filterBuilder;
     this.xmlInputTransformer = xmlInputTransformer;
     this.security = security;
+  }
+
+  public WorkspaceQueryMigration(
+      CatalogFramework catalogFramework,
+      FilterBuilder filterBuilder,
+      InputTransformer xmlInputTransformer,
+      Security security,
+      AttributeFactory attributeFactory) {
+    this.catalogFramework = catalogFramework;
+    this.filterBuilder = filterBuilder;
+    this.xmlInputTransformer = xmlInputTransformer;
+    this.security = security;
+    this.attributeFactory = attributeFactory;
   }
 
   @Override
@@ -147,7 +162,8 @@ public class WorkspaceQueryMigration implements DataMigratable {
 
       LOGGER.trace("Created query metacards with IDs {}", createdMetacardIds);
 
-      workspaceMetacard.setAttribute(new AttributeImpl(WORKSPACE_QUERIES, createdMetacardIds));
+      workspaceMetacard.setAttribute(
+          attributeFactory.getAttribute(WORKSPACE_QUERIES, createdMetacardIds));
 
       updateMetacard(workspaceMetacard);
 
@@ -189,7 +205,7 @@ public class WorkspaceQueryMigration implements DataMigratable {
   private Metacard xmlToMetacard(InputStream inputStream) {
     try {
       Metacard metacard = xmlInputTransformer.transform(inputStream);
-      metacard.setAttribute(new AttributeImpl(Core.METACARD_TAGS, QUERY_TAG));
+      metacard.setAttribute(attributeFactory.getAttribute(Core.METACARD_TAGS, QUERY_TAG));
 
       LOGGER.trace("Successfully parsed query metacard with id [{}]", metacard.getId());
 

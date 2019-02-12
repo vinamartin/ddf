@@ -17,7 +17,10 @@
     <!-- Post Query Plugin -->
     <bean id="plugin"
           class="ddf.catalog.plugin.jpeg2000.thumbnail.converter.Jpeg2000ThumbnailConverter">
+        <property name="attributeFactory" ref="attributeFactory"/>
     </bean>
+
+    <reference id="attributeFactory" interface="ddf.catalog.data.AttributeFactory"/>
 
     <!-- Register in the OSGi Service Registry -->
     <service ref="plugin" interface="ddf.catalog.plugin.PostQueryPlugin"/>

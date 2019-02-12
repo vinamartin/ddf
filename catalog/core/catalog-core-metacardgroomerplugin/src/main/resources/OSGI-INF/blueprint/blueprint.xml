@@ -15,9 +15,12 @@
 
     <reference id="uuidGenerator" interface="org.codice.ddf.platform.util.uuidgenerator.UuidGenerator" filter="(id=uuidGenerator)"/>
 
+    <reference id="attributeFactory" interface="ddf.catalog.data.AttributeFactory"/>
+
 	<!-- PreIngest Plugin -->
     <bean id="plugin" class="ddf.catalog.plugin.groomer.metacard.StandardMetacardGroomerPlugin">
         <property name="uuidGenerator" ref="uuidGenerator" />
+        <property name="attributeFactory" ref="attributeFactory"/>
     </bean>
 
     <!-- Register in the OSGi Service Registry -->

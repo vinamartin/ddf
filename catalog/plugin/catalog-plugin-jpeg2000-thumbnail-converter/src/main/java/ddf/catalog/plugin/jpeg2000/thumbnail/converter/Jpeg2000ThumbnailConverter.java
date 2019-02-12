@@ -15,9 +15,9 @@ package ddf.catalog.plugin.jpeg2000.thumbnail.converter;
 
 import com.github.jaiimageio.jpeg2000.impl.IISRandomAccessIO;
 import com.github.jaiimageio.jpeg2000.impl.J2KImageReaderSpi;
+import ddf.catalog.data.AttributeFactory;
 import ddf.catalog.data.Metacard;
 import ddf.catalog.data.Result;
-import ddf.catalog.data.impl.AttributeImpl;
 import ddf.catalog.operation.QueryResponse;
 import ddf.catalog.plugin.PluginExecutionException;
 import ddf.catalog.plugin.PostQueryPlugin;
@@ -42,6 +42,8 @@ public class Jpeg2000ThumbnailConverter implements PostQueryPlugin {
   public static final int OFFICIAL_JP2_SIGNATURE = 0x0d0a870a;
 
   public static final short START_OF_CODESTREAM_MARKER = (short) 0xff4f;
+
+  private AttributeFactory attributeFactory;
 
   public Jpeg2000ThumbnailConverter() {
     IIORegistry.getDefaultInstance().registerServiceProvider(new J2KImageReaderSpi());
@@ -83,11 +85,16 @@ public class Jpeg2000ThumbnailConverter implements PostQueryPlugin {
           continue;
         }
         ImageIO.write(thumbnail, "jpeg", converted);
-        metacard.setAttribute(new AttributeImpl(Metacard.THUMBNAIL, converted.toByteArray()));
+        metacard.setAttribute(
+            attributeFactory.getAttribute(Metacard.THUMBNAIL, converted.toByteArray()));
       } catch (IOException e) {
         throw new PluginExecutionException(e);
       }
     }
     return input;
+  }
+
+  public void setAttributeFactory(AttributeFactory attributeFactory) {
+    this.attributeFactory = attributeFactory;
   }
 }

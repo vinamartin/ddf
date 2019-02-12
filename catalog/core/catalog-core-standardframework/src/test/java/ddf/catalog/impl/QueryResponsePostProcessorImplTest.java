@@ -102,7 +102,7 @@ public class QueryResponsePostProcessorImplTest {
     results.add(mock(Result.class));
 
     queryResponsePostProcessor =
-        new QueryResponsePostProcessor(resourceActionProvider, derivedActionProvider);
+        new QueryResponsePostProcessor(resourceActionProvider, derivedActionProvider, null);
   }
 
   @Test
@@ -125,7 +125,7 @@ public class QueryResponsePostProcessorImplTest {
   @Test
   public void testProcessRequestWhenResourceActionProviderIsNull() {
     QueryResponsePostProcessor queryResponsePostProcessor =
-        new QueryResponsePostProcessor(null, null);
+        new QueryResponsePostProcessor(null, null, null);
     queryResponsePostProcessor.processResponse(queryResponse);
 
     verifyZeroInteractions(queryResponse);

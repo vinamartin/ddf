@@ -20,6 +20,8 @@
 
   <reference id="xmlInputTransformer" interface="ddf.catalog.transform.InputTransformer" filter="(id=xml)"/>
 
+  <reference id="attributeFactory" interface="ddf.catalog.data.AttributeFactory"/>
+
   <bean id="security"
     class="org.codice.ddf.security.common.Security"
     factory-method="getInstance">
@@ -30,6 +32,7 @@
     <argument ref="filterBuilder"/>
     <argument ref="xmlInputTransformer"/>
     <argument ref="security"/>
+    <argument ref="attributeFactory"/>
   </bean>
 
   <service ref="workspaceQueryMigration" interface="ddf.catalog.migrate.migration.api.DataMigratable">

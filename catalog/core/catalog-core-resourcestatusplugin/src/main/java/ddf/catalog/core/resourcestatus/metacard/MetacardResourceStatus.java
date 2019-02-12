@@ -15,9 +15,9 @@ package ddf.catalog.core.resourcestatus.metacard;
 
 import ddf.catalog.cache.ResourceCacheInterface;
 import ddf.catalog.cache.impl.CacheKey;
+import ddf.catalog.data.AttributeFactory;
 import ddf.catalog.data.Metacard;
 import ddf.catalog.data.Result;
-import ddf.catalog.data.impl.AttributeImpl;
 import ddf.catalog.operation.QueryResponse;
 import ddf.catalog.operation.ResourceRequest;
 import ddf.catalog.operation.impl.ResourceRequestById;
@@ -34,9 +34,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * {@link PostQueryPlugin} that checks the {@link ddf.catalog.cache.impl.ResourceCache} for
- * existence of each {@link Metacard}'s related {@link ddf.catalog.resource.Resource} and adds an
- * {@link ddf.catalog.data.Attribute} to each {@link Metacard} in the {@link QueryResponse}.
+ * {@link PostQueryPlugin} that checks the {ResourceCache} for existence of each {@link Metacard}'s
+ * related {@link ddf.catalog.resource.Resource} and adds an {@link ddf.catalog.data.Attribute} to
+ * each {@link Metacard} in the {@link QueryResponse}.
  */
 public class MetacardResourceStatus implements PostQueryPlugin {
 
@@ -48,8 +48,11 @@ public class MetacardResourceStatus implements PostQueryPlugin {
 
   private ResourceCacheInterface cache;
 
-  public MetacardResourceStatus(ResourceCacheInterface cache) {
+  private AttributeFactory attributeFactory;
+
+  public MetacardResourceStatus(ResourceCacheInterface cache, AttributeFactory attributeFactory) {
     this.cache = cache;
+    this.attributeFactory = attributeFactory;
   }
 
   @Override
@@ -73,7 +76,7 @@ public class MetacardResourceStatus implements PostQueryPlugin {
     } else {
       isResourceLocal = isResourceLocal(metacard);
     }
-    metacard.setAttribute(new AttributeImpl(INTERNAL_LOCAL_RESOURCE, isResourceLocal));
+    metacard.setAttribute(attributeFactory.getAttribute(INTERNAL_LOCAL_RESOURCE, isResourceLocal));
   }
 
   private boolean isResourceLocal(Metacard metacard) {
@@ -119,5 +122,9 @@ public class MetacardResourceStatus implements PostQueryPlugin {
 
   String getLocalSiteName() {
     return SystemInfo.getSiteName().toLowerCase();
+  }
+
+  public void setAttributeFactory(AttributeFactory attributeFactory) {
+    this.attributeFactory = attributeFactory;
   }
 }

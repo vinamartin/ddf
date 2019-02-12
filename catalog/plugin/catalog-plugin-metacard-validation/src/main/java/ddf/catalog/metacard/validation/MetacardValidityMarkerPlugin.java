@@ -15,8 +15,8 @@ package ddf.catalog.metacard.validation;
 
 import ddf.catalog.Constants;
 import ddf.catalog.data.Attribute;
+import ddf.catalog.data.AttributeFactory;
 import ddf.catalog.data.Metacard;
-import ddf.catalog.data.impl.AttributeImpl;
 import ddf.catalog.data.types.Validation;
 import ddf.catalog.operation.CreateRequest;
 import ddf.catalog.operation.DeleteRequest;
@@ -62,6 +62,8 @@ public class MetacardValidityMarkerPlugin implements PreIngestPlugin {
   private boolean enforceErrors = true;
 
   private boolean enforceWarnings = true;
+
+  private AttributeFactory attributeFactory;
 
   @Override
   public CreateRequest process(CreateRequest input)
@@ -155,20 +157,21 @@ public class MetacardValidityMarkerPlugin implements PreIngestPlugin {
     }
 
     tags.add(valid);
-    metacard.setAttribute(new AttributeImpl(Metacard.TAGS, new ArrayList<String>(tags)));
+    metacard.setAttribute(
+        attributeFactory.getAttribute(Metacard.TAGS, new ArrayList<String>(tags)));
 
     metacard.setAttribute(
-        new AttributeImpl(
+        attributeFactory.getAttribute(
             Validation.VALIDATION_ERRORS, (List<Serializable>) new ArrayList<>(newErrors)));
     metacard.setAttribute(
-        new AttributeImpl(
+        attributeFactory.getAttribute(
             Validation.VALIDATION_WARNINGS, (List<Serializable>) new ArrayList<>(newWarnings)));
     metacard.setAttribute(
-        new AttributeImpl(
+        attributeFactory.getAttribute(
             Validation.FAILED_VALIDATORS_WARNINGS,
             (List<Serializable>) new ArrayList<>(warningValidators)));
     metacard.setAttribute(
-        new AttributeImpl(
+        attributeFactory.getAttribute(
             Validation.FAILED_VALIDATORS_ERRORS,
             (List<Serializable>) new ArrayList<>(errorValidators)));
 
@@ -266,5 +269,9 @@ public class MetacardValidityMarkerPlugin implements PreIngestPlugin {
 
   public boolean getEnforceWarnings() {
     return enforceWarnings;
+  }
+
+  public void setAttributeFactory(AttributeFactory attributeFactory) {
+    this.attributeFactory = attributeFactory;
   }
 }

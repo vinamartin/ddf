@@ -206,7 +206,7 @@ public class MetacardResourceStatusTest {
 
   private MetacardResourceStatus getMetacardResourceStatusPlugin() {
     MetacardResourceStatus plugin =
-        new MetacardResourceStatus(cache) {
+        new MetacardResourceStatus(cache, null) {
           @Override
           String getLocalSiteName() {
             return LOCAL_SITE_NAME;

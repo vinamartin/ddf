@@ -15,8 +15,8 @@ package ddf.catalog.plugin.groomer.metacard;
 
 import ddf.catalog.content.data.ContentItem;
 import ddf.catalog.data.Attribute;
+import ddf.catalog.data.AttributeFactory;
 import ddf.catalog.data.Metacard;
-import ddf.catalog.data.impl.AttributeImpl;
 import ddf.catalog.data.types.Core;
 import ddf.catalog.operation.CreateRequest;
 import ddf.catalog.operation.UpdateRequest;
@@ -39,6 +39,8 @@ public class StandardMetacardGroomerPlugin extends AbstractMetacardGroomerPlugin
 
   private UuidGenerator uuidGenerator;
 
+  private AttributeFactory attributeFactory;
+
   public void setUuidGenerator(UuidGenerator uuidGenerator) {
     this.uuidGenerator = uuidGenerator;
   }
@@ -48,27 +50,28 @@ public class StandardMetacardGroomerPlugin extends AbstractMetacardGroomerPlugin
     LOGGER.debug("Applying standard rules on CreateRequest");
     if ((aMetacard.getResourceURI() != null && !isCatalogResourceUri(aMetacard.getResourceURI()))
         || !uuidGenerator.validateUuid(aMetacard.getId())) {
-      aMetacard.setAttribute(new AttributeImpl(Metacard.ID, uuidGenerator.generateUuid()));
+      aMetacard.setAttribute(
+          attributeFactory.getAttribute(Metacard.ID, uuidGenerator.generateUuid()));
     }
 
     if (aMetacard.getCreatedDate() == null) {
-      aMetacard.setAttribute(new AttributeImpl(Metacard.CREATED, now));
+      aMetacard.setAttribute(attributeFactory.getAttribute(Metacard.CREATED, now));
     }
 
     if (aMetacard.getModifiedDate() == null) {
-      aMetacard.setAttribute(new AttributeImpl(Metacard.MODIFIED, now));
+      aMetacard.setAttribute(attributeFactory.getAttribute(Metacard.MODIFIED, now));
     }
 
     if (aMetacard.getEffectiveDate() == null) {
-      aMetacard.setAttribute(new AttributeImpl(Metacard.EFFECTIVE, now));
+      aMetacard.setAttribute(attributeFactory.getAttribute(Metacard.EFFECTIVE, now));
     }
 
     if (isDateAttributeEmpty(aMetacard, Core.METACARD_CREATED)) {
-      aMetacard.setAttribute(new AttributeImpl(Core.METACARD_CREATED, now));
+      aMetacard.setAttribute(attributeFactory.getAttribute(Core.METACARD_CREATED, now));
       logMetacardAttributeUpdate(aMetacard, Core.METACARD_CREATED, now);
     }
 
-    aMetacard.setAttribute(new AttributeImpl(Core.METACARD_MODIFIED, now));
+    aMetacard.setAttribute(attributeFactory.getAttribute(Core.METACARD_MODIFIED, now));
     logMetacardAttributeUpdate(aMetacard, Core.METACARD_MODIFIED, now);
   }
 
@@ -92,33 +95,33 @@ public class StandardMetacardGroomerPlugin extends AbstractMetacardGroomerPlugin
           Metacard.ID,
           aMetacard.getId(),
           anUpdate.getKey());
-      aMetacard.setAttribute(new AttributeImpl(Metacard.ID, anUpdate.getKey()));
+      aMetacard.setAttribute(attributeFactory.getAttribute(Metacard.ID, anUpdate.getKey()));
     }
 
     if (aMetacard.getCreatedDate() == null) {
       LOGGER.debug(
           "{} date should match the original metacard. Changing date to current timestamp so it is at least not null.",
           Metacard.CREATED);
-      aMetacard.setAttribute(new AttributeImpl(Metacard.CREATED, now));
+      aMetacard.setAttribute(attributeFactory.getAttribute(Metacard.CREATED, now));
     }
 
     if (isDateAttributeEmpty(aMetacard, Core.METACARD_CREATED)) {
-      aMetacard.setAttribute(new AttributeImpl(Core.METACARD_CREATED, now));
+      aMetacard.setAttribute(attributeFactory.getAttribute(Core.METACARD_CREATED, now));
       LOGGER.debug(
           "{} date should not be null on an update operation. Changing date to current timestamp so it is at least not null.",
           Core.METACARD_CREATED);
     }
 
     if (aMetacard.getModifiedDate() == null) {
-      aMetacard.setAttribute(new AttributeImpl(Metacard.MODIFIED, now));
+      aMetacard.setAttribute(attributeFactory.getAttribute(Metacard.MODIFIED, now));
     }
 
     if (aMetacard.getEffectiveDate() == null) {
-      aMetacard.setAttribute(new AttributeImpl(Metacard.EFFECTIVE, now));
+      aMetacard.setAttribute(attributeFactory.getAttribute(Metacard.EFFECTIVE, now));
     }
 
     // upon an update operation, the metacard modified time should be updated
-    aMetacard.setAttribute(new AttributeImpl(Core.METACARD_MODIFIED, now));
+    aMetacard.setAttribute(attributeFactory.getAttribute(Core.METACARD_MODIFIED, now));
     logMetacardAttributeUpdate(aMetacard, Core.METACARD_MODIFIED, now);
   }
 
@@ -133,5 +136,9 @@ public class StandardMetacardGroomerPlugin extends AbstractMetacardGroomerPlugin
   private boolean isDateAttributeEmpty(Metacard metacard, String attribute) {
     Attribute origAttribute = metacard.getAttribute(attribute);
     return (origAttribute == null || !(origAttribute.getValue() instanceof Date));
+  }
+
+  public void setAttributeFactory(AttributeFactory attributeFactory) {
+    this.attributeFactory = attributeFactory;
   }
 }

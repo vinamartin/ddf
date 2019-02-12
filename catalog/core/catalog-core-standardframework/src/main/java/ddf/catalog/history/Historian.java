@@ -32,10 +32,10 @@ import ddf.catalog.core.versioning.MetacardVersion.Action;
 import ddf.catalog.core.versioning.impl.DeletedMetacardImpl;
 import ddf.catalog.core.versioning.impl.MetacardVersionImpl;
 import ddf.catalog.data.AttributeDescriptor;
+import ddf.catalog.data.AttributeFactory;
 import ddf.catalog.data.Metacard;
 import ddf.catalog.data.MetacardType;
 import ddf.catalog.data.Result;
-import ddf.catalog.data.impl.AttributeImpl;
 import ddf.catalog.filter.FilterBuilder;
 import ddf.catalog.operation.CreateResponse;
 import ddf.catalog.operation.DeleteResponse;
@@ -114,6 +114,8 @@ public class Historian {
   private UuidGenerator uuidGenerator;
 
   private SubjectIdentity subjectIdentity;
+
+  private AttributeFactory attributeFactory;
 
   public void init() {
     Bundle bundle = FrameworkUtil.getBundle(Historian.class);
@@ -683,7 +685,8 @@ public class Historian {
             contentItem);
         continue;
       }
-      metacard.setAttribute(new AttributeImpl(Metacard.RESOURCE_URI, contentItem.getUri()));
+      metacard.setAttribute(
+          attributeFactory.getAttribute(Metacard.RESOURCE_URI, contentItem.getUri()));
     }
   }
 
@@ -760,6 +763,10 @@ public class Historian {
 
   void setSecurity(Security security) {
     this.security = security;
+  }
+
+  public void setAttributeFactory(AttributeFactory attributeFactory) {
+    this.attributeFactory = attributeFactory;
   }
 
   private static class WrappedByteSource extends ByteSource {

@@ -16,9 +16,9 @@ package ddf.catalog.impl;
 import ddf.action.Action;
 import ddf.action.ActionProvider;
 import ddf.action.MultiActionProvider;
+import ddf.catalog.data.AttributeFactory;
 import ddf.catalog.data.Metacard;
 import ddf.catalog.data.Result;
-import ddf.catalog.data.impl.AttributeImpl;
 import ddf.catalog.operation.QueryResponse;
 import java.net.URL;
 import java.util.List;
@@ -41,8 +41,12 @@ public class QueryResponsePostProcessor {
 
   private ActionProvider resourceActionProvider;
 
+  private AttributeFactory attributeFactory;
+
   public QueryResponsePostProcessor(
-      ActionProvider resourceActionProvider, MultiActionProvider derivedActionProvider) {
+      ActionProvider resourceActionProvider,
+      MultiActionProvider derivedActionProvider,
+      AttributeFactory attributeFactory) {
     this.resourceActionProvider = resourceActionProvider;
     this.derivedMultiActionProvider = derivedActionProvider;
   }
@@ -75,7 +79,8 @@ public class QueryResponsePostProcessor {
 
           if (resourceUrl != null) {
             metacard.setAttribute(
-                new AttributeImpl(Metacard.RESOURCE_DOWNLOAD_URL, resourceUrl.toString()));
+                attributeFactory.getAttribute(
+                    Metacard.RESOURCE_DOWNLOAD_URL, resourceUrl.toString()));
           }
         }
       }
@@ -86,7 +91,7 @@ public class QueryResponsePostProcessor {
 
         if (!CollectionUtils.isEmpty(actions)) {
           metacard.setAttribute(
-              new AttributeImpl(
+              attributeFactory.getAttribute(
                   Metacard.DERIVED_RESOURCE_DOWNLOAD_URL,
                   actions
                       .stream()
