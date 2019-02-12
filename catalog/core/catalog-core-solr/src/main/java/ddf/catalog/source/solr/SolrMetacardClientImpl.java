@@ -32,12 +32,12 @@ import com.google.common.collect.Sets;
 import ddf.catalog.data.Attribute;
 import ddf.catalog.data.AttributeType;
 import ddf.catalog.data.ContentType;
+import ddf.catalog.data.ContentTypeFactory;
 import ddf.catalog.data.Metacard;
 import ddf.catalog.data.MetacardCreationException;
 import ddf.catalog.data.MetacardType;
 import ddf.catalog.data.Result;
 import ddf.catalog.data.impl.AttributeImpl;
-import ddf.catalog.data.impl.ContentTypeImpl;
 import ddf.catalog.data.impl.MetacardImpl;
 import ddf.catalog.data.impl.ResultImpl;
 import ddf.catalog.filter.FilterAdapter;
@@ -124,6 +124,8 @@ public class SolrMetacardClientImpl implements SolrMetacardClient {
   private final FilterAdapter filterAdapter;
 
   private final DynamicSchemaResolver resolver;
+
+  private final ContentTypeFactory contentTypeFactory = null;
 
   private static final Supplier<Boolean> ZERO_PAGESIZE_COMPATIBILTY =
       () -> Boolean.valueOf(System.getProperty(ZERO_PAGESIZE_COMPATIBILITY_PROPERTY));
@@ -378,8 +380,8 @@ public class SolrMetacardClientImpl implements SolrMetacardClient {
             // values (content type names).
             for (FacetField.Count currContentType : facetFields.get(0).getValues()) {
               // unknown version, so setting it to null
-              ContentType contentType = new ContentTypeImpl(currContentType.getName(), null);
-
+              ContentType contentType =
+                  contentTypeFactory.getContentType(currContentType.getName(), null);
               finalSet.add(contentType);
             }
           }
@@ -395,8 +397,7 @@ public class SolrMetacardClientImpl implements SolrMetacardClient {
               // associated with this content type name
               LOGGER.debug(
                   "Content type does not have associated contentTypeVersion: {}", contentTypeName);
-              ContentType contentType = new ContentTypeImpl(contentTypeName, null);
-
+              ContentType contentType = contentTypeFactory.getContentType(contentTypeName, null);
               finalSet.add(contentType);
 
             } else {
@@ -408,7 +409,8 @@ public class SolrMetacardClientImpl implements SolrMetacardClient {
                     contentTypeName);
 
                 ContentType contentType =
-                    new ContentTypeImpl(contentTypeName, innerPf.getValue().toString());
+                    contentTypeFactory.getContentType(
+                        contentTypeName, innerPf.getValue().toString());
 
                 finalSet.add(contentType);
               }

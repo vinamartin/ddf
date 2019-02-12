@@ -14,8 +14,8 @@
 package org.codice.ddf.spatial.ogc.catalog.common;
 
 import ddf.catalog.data.ContentType;
+import ddf.catalog.data.ContentTypeFactory;
 import ddf.catalog.data.Metacard;
-import ddf.catalog.data.impl.ContentTypeImpl;
 import ddf.catalog.filter.impl.SimpleFilterDelegate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +28,8 @@ import org.apache.commons.lang.StringUtils;
  * @author Jason Smith
  */
 public class ContentTypeFilterDelegate extends SimpleFilterDelegate<List<ContentType>> {
+
+  private final ContentTypeFactory contentTypeFactory = null;
 
   @Override
   public <S> List<ContentType> defaultOperation(
@@ -62,7 +64,7 @@ public class ContentTypeFilterDelegate extends SimpleFilterDelegate<List<Content
 
     if (propertyName.equalsIgnoreCase(Metacard.CONTENT_TYPE)) {
 
-      ContentType type = new ContentTypeImpl(literal, "");
+      ContentType type = contentTypeFactory.getContentType(literal, "");
       types = new ArrayList<ContentType>();
       types.add(type);
     } else {

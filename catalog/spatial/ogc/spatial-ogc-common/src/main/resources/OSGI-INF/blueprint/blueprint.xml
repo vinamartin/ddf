@@ -12,10 +12,8 @@
  **/
 -->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
-<bean class="org.codice.ddf.catalog.data.impl.ContentTypeFactoryImpl"/>
-<service id="contentTypeFactoryService" interface="org.codice.ddf.catalog.data.ContentTypeFactory">
-    <service-properties>
-        <entry key="name" value="contentTypeFactory"/>
-    </service-properties>
-</service>
+    <reference id="contentTypeService" interface="ddf.catalog.data.ContentTypeFactory"/>
+    <bean id="contentTypeFilterDelegate" class="org.codice.ddf.spatial.ogc.catalog.common.ContentTypeFilterDelegate" init-method="init">
+        <property name="contentTypeService" ref="contentTypeService"/>
+    </bean>
 </blueprint>

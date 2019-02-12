@@ -43,6 +43,7 @@ import ddf.catalog.data.Metacard;
 import ddf.catalog.data.impl.AttributeDescriptorImpl;
 import ddf.catalog.data.impl.AttributeImpl;
 import ddf.catalog.data.impl.BasicTypes;
+import ddf.catalog.data.ContentTypeFactory;
 import ddf.catalog.data.impl.ContentTypeImpl;
 import ddf.catalog.data.impl.MetacardImpl;
 import ddf.catalog.data.impl.types.CoreAttributes;
