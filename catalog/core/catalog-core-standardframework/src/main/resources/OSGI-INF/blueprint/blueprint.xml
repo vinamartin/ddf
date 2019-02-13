@@ -36,6 +36,8 @@
 
     <reference id="subjectIdentity" interface="ddf.security.SubjectIdentity"/>
 
+    <reference id="attributeFactory" interface="ddf.catalog.data.AttributeFactory"/>
+
     <reference id="defaultAttributeValueRegistry"
                interface="ddf.catalog.data.DefaultAttributeValueRegistry"/>
 

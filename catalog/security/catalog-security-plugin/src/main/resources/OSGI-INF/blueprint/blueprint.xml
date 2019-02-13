@@ -18,8 +18,10 @@
 
     <bean id="securityPlugin" class="ddf.catalog.security.plugin.SecurityPlugin">
         <argument ref="subjectIdentity"/>
+        <argument ref="attributeFactory"/>
     </bean>
 
     <service ref="securityPlugin" auto-export="interfaces" ranking="100"/>
 
+    <reference id="attributeFactory" interface="ddf.catalog.data.AttributeFactory"/>
 </blueprint>

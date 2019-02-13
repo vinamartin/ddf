@@ -23,4 +23,6 @@
     
     <reference id="resourceCache" interface="ddf.catalog.cache.ResourceCacheInterface"/>
 
+    <reference id="attributeFactory" interface="ddf.catalog.data.AttributeFactory"/>
+
 </blueprint>

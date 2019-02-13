@@ -13,8 +13,8 @@
  */
 package ddf.catalog.security.plugin;
 
+import ddf.catalog.data.AttributeFactory;
 import ddf.catalog.data.Metacard;
-import ddf.catalog.data.impl.AttributeImpl;
 import ddf.catalog.operation.CreateRequest;
 import ddf.catalog.operation.DeleteRequest;
 import ddf.catalog.operation.DeleteResponse;
@@ -45,8 +45,15 @@ public class SecurityPlugin implements AccessPlugin {
 
   private SubjectIdentity subjectIdentity;
 
+  private AttributeFactory attributeFactory;
+
   public SecurityPlugin(SubjectIdentity subjectIdentity) {
     this.subjectIdentity = subjectIdentity;
+  }
+
+  public SecurityPlugin(SubjectIdentity subjectIdentity, AttributeFactory attributeFactory) {
+    this.subjectIdentity = subjectIdentity;
+    this.attributeFactory = attributeFactory;
   }
 
   /**
@@ -72,7 +79,8 @@ public class SecurityPlugin implements AccessPlugin {
                 if ((metacard.getTags().isEmpty()
                         || metacard.getTags().contains(Metacard.DEFAULT_TAG))
                     && StringUtils.isNotBlank(id)) {
-                  metacard.setAttribute(new AttributeImpl(Metacard.POINT_OF_CONTACT, id));
+                  metacard.setAttribute(
+                      attributeFactory.getAttribute(Metacard.POINT_OF_CONTACT, id));
                 }
               });
     }

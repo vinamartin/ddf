@@ -46,7 +46,7 @@
         </property>
         <property name="enforceErrors" value="true"/>
         <property name="enforceWarnings" value="true"/>
-
+        <property name="attributeFactory" ref="attributeFactory"/>
     </bean>
 
     <!-- Pre-Federation and Post-Query Metacard Validity Filter Plugin -->
@@ -64,7 +64,6 @@
         </property>
         <property name="filterErrors" value="true"/>
         <property name="filterWarnings" value="false"/>
-        <property name="attributeFactory" ref="attributeFactory"/>
     </bean>
 
     <reference id="attributeFactory" interface="ddf.catalog.data.AttributeFactory"/>

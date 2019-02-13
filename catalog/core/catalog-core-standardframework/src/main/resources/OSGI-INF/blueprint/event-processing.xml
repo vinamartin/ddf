@@ -39,8 +39,6 @@
         <argument ref="attributeFactory"/>
     </bean>
 
-    <reference id="attributeFactory" interface="ddf.catalog.data.AttributeFactory"/>
-
     <bean id="eventProcessorService" class="ddf.catalog.pubsub.EventProcessorImpl"
           init-method="init" destroy-method="destroy">
         <argument ref="blueprintBundleContext"/>

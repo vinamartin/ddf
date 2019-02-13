@@ -13,6 +13,7 @@
  */
 package ddf.catalog.source.solr;
 
+import ddf.catalog.data.AttributeFactory;
 import ddf.catalog.data.ContentType;
 import ddf.catalog.data.Metacard;
 import ddf.catalog.data.MetacardCreationException;
@@ -100,6 +101,8 @@ public class SolrCatalogProvider extends MaskableImpl implements CatalogProvider
   private final SolrMetacardClientImpl client;
 
   private final FilterAdapter filterAdapter;
+
+  private AttributeFactory attributeFactory;
 
   /**
    * Constructor that creates a new instance and allows for a custom {@link DynamicSchemaResolver}

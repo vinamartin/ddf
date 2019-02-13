@@ -49,6 +49,7 @@ public class QueryResponsePostProcessor {
       AttributeFactory attributeFactory) {
     this.resourceActionProvider = resourceActionProvider;
     this.derivedMultiActionProvider = derivedActionProvider;
+    this.attributeFactory = attributeFactory;
   }
 
   /**

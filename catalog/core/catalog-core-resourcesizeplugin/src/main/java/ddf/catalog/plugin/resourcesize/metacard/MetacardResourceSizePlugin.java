@@ -16,9 +16,9 @@ package ddf.catalog.plugin.resourcesize.metacard;
 import ddf.catalog.cache.ResourceCacheInterface;
 import ddf.catalog.cache.impl.CacheKey;
 import ddf.catalog.data.Attribute;
+import ddf.catalog.data.AttributeFactory;
 import ddf.catalog.data.Metacard;
 import ddf.catalog.data.Result;
-import ddf.catalog.data.impl.AttributeImpl;
 import ddf.catalog.operation.QueryResponse;
 import ddf.catalog.operation.ResourceRequest;
 import ddf.catalog.operation.impl.ResourceRequestById;
@@ -36,8 +36,16 @@ public class MetacardResourceSizePlugin implements PostQueryPlugin {
 
   private ResourceCacheInterface cache;
 
+  private AttributeFactory attributeFactory;
+
   public MetacardResourceSizePlugin(ResourceCacheInterface cache) {
     this.cache = cache;
+  }
+
+  public MetacardResourceSizePlugin(
+      ResourceCacheInterface cache, AttributeFactory attributeFactory) {
+    this.cache = cache;
+    this.attributeFactory = attributeFactory;
   }
 
   @Override
@@ -75,7 +83,7 @@ public class MetacardResourceSizePlugin implements PostQueryPlugin {
             LOGGER.debug(
                 "Setting resourceSize = {} for metacard ID = {}", resourceSize, metacard.getId());
             Attribute resourceSizeAttribute =
-                new AttributeImpl(Metacard.RESOURCE_SIZE, String.valueOf(resourceSize));
+                attributeFactory.getAttribute(Metacard.RESOURCE_SIZE, String.valueOf(resourceSize));
             metacard.setAttribute(resourceSizeAttribute);
           } else {
             LOGGER.debug("resourceSize <= 0 for metacard ID = {}", metacard.getId());

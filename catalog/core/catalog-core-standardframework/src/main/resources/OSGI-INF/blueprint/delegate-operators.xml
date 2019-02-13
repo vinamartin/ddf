@@ -30,8 +30,6 @@
         <property name="attributeFactory" ref="attributeFactory"/>
     </bean>
 
-    <reference id="attributeFactory" interface="ddf.catalog.data.AttributeFactory"/>
-
     <service interface="ddf.catalog.configuration.HistorianConfiguration">
         <bean class="ddf.catalog.history.HistorianConfigurationImpl">
             <property name="historian" ref="historian"/>
