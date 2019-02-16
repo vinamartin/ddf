@@ -24,6 +24,7 @@
 
         <argument ref="blueprintBundleContext"/>
         <argument ref="commonTikaMetacardType"/>
+        <argument ref="attributeFactory"/>
         <property name="fallbackJpegMetacardType" ref="fallbackJpegMetacardType"/>
         <property name="fallbackExcelMetacardType" ref="fallbackExcelMetacardType"/>
         <property name="commonTikaMetacardType" ref="commonTikaMetacardType"/>
@@ -33,6 +34,8 @@
         <property name="fallbackPdfMetacardType" ref="fallbackPdfMetacardType"/>
         <property name="fallbackPowerpointMetacardType" ref="fallbackPowerpointMetacardType"/>
     </bean>
+
+    <reference id="attributeFactory" interface="ddf.catalog.data.AttributeFactory"/>
 
     <reference-list id="contentExtractors"
                     interface="ddf.catalog.content.operation.ContentMetadataExtractor"

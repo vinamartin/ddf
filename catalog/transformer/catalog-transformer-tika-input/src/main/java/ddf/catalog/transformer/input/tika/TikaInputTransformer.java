@@ -19,9 +19,9 @@ import ddf.catalog.content.operation.ContentMetadataExtractor;
 import ddf.catalog.content.operation.MetadataExtractor;
 import ddf.catalog.data.Attribute;
 import ddf.catalog.data.AttributeDescriptor;
+import ddf.catalog.data.AttributeFactory;
 import ddf.catalog.data.Metacard;
 import ddf.catalog.data.MetacardType;
-import ddf.catalog.data.impl.AttributeImpl;
 import ddf.catalog.data.impl.MetacardImpl;
 import ddf.catalog.data.impl.MetacardTypeImpl;
 import ddf.catalog.data.impl.types.experimental.ExtractedAttributes;
@@ -172,8 +172,17 @@ public class TikaInputTransformer implements InputTransformer {
 
   private boolean useResourceTitleAsTitle;
 
+  private AttributeFactory attributeFactory;
+
   public TikaInputTransformer(BundleContext bundleContext, MetacardType metacardType) {
     this.commonTikaMetacardType = metacardType;
+    classLoaderAndBundleContextSetup(bundleContext);
+  }
+
+  public TikaInputTransformer(
+      BundleContext bundleContext, MetacardType metacardType, AttributeFactory attributeFactory) {
+    this.commonTikaMetacardType = metacardType;
+    this.attributeFactory = attributeFactory;
     classLoaderAndBundleContextSetup(bundleContext);
   }
 
@@ -380,7 +389,7 @@ public class TikaInputTransformer implements InputTransformer {
         Attribute validationAttribute = null;
         if (metadataText.equals(TikaMetadataExtractor.METADATA_LIMIT_REACHED_MSG)) {
           validationAttribute =
-              new AttributeImpl(
+              attributeFactory.getAttribute(
                   Validation.VALIDATION_WARNINGS, Collections.singletonList(metadataText));
           metadataText = "";
         }
@@ -392,7 +401,7 @@ public class TikaInputTransformer implements InputTransformer {
             MetacardCreator.createMetacard(
                 metadata, id, metadataText, metacardType, useResourceTitleAsTitle);
         if (StringUtils.isNotBlank(bodyText)) {
-          metacard.setAttribute(new AttributeImpl(Extracted.EXTRACTED_TEXT, bodyText));
+          metacard.setAttribute(attributeFactory.getAttribute(Extracted.EXTRACTED_TEXT, bodyText));
           processContentMetadataExtractors(bodyText, metacard);
         }
 
@@ -523,7 +532,8 @@ public class TikaInputTransformer implements InputTransformer {
       throws IOException {
 
     if (StringUtils.isNotBlank(metacardContentType)) {
-      metacard.setAttribute(new AttributeImpl(Core.DATATYPE, getDatatype(metacardContentType)));
+      metacard.setAttribute(
+          attributeFactory.getAttribute(Core.DATATYPE, getDatatype(metacardContentType)));
     }
 
     if (StringUtils.startsWith(metacardContentType, "image")) {
@@ -532,7 +542,7 @@ public class TikaInputTransformer implements InputTransformer {
       }
     }
 
-    metacard.setAttribute(new AttributeImpl(Core.RESOURCE_SIZE, String.valueOf(bytes)));
+    metacard.setAttribute(attributeFactory.getAttribute(Core.RESOURCE_SIZE, String.valueOf(bytes)));
   }
 
   @Nullable
@@ -638,7 +648,7 @@ public class TikaInputTransformer implements InputTransformer {
           ImageIO.write(thumb, "jpeg", out);
 
           byte[] thumbBytes = out.toByteArray();
-          metacard.setAttribute(new AttributeImpl(Metacard.THUMBNAIL, thumbBytes));
+          metacard.setAttribute(attributeFactory.getAttribute(Metacard.THUMBNAIL, thumbBytes));
         }
       } else {
         LOGGER.debug("Unable to read image from input stream to create thumbnail.");
