@@ -13,9 +13,9 @@
  */
 package ddf.catalog.transformer.xml;
 
+import ddf.catalog.data.AttributeFactory;
 import ddf.catalog.data.Metacard;
 import ddf.catalog.data.MetacardType;
-import ddf.catalog.data.impl.AttributeImpl;
 import ddf.catalog.transform.CatalogTransformerException;
 import ddf.catalog.transform.InputTransformer;
 import ddf.catalog.transformer.xml.adapter.MetacardTypeAdapter;
@@ -38,8 +38,15 @@ public class XmlInputTransformer extends AbstractXmlTransformer implements Input
 
   private List<MetacardType> metacardTypes;
 
+  private AttributeFactory attributeFactory;
+
   public XmlInputTransformer(Parser parser) {
     super(parser);
+  }
+
+  public XmlInputTransformer(Parser parser, AttributeFactory attributeFactory) {
+    super(parser);
+    this.attributeFactory = attributeFactory;
   }
 
   @Override
@@ -68,7 +75,7 @@ public class XmlInputTransformer extends AbstractXmlTransformer implements Input
       }
 
       if (!StringUtils.isEmpty(id)) {
-        metacard.setAttribute(new AttributeImpl(Metacard.ID, id));
+        metacard.setAttribute(attributeFactory.getAttribute(Metacard.ID, id));
       }
 
       return metacard;

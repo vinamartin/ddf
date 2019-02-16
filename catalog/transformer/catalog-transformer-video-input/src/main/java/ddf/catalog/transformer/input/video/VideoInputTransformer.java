@@ -13,9 +13,9 @@
  */
 package ddf.catalog.transformer.input.video;
 
+import ddf.catalog.data.AttributeFactory;
 import ddf.catalog.data.Metacard;
 import ddf.catalog.data.MetacardType;
-import ddf.catalog.data.impl.AttributeImpl;
 import ddf.catalog.data.types.Core;
 import ddf.catalog.data.types.constants.core.DataType;
 import ddf.catalog.transform.CatalogTransformerException;
@@ -31,9 +31,15 @@ public class VideoInputTransformer implements InputTransformer {
 
   private MetacardType metacardType = null;
 
-  public VideoInputTransformer(MetacardType metacardType) {
+  private AttributeFactory attributeFactory;
 
+  public VideoInputTransformer(MetacardType metacardType) {
     this.metacardType = metacardType;
+  }
+
+  public VideoInputTransformer(MetacardType metacardType, AttributeFactory attributeFactory) {
+    this.metacardType = metacardType;
+    this.attributeFactory = attributeFactory;
   }
 
   @Override
@@ -55,7 +61,8 @@ public class VideoInputTransformer implements InputTransformer {
 
       metacard = MetacardCreator.createMetacard(metadata, id, metadataText, metacardType);
 
-      metacard.setAttribute(new AttributeImpl(Core.DATATYPE, DataType.MOVING_IMAGE.toString()));
+      metacard.setAttribute(
+          attributeFactory.getAttribute(Core.DATATYPE, DataType.MOVING_IMAGE.toString()));
     } catch (TikaException e) {
       throw new CatalogTransformerException(e);
     }

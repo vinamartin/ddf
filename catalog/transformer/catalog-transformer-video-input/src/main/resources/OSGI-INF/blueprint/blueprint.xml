@@ -15,11 +15,14 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
     <bean id="transformer" class="ddf.catalog.transformer.input.video.VideoInputTransformer">
         <argument ref="commonMetacardType"/>
+        <argument ref="attributeFactory"/>
     </bean>
 
     <reference id="commonMetacardType" interface="ddf.catalog.data.MetacardType"
                filter="(name=common)"
                availability="mandatory"/>
+
+    <reference id="attributeFactory" interface="ddf.catalog.data.AttributeFactory"/>
 
     <service ref="transformer" interface="ddf.catalog.transform.InputTransformer">
         <service-properties>

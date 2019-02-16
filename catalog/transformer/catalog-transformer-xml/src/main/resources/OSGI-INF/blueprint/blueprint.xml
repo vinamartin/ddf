@@ -17,6 +17,8 @@
     <reference id="xmlParser" interface="org.codice.ddf.parser.Parser" filter="(id=xml)"
                availability="mandatory"/>
 
+    <reference id="attributeFactory" interface="ddf.catalog.data.AttributeFactory"/>
+
     <service interface="ddf.catalog.transform.InputTransformer">
         <service-properties>
             <entry key="id" value="xml"/>
@@ -25,6 +27,7 @@
         </service-properties>
         <bean class="ddf.catalog.transformer.xml.XmlInputTransformer">
             <argument ref="xmlParser"/>
+            <argument ref="attributeFactory"/>
             <property name="metacardTypes">
                 <reference-list interface="ddf.catalog.data.MetacardType" availability="optional"/>
             </property>
